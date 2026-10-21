@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..500,0..1,0&display=block" rel="stylesheet">
+<style>
+body{margin:0;background:#EDECE8;color:#1B1B1A;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#3E5FA8;text-decoration:none}a:hover{color:#1B1B1A;text-decoration:underline}
+</style>
+</helmet>
+
+<div style="max-width:1440px;margin:0 auto;padding:64px 48px 120px;display:flex;flex-direction:column;gap:96px">
+
+<header style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:end">
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5E5D59">Stage 1 · Foundations &amp; components · v0.1</div>
+    <div style="display:flex;align-items:center;gap:20px">
+      <svg width="64" height="64" viewBox="0 0 64 64"><rect x="0" y="0" width="64" height="64" rx="20" fill="#1B1B1A"></rect><rect x="14" y="14" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="27" y="14" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="40" y="14" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="14" y="27" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="27" y="27" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="40" y="31" width="10" height="10" rx="5" fill="#F7F6F3" opacity=".55"></rect><rect x="14" y="40" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="29" y="44" width="10" height="10" rx="5" fill="#F7F6F3" opacity=".35"></rect></svg>
+      <h1 style="margin:0;font-size:88px;line-height:1;font-weight:600;letter-spacing:-.03em">Sift</h1>
+    </div>
+    <p style="margin:0;font-size:22px;line-height:30px;max-width:560px;text-wrap:pretty;color:#3A3936">A photo library that organizes itself, privately. Design system for Android 17, Material 3 Expressive, Jetpack Compose.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 32px;font-size:14px;line-height:20px;color:#3A3936">
+    <div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59;text-transform:uppercase;letter-spacing:.06em">Target</div>Pixel 10 Pro · 1280 × 2856 px · ~412 × 919 dp · 120 Hz LTPO OLED</div>
+    <div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59;text-transform:uppercase;letter-spacing:.06em">Rendering</div>Components drawn at 1 dp = 1 px</div>
+    <div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59;text-transform:uppercase;letter-spacing:.06em">Principle</div>Photos provide the color. UI stays quiet.</div>
+    <div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59;text-transform:uppercase;letter-spacing:.06em">Personality</div>Calm · precise · trustworthy</div>
+  </div>
+</header>
+
+<section data-screen-label="01 Name" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">01</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Name &amp; logo direction</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:20px;outline:2px solid #1B1B1A">
+      <div style="display:flex;justify-content:space-between;align-items:start">
+        <svg width="72" height="72" viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="#1B1B1A"></rect><rect x="14" y="14" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="27" y="14" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="40" y="14" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="14" y="27" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="27" y="27" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="40" y="31" width="10" height="10" rx="5" fill="#F7F6F3" opacity=".55"></rect><rect x="14" y="40" width="10" height="10" rx="3" fill="#F7F6F3"></rect><rect x="29" y="44" width="10" height="10" rx="5" fill="#F7F6F3" opacity=".35"></rect></svg>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:#1B1B1A;color:#F7F6F3;padding:6px 10px;border-radius:8px">Chosen</span>
+      </div>
+      <div style="font-size:40px;font-weight:600;letter-spacing:-.02em">Sift</div>
+      <p style="margin:0;font-size:15px;line-height:22px;color:#3A3936;text-wrap:pretty">Mark: a 3 × 3 grid where the last tiles are still settling, round and translucent, into place. The grid is the library; the motion is the organizing. Animates as the launcher splash and the "organizing" state.</p>
+    </div>
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:20px">
+      <svg width="72" height="72" viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="#E6E4DF"></rect><path d="M18 46 V30 a14 14 0 0 1 28 0 V46 Z" fill="none" stroke="#1B1B1A" stroke-width="4" stroke-linejoin="round"></path><rect x="28" y="34" width="8" height="12" rx="2" fill="#1B1B1A"></rect></svg>
+      <div style="font-size:40px;font-weight:600;letter-spacing:-.02em">Hearth</div>
+      <p style="margin:0;font-size:15px;line-height:22px;color:#3A3936;text-wrap:pretty">Mark: an arch, a doorway into a home. Speaks to "your photos stay with you." Warm, but leans domestic and says little about organization or actions.</p>
+    </div>
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:20px">
+      <svg width="72" height="72" viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="#E6E4DF"></rect><path d="M16 18 h24 l8 8 v20 a2 2 0 0 1 -2 2 h-30 a2 2 0 0 1 -2 -2 v-26 a2 2 0 0 1 2 -2 z" fill="#1B1B1A"></path><path d="M40 18 v8 h8" fill="#E6E4DF"></path></svg>
+      <div style="font-size:40px;font-weight:600;letter-spacing:-.02em">Plate</div>
+      <p style="margin:0;font-size:15px;line-height:22px;color:#3A3936;text-wrap:pretty">Mark: a photographic plate with a folded corner, the frame turning into a document. Nods to tickets and receipts becoming actions. Reads as archival and slightly technical.</p>
+    </div>
+  </div>
+  <p style="margin:0;font-size:18px;line-height:28px;max-width:860px;text-wrap:pretty"><strong style="font-weight:600">Why Sift:</strong> it names the core behavior, a library that sorts itself, as a short, calm verb that also works inside the product ("Sifted 214 photos on device"). Its mark is pure grid geometry, so it stays neutral next to any photo and doubles as the app's organizing animation. <span style="color:#5E5D59">Trademark search pending.</span></p>
+</section>
+
+<section data-screen-label="02 Color" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">02</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Color</h2></div>
+  <p style="margin:0;font-size:16px;line-height:24px;max-width:760px;color:#3A3936;text-wrap:pretty">Neutrals are warm, near-achromatic and carry 95% of the UI. The accent appears only on primary actions, active states, selection and the confidence meter. Photos are never tinted or framed in color.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
+    <sc-for list="{{ themes }}" as="t" hint-placeholder-count="3">
+      <div style="background:{{ t.bg }};color:{{ t.on }};border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:16px;border:1px solid {{ t.outlineVar }}">
+        <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:22px;font-weight:600">{{ t.label }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:{{ t.onVar }}">{{ t.note }}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+          <sc-for list="{{ t.swatches }}" as="s" hint-placeholder-count="10">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:40px;height:40px;border-radius:12px;background:{{ s.hex }};border:1px solid {{ s.ring }};flex:none"></div>
+              <div style="min-width:0"><div style="font-size:13px;font-weight:500">{{ s.name }}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.75">{{ s.hex }}</div></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="background:#F7F6F3;border-radius:28px;padding:32px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:24px;font-weight:600">Accent system</div><div style="font-size:15px;color:#5E5D59;max-width:620px;text-wrap:pretty">Three sources feed one pipeline. Every seed is clamped to HCT-style tones (primary T40 light / T80 dark, chroma capped) and contrast-verified before it reaches the UI. Selection here drives every component below.</div></div>
+      <div style="display:flex;background:#E9E7E2;border-radius:999px;padding:4px;gap:4px">
+        <sc-for list="{{ sources }}" as="src" hint-placeholder-count="3">
+          <button onClick="{{ src.onClick }}" style="border:0;cursor:pointer;font:500 14px 'Hanken Grotesk';padding:10px 18px;border-radius:999px;background:{{ src.bg }};color:{{ src.fg }};display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 400">{{ src.icon }}</span>{{ src.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:32px">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <sc-if value="{{ isWall }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:14px;color:#5E5D59">Material You · reads the system's wallpaper-derived seed. Default on first launch.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <sc-for list="{{ walls }}" as="w" hint-placeholder-count="3">
+              <button onClick="{{ w.onClick }}" style="cursor:pointer;width:120px;height:200px;border-radius:20px;border:3px solid {{ w.ring }};background:{{ w.img }};padding:0;display:flex;align-items:flex-end;justify-content:center"><span style="margin-bottom:10px;width:28px;height:28px;border-radius:999px;background:{{ w.hex }};border:2px solid #FFFFFF"></span></button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isCurated }}" hint-placeholder-val="{{ true }}">
+          <div style="font-size:14px;color:#5E5D59">Six curated accents, each tuned to stay quiet next to skin, sky and foliage.</div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px">
+            <sc-for list="{{ accents }}" as="a" hint-placeholder-count="6">
+              <button onClick="{{ a.onClick }}" style="cursor:pointer;background:#FFFFFF;border:2px solid {{ a.ring }};border-radius:20px;padding:12px;display:flex;align-items:center;gap:12px;text-align:left;font-family:'Hanken Grotesk'">
+                <span style="display:flex;flex:none"><span style="width:28px;height:44px;border-radius:14px 0 0 14px;background:{{ a.light }}"></span><span style="width:28px;height:44px;border-radius:0 14px 14px 0;background:{{ a.dark }}"></span></span>
+                <span style="display:flex;flex-direction:column"><span style="font-size:15px;font-weight:600;color:#1B1B1A">{{ a.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59">seed {{ a.seed }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isPhoto }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:14px;color:#5E5D59">Match my photo · long-press any photo → "Use its color". Samples the most prominent non-skin, non-neutral cluster on device.</div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <sc-for list="{{ samples }}" as="p" hint-placeholder-count="4">
+              <button onClick="{{ p.onClick }}" style="cursor:pointer;width:132px;height:132px;border-radius:16px;border:3px solid {{ p.ring }};background:{{ p.img }};padding:0;position:relative;display:flex;align-items:flex-start;justify-content:flex-end"><span style="margin:8px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.55);color:#FFFFFF;border-radius:999px;padding:4px 8px 4px 4px;font:500 11px 'IBM Plex Mono'"><span style="width:16px;height:16px;border-radius:999px;background:{{ p.hex }};border:1px solid #FFFFFF"></span>{{ p.hex }}</span></button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;align-items:center;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#3A3936;flex-wrap:wrap">
+          <span style="width:24px;height:24px;border-radius:8px;background:{{ seed }}"></span>seed {{ seed }}
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px">arrow_forward</span>clamp tone · cap chroma · verify ≥ 4.5:1 · step tone if short
+          <span style="color:#1B1B1A;font-weight:500">{{ adjustNote }}</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px">
+        <sc-for list="{{ roleCols }}" as="rc" hint-placeholder-count="2">
+          <div style="background:{{ rc.bg }};border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px;border:1px solid {{ rc.border }}">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ rc.fg }};text-transform:uppercase;letter-spacing:.06em">{{ rc.label }}</div>
+            <sc-for list="{{ rc.roles }}" as="r" hint-placeholder-count="5">
+              <div style="background:{{ r.hex }};color:{{ r.fg }};border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:500"><span>{{ r.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px">{{ r.hex }}</span></div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="03 Type" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">03</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Type</h2></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:48px">
+    <div style="display:flex;flex-direction:column;gap:20px;font-size:15px;line-height:22px;color:#3A3936">
+      <div><div style="font-size:56px;line-height:1;font-weight:500;color:#1B1B1A;letter-spacing:-.02em">Aa</div><div style="margin-top:8px;font-weight:600;color:#1B1B1A">Hanken Grotesk</div>Variable 400–700. Open apertures and even color at small sizes; neutral enough to sit under photos. Bundled as a downloadable font, mapped onto M3 type roles.</div>
+      <div><div style="font-family:'IBM Plex Mono',monospace;font-size:44px;line-height:1;color:#1B1B1A">0.94</div><div style="margin-top:8px;font-weight:600;color:#1B1B1A">IBM Plex Mono</div>Only for facts the system reports: confidence, file sizes, EXIF, dates in reasons. Signals "measured, not guessed."</div>
+      <div style="font-size:13px;color:#5E5D59">Tabular figures everywhere. Respect system font scale up to 200%; grid and nav labels truncate, reasons wrap.</div>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Display L</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">57/64 · 500 · −1%</span><span style="font-size:57px;line-height:64px;font-weight:500;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lisbon, 2026</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Headline L</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">32/40 · 500</span><span style="font-size:32px;line-height:40px;font-weight:500">October</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Headline S</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">24/32 · 500</span><span style="font-size:24px;line-height:32px;font-weight:500">Use cloud for this search?</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Title L</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">22/28 · 600</span><span style="font-size:22px;line-height:28px;font-weight:600">Move 12 photos to</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Title M</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">16/24 · 600</span><span style="font-size:16px;line-height:24px;font-weight:600">Flight LH 1167 · Fri 24 Oct, 09:40</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Body L</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">16/24 · 400</span><span style="font-size:16px;line-height:24px">Photos stay on this phone unless you choose a location.</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Body M</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">14/20 · 400</span><span style="font-size:14px;line-height:20px">Boarding pass detected: airline, flight number, date and gate.</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Label L</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">14/20 · 500</span><span style="font-size:14px;line-height:20px;font-weight:500">Undo</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0;border-bottom:1px solid #D3D0CA"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Label M</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">12/16 · 500 · +1%</span><span style="font-size:12px;line-height:16px;font-weight:500;letter-spacing:.01em">Library</span></div>
+      <div style="display:grid;grid-template-columns:150px 120px minmax(0,1fr);gap:16px;align-items:baseline;padding:14px 0"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">Data (mono)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">12/16 · 400</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:16px">0.94 · IMG_2041.HEIC · 3.2 MB</span></div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="04 Spacing shape elevation motion icons" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">04</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Spacing, shape, elevation, motion, icons</h2></div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:20px">
+
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-size:20px;font-weight:600">Spacing · 4 dp base</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ spacing }}" as="sp" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:48px 72px minmax(0,1fr);gap:12px;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px">{{ sp.v }}</span><span style="height:12px;width:{{ sp.w }};background:#1B1B1A;border-radius:2px"></span><span style="font-size:13px;color:#5E5D59">{{ sp.use }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-size:20px;font-weight:600">Shape scale</div>
+      <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px">
+        <sc-for list="{{ shapes }}" as="sh" hint-placeholder-count="10">
+          <div style="display:flex;flex-direction:column;gap:6px"><div style="aspect-ratio:1;background:#E1DED8;border-radius:{{ sh.r }}"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px">{{ sh.name }}</div><div style="font-size:11px;color:#5E5D59;line-height:14px">{{ sh.use }}</div></div>
+        </sc-for>
+      </div>
+      <div style="font-size:13px;color:#5E5D59;text-wrap:pretty">Expressive shape morph is reserved for state change: a selected photo morphs xs → l; the active nav pill morphs from the icon; the FAB morphs into the Ask sheet.</div>
+    </div>
+
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:18px">
+      <div style="font-size:20px;font-weight:600">Elevation · tonal first</div>
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px">
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:72px;border-radius:16px;background:#F7F6F3;border:1px solid #D3D0CA"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px">0 · surface</div><div style="font-size:11px;color:#5E5D59">grid, app bars</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:72px;border-radius:16px;background:#F0EEEA"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px">1 · low</div><div style="font-size:11px;color:#5E5D59">nav, cards</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:72px;border-radius:16px;background:#E9E7E2"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px">2 · high</div><div style="font-size:11px;color:#5E5D59">Ask bar, inputs</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="height:72px;border-radius:16px;background:#FFFFFF;box-shadow:0 1px 2px rgba(27,27,26,.08),0 8px 24px rgba(27,27,26,.10)"></div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px">3 · modal</div><div style="font-size:11px;color:#5E5D59">sheet, dialog</div></div>
+      </div>
+      <div style="font-size:13px;color:#5E5D59;text-wrap:pretty">Shadows only at level 3 in light. Dark uses tone steps only. True black replaces shadow with a 1 dp outlineVariant hairline, since shadows vanish on #000.</div>
+    </div>
+
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:14px">
+      <div style="font-size:20px;font-weight:600">Motion · springs, not durations</div>
+      <div style="display:flex;flex-direction:column">
+        <sc-for list="{{ motion }}" as="m" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:150px 150px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid #E1DED8;font-size:13px"><span style="font-weight:600">{{ m.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#3A3936">{{ m.spec }}</span><span style="color:#5E5D59">{{ m.use }}</span></div>
+        </sc-for>
+      </div>
+      <ul style="margin:0;padding-left:18px;font-size:13px;line-height:20px;color:#3A3936;display:flex;flex-direction:column;gap:4px">
+        <li>Spatial springs never overshoot on photos; overshoot only on chrome (nav pill, toggle thumb).</li>
+        <li>All motion is interruptible and velocity-preserving at 120 Hz; no fixed-time tweens on gestures.</li>
+        <li>AI results enter with fade + 8 dp rise, never a flourish. Undo reverses the exact path.</li>
+        <li>Reduce motion: springs become 150 ms fades; shape morphs become crossfades.</li>
+      </ul>
+    </div>
+
+    <div style="background:#F7F6F3;border-radius:28px;padding:28px;display:flex;flex-direction:column;gap:18px;grid-column:1 / -1">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap"><div style="font-size:20px;font-weight:600">Icons · Material Symbols Rounded</div><div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5E5D59">wght 300 · GRAD 0 (−25 on dark) · opsz 24 · FILL 0 → 1 on active</div></div>
+      <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:center">
+        <sc-for list="{{ icons }}" as="ic" hint-placeholder-count="12">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:64px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:28px;font-variation-settings:'wght' 300, 'FILL' {{ ic.fill }}">{{ ic.g }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59;text-align:center">{{ ic.label }}</span></div>
+        </sc-for>
+      </div>
+      <div style="font-size:13px;color:#5E5D59;text-wrap:pretty">Light weight keeps chrome recessive against photos. Two product-specific glyphs carry the trust story and are never substituted: <strong style="color:#1B1B1A;font-weight:600">memory</strong> = on device, <strong style="color:#1B1B1A;font-weight:600">cloud</strong> = left the device. Icons and text over photos sit on a 56% black scrim, which holds 4.5:1 on the lightest photos; never a drop shadow. Every control has a 48 × 48 dp touch target, even when its visual is 40 or 32 dp; icon-only controls carry a TalkBack label.</div>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="05 Components" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">05</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Components</h2><span style="font-size:14px;color:#5E5D59">412 dp columns · accent: {{ accentName }} · photos are placeholders</span></div>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="3">
+    <div style="width:412px;flex:none;background:{{ t.bg }};color:{{ t.on }};border-radius:32px;padding:24px 16px 0;display:flex;flex-direction:column;gap:28px;overflow:hidden;border:1px solid {{ t.outlineVar }}">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};text-transform:uppercase;letter-spacing:.06em;padding:0 4px">{{ t.label }}</div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Ask bar · 56 dp · full</div>
+        <div style="min-height:56px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;gap:12px;padding:0 8px 0 18px">
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">search</span>
+          <span style="flex:1;font-size:16px;color:{{ t.onVar }}">Ask your library</span>
+          <span style="display:flex;align-items:center;gap:4px;min-height:28px;padding:0 10px 0 8px;border-radius:8px;background:{{ t.c1 }};font-size:12px;font-weight:500;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 400">memory</span>On device</span>
+          <span role="button" aria-label="Voice search" style="width:48px;height:48px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;color:{{ t.on }}">mic</span>
+        </div>
+        <div style="min-height:56px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;gap:12px;padding:0 8px 0 18px;outline:2px solid {{ t.p }}">
+          <span style="flex:1;font-size:16px">receipts from Lisbon over €50</span>
+          <span role="button" aria-label="Send" style="width:40px;height:40px;border-radius:999px;display:flex;align-items:center;justify-content:center;background:{{ t.p }};color:{{ t.onP }};font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 400">arrow_upward</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Filter chips · 32 dp · s</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">check</span>Receipts</span>
+          <span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};font-size:14px;font-weight:500;box-sizing:border-box">People</span>
+          <span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};font-size:14px;font-weight:500;box-sizing:border-box">Tickets</span>
+          <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;border:1px solid {{ t.outline }};font-size:14px;font-weight:500;box-sizing:border-box"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300">memory</span>On device only</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Photo grid cell · 2 dp gutter · edge to edge</div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin:0 -16px">
+          <div style="aspect-ratio:1;background:{{ ph0 }};border-radius:{{ cellR }}"></div>
+          <div style="aspect-ratio:1;background:{{ ph1 }};border-radius:{{ cellR }};position:relative"><span style="position:absolute;right:6px;top:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">0:14</span></div>
+          <div style="aspect-ratio:1;background:{{ ph2 }};border-radius:{{ cellR }};position:relative"><span role="img" aria-label="Document detected" style="position:absolute;left:6px;bottom:6px;width:24px;height:24px;border-radius:999px;background:rgba(0,0,0,.56);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 400">receipt_long</span></div>
+          <div style="aspect-ratio:1;background:{{ ph3 }};border-radius:{{ cellR }};position:relative"><span role="img" aria-label="Stored in cloud" style="position:absolute;right:6px;bottom:6px;width:24px;height:24px;border-radius:999px;background:rgba(0,0,0,.56);display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;color:#FFFFFF;font-variation-settings:'wght' 400">cloud</span></div>
+          <div style="aspect-ratio:1;background:{{ ph4 }};border-radius:{{ cellR }}"></div>
+          <div style="aspect-ratio:1;background:{{ ph5 }};border-radius:{{ cellR }};position:relative"><span role="img" aria-label="Favorite" style="position:absolute;right:6px;top:6px;width:24px;height:24px;border-radius:999px;background:rgba(0,0,0,.56);display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;color:#FFFFFF;font-variation-settings:'wght' 400,'FILL' 1">favorite</span></div>
+        </div>
+        <div style="font-size:12px;line-height:16px;color:{{ t.onVar }};padding:0 4px">Corner badges: duration · recognized document · stored in cloud · favorite. One badge per corner, max two per cell.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Selection state</div>
+        <div style="min-height:56px;border-radius:16px;background:{{ t.c1 }};display:flex;align-items:center;gap:4px;padding:0 8px">
+          <span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">close</span>
+          <span style="flex:1;font-size:18px;font-weight:600">2 selected</span>
+          <span role="button" aria-label="Share" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">share</span>
+          <span role="button" aria-label="Move" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">drive_file_move</span>
+          <span role="button" aria-label="Delete" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">delete</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin:0 -16px">
+          <div style="aspect-ratio:1;background:{{ t.pc }};position:relative;display:flex"><div style="margin:12px;flex:1;border-radius:16px;background:{{ ph6 }}"></div><span role="img" aria-label="Selected" style="position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 600;border:2px solid {{ t.bg }}">check</span></div>
+          <div style="aspect-ratio:1;background:{{ ph7 }};border-radius:{{ cellR }};position:relative"><span style="position:absolute;left:8px;top:8px;width:20px;height:20px;border-radius:999px;border:2px solid #FFFFFF;background:rgba(0,0,0,.2)"></span></div>
+          <div style="aspect-ratio:1;background:{{ t.pc }};position:relative;display:flex"><div style="margin:12px;flex:1;border-radius:16px;background:{{ ph8 }}"></div><span role="img" aria-label="Selected" style="position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 600;border:2px solid {{ t.bg }}">check</span></div>
+        </div>
+        <div style="font-size:12px;line-height:16px;color:{{ t.onVar }};padding:0 4px">Selected: photo insets 12 dp and morphs to l (16 dp) on a primaryContainer field. Drag-to-select range across rows.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">AI result card · reason · confidence · origin</div>
+        <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span aria-hidden="true" style="width:40px;height:40px;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 400">event</span>
+            <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Added to Calendar</div><div style="font-size:16px;line-height:22px;font-weight:600">Flight LH 1167 · Fri 24 Oct, 09:40</div></div>
+            <div style="width:44px;height:44px;border-radius:8px;background:{{ ph2 }};flex:none"></div>
+          </div>
+          <div style="display:flex;gap:8px;font-size:14px;line-height:20px;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300;margin-top:1px">info</span><span style="text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> boarding pass in IMG_2041. Read airline, flight number, date and gate. Matched no existing event.</span></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span>
+            <span style="font:500 12px 'IBM Plex Mono'">High · 0.94</span>
+            <span style="flex:1"></span>
+            <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span>
+          </div>
+          <div style="display:flex;gap:8px;border-top:1px solid {{ t.outlineVar }};padding-top:10px;margin:0 -4px">
+            <span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;color:{{ t.p }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">undo</span>Undo</span>
+            <span style="min-height:40px;display:flex;align-items:center;padding:0 12px;border-radius:999px;color:{{ t.on }};font-size:14px;font-weight:500">Edit event</span>
+            <span style="flex:1"></span>
+            <span style="min-height:40px;display:flex;align-items:center;padding:0 12px;border-radius:999px;color:{{ t.onVar }};font-size:14px;font-weight:500">Don't do this again</span>
+          </div>
+        </div>
+        <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span aria-hidden="true" style="width:40px;height:40px;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">contact_page</span>
+            <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Suggested · not saved yet</div><div style="font-size:16px;line-height:22px;font-weight:600">Save contact: Mara Lindqvist</div></div>
+          </div>
+          <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> business card layout; name and phone read clearly, email partly obscured.</div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;border:1px solid {{ t.outline }};box-sizing:border-box"></span></span>
+            <span style="font:500 12px 'IBM Plex Mono'">Medium · 0.78</span>
+            <span style="flex:1"></span>
+            <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">cloud</span>Cloud · opted in 2 Oct</span>
+          </div>
+          <div style="display:flex;gap:8px;margin:0 -4px">
+            <span style="min-height:40px;display:flex;align-items:center;padding:0 18px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Review &amp; save</span>
+            <span style="min-height:40px;display:flex;align-items:center;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500">Dismiss</span>
+          </div>
+        </div>
+        <div style="font-size:12px;line-height:16px;color:{{ t.onVar }};padding:0 4px">High ≥ 0.90 may act, always with Undo. Medium 0.70–0.89 suggests, never acts. Below 0.70 stays silent unless asked. Cloud badge is outlined so it never reads as the default.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Toggle · 52 × 32</div>
+        <div style="display:flex;flex-direction:column;background:{{ t.c1 }};border-radius:20px">
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid {{ t.outlineVar }}">
+            <div style="flex:1"><div style="font-size:16px;font-weight:500">Auto-file receipts</div><div style="font-size:13px;color:{{ t.onVar }}">On device · undo from Activity</div></div>
+            <span style="width:52px;height:32px;border-radius:999px;background:{{ t.p }};display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box"><span aria-hidden="true" style="width:24px;height:24px;border-radius:999px;background:{{ t.onP }};color:{{ t.p }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 600">check</span></span>
+          </div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px">
+            <div style="flex:1"><div style="font-size:16px;font-weight:500">Cloud processing</div><div style="font-size:13px;color:{{ t.onVar }}">Off · asks each time</div></div>
+            <span style="width:52px;height:32px;border-radius:999px;background:{{ t.c2 }};border:2px solid {{ t.outline }};display:flex;align-items:center;padding:0 6px;box-sizing:border-box"><span style="width:16px;height:16px;border-radius:999px;background:{{ t.outline }}"></span></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Storage meter · bring your own</div>
+        <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">312 GB library</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">3 locations</span></div>
+          <div style="display:flex;height:12px;gap:2px"><span style="width:18%;background:{{ t.p }};border-radius:6px 2px 2px 6px"></span><span style="width:64%;background:{{ t.onVar }};border-radius:2px"></span><span style="width:18%;background:{{ t.outline }};border-radius:2px 6px 6px 2px;opacity:.6"></span></div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.p }}"></span><span style="flex:1">This phone</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">56 GB · originals</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.onVar }}"></span><span style="flex:1">Home NAS · SMB</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">200 GB · originals</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.outline }};opacity:.6"></span><span style="flex:1">Dropbox</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">56 GB · backup</span></div>
+          </div>
+          <div style="font-size:12px;line-height:16px;color:{{ t.onVar }}">Plain folders, standard files, sidecar XMP. Export everything anytime.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Toast · inverse surface · 4 s + Undo</div>
+        <div style="background:{{ t.inv }};color:{{ t.onInv }};border-radius:12px;min-height:48px;display:flex;align-items:center;gap:12px;padding:0 8px 0 16px">
+          <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">memory</span>
+          <span style="flex:1;font-size:14px">3 receipts filed to Expenses</span>
+          <span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.invP }};font-size:14px;font-weight:600">Undo</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 4px">Dialog · xl 28</div>
+        <div style="background:{{ t.scrim }};border-radius:20px;padding:20px">
+          <div style="background:{{ t.modal }};border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:16px;box-shadow:{{ t.shadow }};border:{{ t.modalBorder }}">
+            <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;color:{{ t.onVar }};text-align:center">cloud</span>
+            <div style="font-size:24px;line-height:32px;font-weight:500;text-align:center">Use cloud for this search?</div>
+            <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty">This question needs a larger model. Your query and text from 4 photos leave the device, are processed once, then deleted. Nothing is kept or used for training.</div>
+            <div style="display:flex;justify-content:flex-end;gap:8px">
+              <span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600">Keep on device</span>
+              <span style="min-height:40px;display:flex;align-items:center;padding:0 16px;border-radius:999px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:600">Use cloud once</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:12px;line-height:16px;color:{{ t.onVar }};padding:0 4px">The private choice is the primary action. Cloud is never the filled button.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:0;margin:0 -16px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 20px 10px">Bottom sheet · top xl 28</div>
+        <div style="background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 20px 20px;display:flex;flex-direction:column;gap:6px;box-shadow:{{ t.shadow }};border-top:{{ t.modalBorder }}">
+          <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 14px"></div>
+          <div style="font-size:22px;line-height:28px;font-weight:600">Move 12 photos to</div>
+          <div style="font-size:14px;color:{{ t.onVar }};margin-bottom:6px">Originals move. Nothing is re-encoded.</div>
+          <div style="display:flex;align-items:center;gap:14px;min-height:56px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">smartphone</span><div style="flex:1"><div style="font-size:16px">This phone</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">41.2 GB free</div></div><span style="width:20px;height:20px;border-radius:999px;border:2px solid {{ t.outline }};box-sizing:border-box"></span></div>
+          <div style="display:flex;align-items:center;gap:14px;min-height:56px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">dns</span><div style="flex:1"><div style="font-size:16px">Home NAS</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">1.6 TB free · local network</div></div><span style="width:20px;height:20px;border-radius:999px;border:2px solid {{ t.p }};box-sizing:border-box;display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:999px;background:{{ t.p }}"></span></span></div>
+          <div style="display:flex;align-items:center;gap:14px;min-height:56px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">cloud</span><div style="flex:1"><div style="font-size:16px">Dropbox</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">88 GB free · cloud</div></div><span style="width:20px;height:20px;border-radius:999px;border:2px solid {{ t.outline }};box-sizing:border-box"></span></div>
+          <div style="min-height:48px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;margin-top:10px">Move to Home NAS</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;margin:0 -16px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:{{ t.onVar }};padding:0 20px 10px">Bottom navigation · 80 dp</div>
+        <div style="height:80px;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 400,'FILL' 1">photo_library</span><span style="font-size:12px;font-weight:600">Library</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">photo_album</span><span style="font-size:12px;font-weight:500">Albums</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;position:relative">bolt<span style="position:absolute;right:16px;top:2px;width:8px;height:8px;border-radius:999px;background:{{ t.p }}"></span></span><span style="font-size:12px;font-weight:500">Actions</span></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">hard_drive</span><span style="font-size:12px;font-weight:500">Storage</span></div>
+        </div>
+      </div>
+    </div>
+  </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="06 Contrast" style="display:flex;flex-direction:column;gap:32px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">06</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Contrast check · WCAG 2.2 AA</h2></div>
+  <p style="margin:0;font-size:16px;line-height:24px;max-width:860px;color:#3A3936;text-wrap:pretty">Ratios computed live from the hex values on this page. Text pairs need 4.5:1; the outline/control boundary needs 3:1. Raw seeds are checked too, because they are what a developer will reach for first.</p>
+
+  <div style="background:#F7F6F3;border-radius:28px;padding:24px;overflow-x:auto">
+    <div style="min-width:1180px;display:flex;flex-direction:column">
+      <div style="display:grid;grid-template-columns:150px 110px 110px repeat(9,minmax(0,1fr)) 260px;gap:8px;padding:0 0 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#5E5D59;border-bottom:1px solid #1B1B1A;align-items:end">
+        <span>Accent</span><span>Seed on light</span><span>Seed on dark</span>
+        <span>L · primary/ surface</span><span>L · onPrimary/ primary</span><span>L · onPC/ PC</span>
+        <span>D · primary/ surface</span><span>D · onPrimary/ primary</span><span>D · onPC/ PC</span>
+        <span>B · primary/ #000</span><span>B · onPrimary/ primary</span><span>B · onPC/ PC</span>
+        <span>Verdict · fix</span>
+      </div>
+      <sc-for list="{{ contrastRows }}" as="row" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:150px 110px 110px repeat(9,minmax(0,1fr)) 260px;gap:8px;padding:12px 0;border-bottom:1px solid #D3D0CA;align-items:center">
+          <span style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600"><span style="width:20px;height:20px;border-radius:6px;background:{{ row.seed }}"></span>{{ row.name }}</span>
+          <span style="font:500 12px 'IBM Plex Mono';color:{{ row.sl.c }}">{{ row.sl.t }}</span>
+          <span style="font:500 12px 'IBM Plex Mono';color:{{ row.sd.c }}">{{ row.sd.t }}</span>
+          <sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="9">
+            <span style="display:flex;align-items:center;gap:6px"><span style="width:30px;height:22px;border-radius:6px;background:{{ c.bg }};color:{{ c.fg }};font:600 11px 'Hanken Grotesk';display:flex;align-items:center;justify-content:center">Aa</span><span style="font:500 12px 'IBM Plex Mono';color:{{ c.c }}">{{ c.t }}</span></span>
+          </sc-for>
+          <span style="font-size:13px;line-height:18px;color:#3A3936;text-wrap:pretty">{{ row.fix }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px">
+    <sc-for list="{{ neutralChecks }}" as="n" hint-placeholder-count="3">
+      <div style="background:{{ n.bg }};color:{{ n.on }};border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:8px;border:1px solid {{ n.border }}">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.06em;opacity:.8">{{ n.label }} · neutrals</div>
+        <sc-for list="{{ n.rows }}" as="r" hint-placeholder-count="5">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:14px"><span style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;border-radius:4px;background:{{ r.hex }}"></span>{{ r.name }}</span><span style="font:500 12px 'IBM Plex Mono'">{{ r.t }}</span></div>
+        </sc-for>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="background:#1B1B1A;color:#F2F0EB;border-radius:28px;padding:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;font-size:15px;line-height:22px">
+    <div><div style="font-weight:600;margin-bottom:6px">Result</div>{{ summary }}</div>
+    <div><div style="font-weight:600;margin-bottom:6px">Flagged</div>{{ flagged }}</div>
+    <div><div style="font-weight:600;margin-bottom:6px">Rule for dynamic sources</div>Wallpaper and photo seeds run the same clamp. If a pair still falls short, tone steps 3 units away from the surface until it passes; the step is logged in Settings → Appearance.</div>
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultAccent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Slate&quot;,&quot;Moss&quot;,&quot;Clay&quot;,&quot;Plum&quot;,&quot;Ochre&quot;,&quot;Tide&quot;],&quot;default&quot;:&quot;Slate&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Accent&quot;},&quot;cellRadius&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:0,&quot;max&quot;:12,&quot;step&quot;:1,&quot;unit&quot;:&quot;dp&quot;,&quot;default&quot;:0,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Grid&quot;}}">
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const lin=v=>{v/=255;return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4};
+const lum=h=>{const[r,g,b]=rgb(h).map(lin);return .2126*r+.7152*g+.0722*b};
+const Lstar=h=>{const Y=lum(h);return Y>0.008856?116*Math.cbrt(Y)-16:903.3*Y};
+const ratio=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const toHsl=h=>{let[r,g,b]=rgb(h).map(v=>v/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,S=0;const L=(mx+mn)/2;if(mx!==mn){const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H/=6}return[H,S,L]};
+const fromHsl=(h,s,l)=>{const f=n=>{const k=(n+h*12)%12,a=s*Math.min(l,1-l);return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1))))};return'#'+[f(0),f(8),f(4)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase()};
+const tone=(seed,T,cap)=>{const[h,s0]=toHsl(seed);const s=Math.min(s0,cap);let lo=0,hi=1;for(let i=0;i<32;i++){const m=(lo+hi)/2;Lstar(fromHsl(h,s,m))<T?lo=m:hi=m}return fromHsl(h,s,(lo+hi)/2)};
+const BASE=[
+ {key:'light',label:'Light',note:'default day',bg:'#F7F6F3',c1:'#F0EEEA',c2:'#E9E7E2',on:'#1B1B1A',onVar:'#5E5D59',outline:'#85837E',outlineVar:'#D3D0CA',inv:'#2F2F2D',onInv:'#F2F0EB',modal:'#FFFFFF',scrim:'rgba(27,27,26,.32)',shadow:'0 1px 2px rgba(27,27,26,.08), 0 8px 24px rgba(27,27,26,.12)',modalBorder:'0 solid transparent',navBorder:'transparent'},
+ {key:'dark',label:'Dark',note:'tonal elevation',bg:'#151515',c1:'#1E1E1D',c2:'#292927',on:'#E6E4DF',onVar:'#A3A19B',outline:'#7D7B75',outlineVar:'#3A3936',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#252524',scrim:'rgba(0,0,0,.5)',shadow:'none',modalBorder:'0 solid transparent',navBorder:'transparent'},
+ {key:'black',label:'True black',note:'OLED · pixels off',bg:'#000000',c1:'#0F0F0F',c2:'#1C1C1B',on:'#E6E4DF',onVar:'#A3A19B',outline:'#75736E',outlineVar:'#2E2D2B',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#0F0F0F',scrim:'rgba(0,0,0,.6)',shadow:'none',modalBorder:'1px solid #2E2D2B',navBorder:'#2E2D2B'}
+];
+const ACC=[['Slate','#4A6CB8'],['Moss','#4F8A5B'],['Clay','#C0623F'],['Plum','#8E5A9C'],['Ochre','#C99A2E'],['Tide','#2A8C92']];
+const WALLS=[{hex:'#6E8F7A',img:'linear-gradient(170deg,#c9d6c4,#6e8f7a 55%,#33473b)'},{hex:'#8A7BB0',img:'linear-gradient(170deg,#e3d9ef,#8a7bb0 55%,#3e3557)'},{hex:'#C08A5A',img:'linear-gradient(170deg,#f1dcc3,#c08a5a 55%,#5b3d25)'}];
+const SAMPLES=[{hex:'#2F7FB5',img:'linear-gradient(180deg,#9cc7e6 0%,#2f7fb5 55%,#e8dcc4 56%,#cdbb98)'},{hex:'#C2453A',img:'linear-gradient(150deg,#e9d2c4,#c2453a 50%,#5d2420)'},{hex:'#E2B93B',img:'linear-gradient(160deg,#fbefc4,#e2b93b 50%,#6b5a2a)'},{hex:'#3C7D4E',img:'linear-gradient(170deg,#c5dcb9,#3c7d4e 60%,#1f3324)'}];
+const PH=['linear-gradient(160deg,#d8c7ad,#8f7a5e)','linear-gradient(170deg,#a9c4d8,#3f6a8a)','linear-gradient(150deg,#ebe5d8,#bfb39b)','linear-gradient(165deg,#9fb391,#4b6340)','linear-gradient(160deg,#e3b9a8,#9a5e4e)','linear-gradient(170deg,#4a4f6b,#1e2134)','linear-gradient(160deg,#c7ccc9,#7f8a86)','linear-gradient(150deg,#e9cf8f,#b0823a)','linear-gradient(165deg,#d6a7ae,#7d4a58)'];
+
+function roles(seed,mode,bg){
+  const light=mode==='light';let T=light?40:80,p=tone(seed,T,.62),steps=0;
+  while(ratio(p,bg)<4.5&&steps<10){T+=light?-3:3;p=tone(seed,T,.62);steps++}
+  const onP=light?'#FFFFFF':tone(seed,20,.6);
+  const pc=light?tone(seed,90,.5):tone(seed,30,.42);
+  const onPc=light?tone(seed,10,.6):tone(seed,90,.5);
+  const invP=light?tone(seed,80,.6):tone(seed,40,.62);
+  return{p,onP,pc,onPc,invP,steps};
+}
+const fmt=(r,min=4.5)=>({t:r.toFixed(2)+(r>=min?' ✓':' ✕'),c:r>=min?'#2D6A3E':'#B3261E',ok:r>=min});
+
+class Component extends DCLogic {
+  state={source:'curated',acc:null,wall:0,sample:0};
+  accIdx(){const d=ACC.findIndex(a=>a[0]===(this.props.defaultAccent??'Slate'));return this.state.acc??(d<0?0:d)}
+  seed(){const s=this.state.source;return s==='wallpaper'?WALLS[this.state.wall].hex:s==='photo'?SAMPLES[this.state.sample].hex:ACC[this.accIdx()][1]}
+  renderVals(){
+    const seed=this.seed(),src=this.state.source,ai=this.accIdx();
+    const themes=BASE.map(b=>{const r=roles(seed,b.key==='light'?'light':'dark',b.bg);const t={...b,...r};
+      t.swatches=[['surface',b.bg],['container low',b.c1],['container high',b.c2],['onSurface',b.on],['onSurfaceVariant',b.onVar],['outline',b.outline],['outlineVariant',b.outlineVar],['inverseSurface',b.inv],['primary',r.p],['primaryContainer',r.pc]].map(([name,hex])=>({name,hex,ring:b.outlineVar}));return t});
+    const roleCols=[themes[0],themes[1]].map(t=>({label:t.label+' roles',bg:t.bg,fg:t.onVar,border:t.outlineVar,roles:[{name:'primary',hex:t.p,fg:t.onP},{name:'onPrimary',hex:t.onP,fg:t.p},{name:'primaryContainer',hex:t.pc,fg:t.onPc},{name:'onPrimaryContainer',hex:t.onPc,fg:t.pc},{name:'inversePrimary',hex:t.invP,fg:t.inv}]}));
+    const adj=themes.map(t=>t.steps?`${t.label} stepped ${t.steps*3} tones`:null).filter(Boolean);
+    let fails=0;const flaggedSeeds=[];
+    const contrastRows=ACC.map(([name,sd])=>{
+      const ts=BASE.map(b=>({b,...roles(sd,b.key==='light'?'light':'dark',b.bg)}));
+      const cells=[];ts.forEach(x=>{[[x.p,x.b.bg],[x.onP,x.p],[x.onPc,x.pc]].forEach(([fg,bg])=>{const f=fmt(ratio(fg,bg));if(!f.ok)fails++;cells.push({...f,fg,bg})})});
+      const sl=fmt(ratio(sd,BASE[0].bg)),sdk=fmt(ratio(sd,BASE[1].bg));
+      const bad=[!sl.ok&&'light',!sdk.ok&&'dark'].filter(Boolean);
+      if(bad.length)flaggedSeeds.push(`${name} (${bad.join(', ')})`);
+      const fix=bad.length?`Seed fails as text on ${bad.join(' & ')}. Fix: never use the seed for text/icons; use ${name} 40 ${ts[0].p} on light, ${name} 80 ${ts[1].p} on dark.`:`Seed passes, but roles still use tones 40/80 for consistency.`;
+      return{name,seed:sd,sl,sd:sdk,cells,fix};
+    });
+    const neutralChecks=BASE.map(b=>({label:b.label,bg:b.bg,on:b.on,border:b.outlineVar,rows:[
+      {name:'onSurface',hex:b.on,t:fmt(ratio(b.on,b.bg)).t},
+      {name:'onSurfaceVariant',hex:b.onVar,t:fmt(ratio(b.onVar,b.bg)).t},
+      {name:'onSurfaceVariant on c2',hex:b.onVar,t:fmt(ratio(b.onVar,b.c2)).t},
+      {name:'outline (3:1 UI)',hex:b.outline,t:fmt(ratio(b.outline,b.bg),3).t},
+      {name:'onInverse / inverse',hex:b.inv,t:fmt(ratio(b.onInv,b.inv)).t}]}));
+    const tab=(k,label,icon)=>({label,icon,bg:src===k?'#1B1B1A':'transparent',fg:src===k?'#F7F6F3':'#3A3936',onClick:()=>this.setState({source:k})});
+    const px={};PH.forEach((v,i)=>px['ph'+i]=v);
+    return{
+      ...px,themes,roleCols,seed,
+      cellR:(this.props.cellRadius??0)+'px',
+      accentName:src==='curated'?ACC[ai][0]:src==='wallpaper'?'wallpaper '+seed:'photo '+seed,
+      adjustNote:adj.length?'· '+adj.join(', '):'· no adjustment needed',
+      sources:[tab('wallpaper','Wallpaper','wallpaper'),tab('curated','Curated','palette'),tab('photo','Match my photo','colorize')],
+      isWall:src==='wallpaper',isCurated:src==='curated',isPhoto:src==='photo',
+      accents:ACC.map(([name,sd],i)=>({name,seed:sd,light:roles(sd,'light',BASE[0].bg).p,dark:roles(sd,'dark',BASE[1].bg).p,ring:i===ai?'#1B1B1A':'transparent',onClick:()=>this.setState({acc:i})})),
+      walls:WALLS.map((w,i)=>({...w,ring:i===this.state.wall?'#1B1B1A':'transparent',onClick:()=>this.setState({wall:i})})),
+      samples:SAMPLES.map((p,i)=>({...p,ring:i===this.state.sample?'#1B1B1A':'transparent',onClick:()=>this.setState({sample:i})})),
+      spacing:[['2','2px','photo grid gutter'],['4','4px','icon ↔ badge text'],['8','8px','chip gap, inline groups'],['12','12px','card inner gaps'],['16','16px','screen margin, card padding'],['20','20px','sheet padding'],['24','24px','dialog padding'],['32','32px','section break'],['48','48px','touch target min']].map(([v,w,use])=>({v:v+' dp',w,use})),
+      shapes:[['none 0','0','photo grid'],['xs 4','4px','badges'],['s 8','8px','chips'],['m 12','12px','toast, icon tiles'],['l 16','16px','selected photo'],['l+ 20','20px','cards'],['xl 28','28px','sheet, dialog'],['xl+ 32','32px','Ask sheet'],['full','999px','Ask bar, buttons'],['mark 20/64','31%','app icon']].map(([name,r,use])=>({name,r,use})),
+      motion:[['Spatial fast','damping 0.9 · stiff 1400','nav pill, toggle, chip'],['Spatial default','damping 0.9 · stiff 700','sheet, card expand, selection morph'],['Spatial slow','damping 0.9 · stiff 300','photo open/close shared element'],['Effects fast','damping 1 · stiff 3800','color, opacity on press'],['Effects default','damping 1 · stiff 1600','AI card enter, toast'],['Grid scroll','native fling · 120 Hz','no parallax, no blur']].map(([name,spec,use])=>({name,spec,use})),
+      icons:[['photo_library','Library',1],['photo_album','Albums',0],['bolt','Actions',0],['hard_drive','Storage',0],['search','Ask',0],['memory','On device',0],['cloud','Cloud',0],['undo','Undo',0],['info','Why',0],['event','Calendar',0],['receipt_long','Receipt',0],['contact_page','Contact',0]].map(([g,label,fill])=>({g,label,fill})),
+      contrastRows,neutralChecks,
+      summary:fails?`${fails} role pair(s) fail; see red cells.`:`All 54 accent role pairs pass AA in light, dark and true black (6 accents × 3 themes × 3 pairs). Neutral text and outlines pass.`,
+      flagged:flaggedSeeds.length?`Raw seeds that fail as text: ${flaggedSeeds.join(', ')}. Fix: seeds are inputs only and never ship as a text or icon color; the tonal roles replace them.`:'No raw seed failures.'
+    };
+  }
+}
+</script>
+</body>
+</html>

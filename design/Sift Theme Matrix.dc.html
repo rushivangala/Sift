@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..500,0..1,0&display=block" rel="stylesheet">
+<style>body{margin:0;background:#EDECE8;color:#1B1B1A;font-family:'Hanken Grotesk',system-ui,sans-serif}a{color:#3E5FA8;text-decoration:none}a:hover{color:#1B1B1A;text-decoration:underline}</style>
+</helmet>
+<div style="width:1560px;padding:64px;display:flex;flex-direction:column;gap:72px">
+
+<header style="display:flex;flex-direction:column;gap:16px;max-width:1100px">
+  <div style="font:500 12px 'IBM Plex Mono';letter-spacing:.08em;text-transform:uppercase;color:#5E5D59">Theme matrix · 5 screens × 18 themes · WCAG 2.2 AA</div>
+  <h1 style="margin:0;font-size:56px;line-height:1.05;font-weight:600;letter-spacing:-.02em">Sift in every theme</h1>
+  <p style="margin:0;font-size:18px;line-height:28px;color:#3A3936;text-wrap:pretty">Columns are accent sources: two curated accents, Material You from a warm and a cool wallpaper, and Match my photo from a sunset and a forest. Rows are Light, Dark and True black. Every screen below is rendered from the post-fix role set. Ratios are computed from the rendered hex values.</p>
+  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:8px">
+    <div style="background:#F7F6F3;border-radius:20px;padding:20px"><div style="font:600 40px 'IBM Plex Mono'">{{ nChecks }}</div><div style="font-size:14px;color:#5E5D59">pairs per theme · {{ nTotal }} measured</div></div>
+    <div style="background:#F7F6F3;border-radius:20px;padding:20px"><div style="font:600 40px 'IBM Plex Mono';color:#B3261E">{{ nFailShipped }}</div><div style="font-size:14px;color:#5E5D59">failures with the roles as shipped</div></div>
+    <div style="background:#F7F6F3;border-radius:20px;padding:20px"><div style="font:600 40px 'IBM Plex Mono';color:#2D6A3E">{{ nFailFixed }}</div><div style="font-size:14px;color:#5E5D59">failures after the fixes below</div></div>
+    <div style="background:#F7F6F3;border-radius:20px;padding:20px"><div style="font:600 40px 'IBM Plex Mono'">{{ minAfter }}</div><div style="font-size:14px;color:#5E5D59">lowest text ratio after fixes</div></div>
+  </div>
+</header>
+
+<section data-screen-label="Failures" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><h2 style="margin:0;font-size:32px;font-weight:600">Failures and fixes</h2></div>
+  <div style="background:#F7F6F3;border-radius:24px;padding:24px;display:flex;flex-direction:column">
+    <div style="display:grid;grid-template-columns:260px 260px 120px 1fr 120px;gap:12px;padding-bottom:10px;border-bottom:1px solid #1B1B1A;font:500 11px 'IBM Plex Mono';color:#5E5D59"><span>Theme</span><span>Pair</span><span>As shipped</span><span>Fix</span><span>After</span></div>
+    <sc-for list="{{ failRows }}" as="f" hint-placeholder-count="6">
+      <div style="display:grid;grid-template-columns:260px 260px 120px 1fr 120px;gap:12px;padding:10px 0;border-bottom:1px solid #D3D0CA;align-items:center;font-size:14px"><span style="font-weight:600">{{ f.theme }}</span><span>{{ f.pair }}</span><span style="font:500 13px 'IBM Plex Mono';color:#B3261E">{{ f.before }} ✕</span><span style="color:#3A3936">{{ f.fix }}</span><span style="font:500 13px 'IBM Plex Mono';color:{{ f.afterC }}">{{ f.after }}</span></div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;font-size:15px;line-height:23px;color:#3A3936">
+    <div style="background:#F7F6F3;border-radius:20px;padding:20px"><strong style="color:#1B1B1A">Pipeline changes.</strong> {{ fixSummary }}</div>
+    <div style="background:#F7F6F3;border-radius:20px;padding:20px"><strong style="color:#1B1B1A">Not measured as ratios.</strong> Selected photo field (primaryContainer) against the surface sits near 1.1:1 in every theme. Selection is carried by the check badge (tested as S3, S2) and the 12 dp inset morph, so the field is never the only cue. White text on photos uses the 24% scrim and depends on the image; it is not part of this table. Dividers and inactive slider tracks are decorative.</div>
+  </div>
+</section>
+
+<section data-screen-label="Audit after fix" style="display:flex;flex-direction:column;gap:16px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><h2 style="margin:0;font-size:32px;font-weight:600">Ratios per theme · after fix</h2><span style="font:12px 'IBM Plex Mono';color:#5E5D59">T text 4.5 · B buttons 4.5 / outline 3 · S selection and controls 3 · red = below AA</span></div>
+  <div style="background:#F7F6F3;border-radius:24px;padding:20px;overflow-x:auto">
+    <div style="min-width:1400px;display:flex;flex-direction:column">
+      <div style="display:grid;grid-template-columns:210px repeat(18,minmax(0,1fr));gap:4px;padding-bottom:8px;border-bottom:1px solid #1B1B1A;align-items:end;font:500 11px/12px 'IBM Plex Mono';color:#3A3936">
+        <span>Theme</span>
+        <sc-for list="{{ checkHeads }}" as="h" hint-placeholder-count="18"><span title="{{ h.label }}" style="display:flex;flex-direction:column;gap:2px"><b style="font-size:12px">{{ h.id }}</b><span style="color:#5E5D59">{{ h.short }}</span></span></sc-for>
+      </div>
+      <sc-for list="{{ auditFixed }}" as="r" hint-placeholder-count="18">
+        <div style="display:grid;grid-template-columns:210px repeat(18,minmax(0,1fr));gap:4px;padding:6px 0;border-bottom:1px solid #E1DED8;align-items:center">
+          <span style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600"><span style="width:14px;height:14px;border-radius:4px;background:{{ r.seed }}"></span>{{ r.name }}</span>
+          <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="18"><span style="font:500 11px 'IBM Plex Mono';color:{{ c.c }};background:{{ c.bg }};border-radius:4px;padding:3px 2px;text-align:center">{{ c.t }}</span></sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px 24px;font:12px/16px 'IBM Plex Mono';color:#3A3936">
+    <sc-for list="{{ checkHeads }}" as="h" hint-placeholder-count="18"><span><b>{{ h.id }}</b> {{ h.label }} · {{ h.min }}:1 · {{ h.screens }}</span></sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Screens: Home" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font:13px 'IBM Plex Mono'">1</span><h2 style="margin:0;font-size:32px;font-weight:600">Home with Ask bar</h2></div>
+  <div style="display:flex;flex-wrap:wrap;gap:20px 24px;align-content:flex-start">
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="18">
+    <div style="width:206px;display:flex;flex-direction:column;gap:6px"><div style="width:206px;height:400px;border-radius:16px;overflow:hidden;border:1px solid {{ t.outlineVar }};box-sizing:border-box;position:relative">
+      <div style="width:412px;height:800px;transform:scale(.5);transform-origin:0 0;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:absolute;left:-1px;top:-1px">
+        <div style="min-height:40px;padding:0 24px;display:flex;align-items:center;justify-content:space-between;font:500 14px 'Hanken Grotesk'"><span>10:24</span><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300">signal_cellular_alt</span></div>
+        <div style="padding:8px 16px 0;display:flex;flex-direction:column;gap:14px">
+          <div style="min-height:56px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;gap:12px;padding:0 8px 0 18px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">search</span><span style="flex:1;font-size:16px;color:{{ t.onVar }}">Ask your library</span><span style="display:flex;align-items:center;gap:4px;min-height:28px;padding:0 10px 0 8px;border-radius:8px;background:{{ t.c1 }};font-size:12px;font-weight:500;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 300">memory</span>On device</span><span role="button" aria-label="Voice search" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">mic</span></div>
+          <div style="display:flex;gap:8px"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">check</span>Receipts</span><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">People</span><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">Tickets</span></div>
+        </div>
+        <div style="font-size:20px;font-weight:600;padding:16px 16px 8px">October</div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px"><div style="aspect-ratio:1;background:{{ ph0 }}"></div><div style="aspect-ratio:1;background:{{ ph1 }}"></div><div style="aspect-ratio:1;background:{{ ph2 }}"></div><div style="aspect-ratio:1;background:{{ ph3 }}"></div><div style="aspect-ratio:1;background:{{ ph4 }}"></div><div style="aspect-ratio:1;background:{{ ph5 }}"></div></div>
+        <div style="margin:12px 16px 0;background:{{ t.c1 }};border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:40px;height:40px;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">event</span><div style="flex:1"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Added to Calendar</div><div style="font-size:15px;font-weight:600">Flight LH 1167 · Fri 24 Oct</div></div></div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> boarding pass in IMG_2041; matched no existing event.</div><div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.94</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+          <div style="display:flex;gap:8px;align-items:center"><span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300">undo</span>Undo</span><span style="flex:1"></span><span style="min-height:40px;display:flex;align-items:center;padding:0 18px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Review</span></div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="height:80px;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center"><div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'FILL' 1">photo_library</span><span style="font-size:12px;font-weight:600">Library</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;min-height:32px;display:flex;align-items:center;font-variation-settings:'wght' 300">photo_album</span><span style="font-size:12px;font-weight:500">Albums</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;min-height:32px;display:flex;align-items:center;font-variation-settings:'wght' 300">bolt</span><span style="font-size:12px;font-weight:500">Actions</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;min-height:32px;display:flex;align-items:center;font-variation-settings:'wght' 300">hard_drive</span><span style="font-size:12px;font-weight:500">Storage</span></div></div>
+      </div></div><div style="font:500 11px 'IBM Plex Mono';color:#3A3936">{{ t.name }}</div></div>
+  </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Screens: Viewer" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font:13px 'IBM Plex Mono'">2</span><h2 style="margin:0;font-size:32px;font-weight:600">Photo viewer</h2></div>
+  <div style="display:flex;flex-wrap:wrap;gap:20px 24px;align-content:flex-start">
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="18">
+    <div style="width:206px;display:flex;flex-direction:column;gap:6px"><div style="width:206px;height:400px;border-radius:16px;overflow:hidden;border:1px solid {{ t.outlineVar }};box-sizing:border-box;position:relative">
+      <div style="width:412px;height:800px;transform:scale(.5);transform-origin:0 0;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:absolute;left:-1px;top:-1px">
+        <div style="height:520px;background:{{ sunset }};position:relative"><div style="position:absolute;left:0;right:0;top:0;height:96px;background:linear-gradient(rgba(0,0,0,.36),transparent);color:#FFFFFF;display:flex;align-items:flex-end;justify-content:space-between;padding:0 12px 12px;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300"><span>arrow_back</span><span>more_vert</span></div></div>
+        <div style="margin-top:-28px;background:{{ t.c1 }};border-radius:28px 28px 0 0;padding:8px 20px 0;display:flex;flex-direction:column;gap:14px;flex:1">
+          <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 4px"></div>
+          <div><div style="font-size:22px;line-height:28px;font-weight:600">Cabo da Roca, Lisbon</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }};margin-top:2px">IMG_2041.HEIC · 3.2 MB · 18:42</div></div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">Sunset</span><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">Coast</span><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">Trip</span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>Tags · on device</span></div>
+          <div style="display:flex;justify-content:space-between;padding:0 4px"><span role="button" aria-label="Share" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">share</span><span role="button" aria-label="Favorite" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:{{ t.p }};font-variation-settings:'wght' 400,'FILL' 1">favorite</span><span role="button" aria-label="Edit" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">tune</span><span role="button" aria-label="Delete" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">delete</span></div>
+          <div style="display:flex;gap:8px"><span style="flex:1;min-height:48px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">Edit</span><span style="flex:1;min-height:48px;border-radius:999px;border:1px solid {{ t.outline }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">Add to album</span></div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300">palette</span><span style="flex:1">Use its color for the app</span><span style="min-height:48px;display:flex;align-items:center;padding:0 12px;color:{{ t.p }};font-weight:600">Apply</span></div>
+        </div>
+      </div></div><div style="font:500 11px 'IBM Plex Mono';color:#3A3936">{{ t.name }}</div></div>
+  </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Screens: Cleanup" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font:13px 'IBM Plex Mono'">3</span><h2 style="margin:0;font-size:32px;font-weight:600">Cleanup review</h2></div>
+  <div style="display:flex;flex-wrap:wrap;gap:20px 24px;align-content:flex-start">
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="18">
+    <div style="width:206px;display:flex;flex-direction:column;gap:6px"><div style="width:206px;height:400px;border-radius:16px;overflow:hidden;border:1px solid {{ t.outlineVar }};box-sizing:border-box;position:relative">
+      <div style="width:412px;height:800px;transform:scale(.5);transform-origin:0 0;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:absolute;left:-1px;top:-1px">
+        <div style="height:40px"></div>
+        <div style="min-height:56px;background:{{ t.c1 }};margin:0 8px;border-radius:16px;display:flex;align-items:center;gap:4px;padding:0 8px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">close</span><span style="flex:1;font-size:18px;font-weight:600">3 selected</span><span style="color:{{ t.p }};font-size:14px;font-weight:600;padding:0 12px">Select all</span></div>
+        <div style="padding:16px 20px 8px"><div style="font-size:24px;line-height:32px;font-weight:500">Similar shots</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }};margin-top:2px">9 photos · 2.4 GB · best kept</div></div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px">
+          <div style="aspect-ratio:1;background:{{ t.pc }};position:relative;display:flex"><div style="margin:12px;flex:1;border-radius:16px;background:{{ ph6 }}"></div><span role="img" aria-label="Selected" style="position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 600;border:2px solid {{ t.bg }}">check</span></div>
+          <div style="aspect-ratio:1;background:{{ ph7 }};position:relative"><span style="position:absolute;left:8px;top:8px;width:20px;height:20px;border-radius:999px;border:2px solid #FFFFFF;background:rgba(0,0,0,.2)"></span><span style="position:absolute;right:6px;bottom:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">Best</span></div>
+          <div style="aspect-ratio:1;background:{{ t.pc }};position:relative;display:flex"><div style="margin:12px;flex:1;border-radius:16px;background:{{ ph8 }}"></div><span role="img" aria-label="Selected" style="position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 600;border:2px solid {{ t.bg }}">check</span></div>
+          <div style="aspect-ratio:1;background:{{ t.pc }};position:relative;display:flex"><div style="margin:12px;flex:1;border-radius:16px;background:{{ ph1 }}"></div><span role="img" aria-label="Selected" style="position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 600;border:2px solid {{ t.bg }}">check</span></div>
+          <div style="aspect-ratio:1;background:{{ ph3 }}"></div><div style="aspect-ratio:1;background:{{ ph4 }}"></div>
+        </div>
+        <div style="margin:16px 16px 0;background:{{ t.c1 }};border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px"><div style="font-size:15px;font-weight:600">Frees 640 MB</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> same scene within 4 seconds; sharper frame kept.</div><div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.91</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div></div>
+        <div style="flex:1"></div>
+        <div style="margin:0 16px 10px;background:{{ t.inv }};color:{{ t.onInv }};border-radius:12px;min-height:48px;display:flex;align-items:center;gap:12px;padding:0 8px 0 16px"><span style="flex:1;font-size:14px">12 moved to Trash</span><span style="color:{{ t.invP }};font-size:14px;font-weight:600;padding:0 12px">Undo</span></div>
+        <div style="padding:12px 16px 24px;background:{{ t.c1 }};display:flex;gap:8px"><span style="flex:1;min-height:48px;border-radius:999px;border:1px solid {{ t.outline }};box-sizing:border-box;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">Keep all</span><span style="flex:2;min-height:48px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600">Move 3 to Trash</span></div>
+      </div></div><div style="font:500 11px 'IBM Plex Mono';color:#3A3936">{{ t.name }}</div></div>
+  </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Screens: Editor" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font:13px 'IBM Plex Mono'">4</span><h2 style="margin:0;font-size:32px;font-weight:600">Editor</h2></div>
+  <div style="display:flex;flex-wrap:wrap;gap:20px 24px;align-content:flex-start">
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="18">
+    <div style="width:206px;display:flex;flex-direction:column;gap:6px"><div style="width:206px;height:400px;border-radius:16px;overflow:hidden;border:1px solid {{ t.outlineVar }};box-sizing:border-box;position:relative">
+      <div style="width:412px;height:800px;transform:scale(.5);transform-origin:0 0;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:absolute;left:-1px;top:-1px">
+        <div style="height:40px"></div>
+        <div style="min-height:56px;display:flex;align-items:center;gap:4px;padding:0 8px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">close</span><span role="button" aria-label="Undo" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">undo</span><span role="button" aria-label="Redo" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;color:{{ t.onVar }};font-variation-settings:'wght' 300">redo</span><span style="flex:1"></span><span style="min-height:40px;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Save</span></div>
+        <div style="height:340px;margin:0 16px;border-radius:20px;background:{{ forest }};position:relative"><span style="position:absolute;left:10px;bottom:10px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};color:{{ t.on }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 300">memory</span>Edited on device</span></div>
+        <div style="display:flex;gap:8px;padding:16px 16px 0"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">check</span>Light</span><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">Color</span><span style="min-height:32px;display:flex;align-items:center;padding:0 14px;border-radius:8px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:500">Detail</span></div>
+        <div style="padding:18px 20px 0;display:flex;flex-direction:column;gap:18px">
+          <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>Exposure</span><span style="font:500 12px 'IBM Plex Mono';color:{{ t.onVar }}">+0.4</span></div><div style="height:20px;position:relative;display:flex;align-items:center"><span style="position:absolute;left:0;right:0;height:4px;border-radius:2px;background:{{ t.outlineVar }}"></span><span style="position:absolute;left:0;width:62%;height:4px;border-radius:2px;background:{{ t.p }}"></span><span style="position:absolute;left:60%;width:20px;height:20px;border-radius:999px;background:{{ t.p }}"></span></div></div>
+          <div style="display:flex;align-items:center;gap:16px;background:{{ t.c1 }};border-radius:20px;padding:12px 16px"><div style="flex:1"><div style="font-size:15px;font-weight:500">Show original on long press</div><div style="font-size:12px;color:{{ t.onVar }}">Compare before saving</div></div><span style="width:52px;height:32px;border-radius:999px;background:{{ t.p }};display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box"><span style="width:24px;height:24px;border-radius:999px;background:{{ t.onP }}"></span></span></div>
+        </div>
+        <div style="flex:1"></div>
+        <div style="height:72px;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;text-align:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300"><span style="justify-self:center;width:56px;height:32px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center">auto_fix_high</span><span style="color:{{ t.onVar }}">crop_rotate</span><span style="color:{{ t.onVar }}">tune</span><span style="color:{{ t.onVar }}">history</span></div>
+      </div></div><div style="font:500 11px 'IBM Plex Mono';color:#3A3936">{{ t.name }}</div></div>
+  </sc-for>
+  </div>
+</section>
+
+<section data-screen-label="Screens: Settings" style="display:flex;flex-direction:column;gap:20px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font:13px 'IBM Plex Mono'">5</span><h2 style="margin:0;font-size:32px;font-weight:600">Settings</h2></div>
+  <div style="display:flex;flex-wrap:wrap;gap:20px 24px;align-content:flex-start">
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="18">
+    <div style="width:206px;display:flex;flex-direction:column;gap:6px"><div style="width:206px;height:400px;border-radius:16px;overflow:hidden;border:1px solid {{ t.outlineVar }};box-sizing:border-box;position:relative">
+      <div style="width:412px;height:800px;transform:scale(.5);transform-origin:0 0;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:absolute;left:-1px;top:-1px">
+        <div style="height:40px"></div>
+        <div style="font-size:32px;line-height:40px;font-weight:500;padding:16px 20px 12px">Settings</div>
+        <div style="font:500 12px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;color:{{ t.onVar }};padding:8px 24px">Appearance</div>
+        <div style="margin:0 16px;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:40px;border-radius:999px;border:1px solid {{ t.outline }};overflow:hidden;font-size:14px;font-weight:500"><span style="display:flex;align-items:center;justify-content:center;gap:4px;color:{{ t.onVar }}">Light</span><span style="display:flex;align-items:center;justify-content:center;gap:4px;color:{{ t.onVar }};border-left:1px solid {{ t.outline }}">Dark</span><span style="display:flex;align-items:center;justify-content:center;gap:4px;background:{{ t.pc }};color:{{ t.onPc }};border-left:1px solid {{ t.outline }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300">check</span>Black</span></div>
+          <div style="display:flex;gap:12px;align-items:center"><span aria-hidden="true" style="width:36px;height:36px;border-radius:999px;background:{{ t.p }};outline:2px solid {{ t.p }};outline-offset:3px;color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">check</span><span style="font-size:15px;font-weight:500;flex:1">{{ t.srcLabel }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ t.seed }}</span></div>
+        </div>
+        <div style="font:500 12px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;color:{{ t.onVar }};padding:20px 24px 8px">Privacy</div>
+        <div style="margin:0 16px;background:{{ t.c1 }};border-radius:20px;display:flex;flex-direction:column">
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-bottom:1px solid {{ t.outlineVar }}"><div style="flex:1"><div style="font-size:16px;font-weight:500">Auto-file receipts</div><div style="font-size:13px;color:{{ t.onVar }}">On device · undo from Activity</div></div><span style="width:52px;height:32px;border-radius:999px;background:{{ t.p }};display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box"><span aria-hidden="true" style="width:24px;height:24px;border-radius:999px;background:{{ t.onP }};color:{{ t.p }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 300">check</span></span></div>
+          <div style="display:flex;align-items:center;gap:16px;padding:14px 16px"><div style="flex:1"><div style="font-size:16px;font-weight:500">Cloud processing</div><div style="font-size:13px;color:{{ t.onVar }}">Off · asks each time</div></div><span style="width:52px;height:32px;border-radius:999px;background:{{ t.c2 }};border:2px solid {{ t.outline }};display:flex;align-items:center;padding:0 6px;box-sizing:border-box"><span style="width:16px;height:16px;border-radius:999px;background:{{ t.outline }}"></span></span></div>
+        </div>
+        <div style="margin:16px 16px 0;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px"><div style="display:flex;justify-content:space-between"><span style="font-size:16px;font-weight:600">312 GB library</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">3 locations</span></div><div style="display:flex;height:12px;gap:2px"><span style="width:18%;background:{{ t.p }};border-radius:6px 2px 2px 6px"></span><span style="width:64%;background:{{ t.onVar }};border-radius:2px"></span><span style="flex:1;background:{{ t.outline }};border-radius:2px 6px 6px 2px"></span></div></div>
+        <div style="flex:1"></div>
+        <div style="padding:0 20px 24px;display:flex;justify-content:space-between;align-items:center"><span style="color:{{ t.p }};font-size:14px;font-weight:600;padding:12px 0">Delete AI data</span><span style="min-height:40px;display:flex;align-items:center;padding:0 16px;border-radius:999px;border:1px solid {{ t.outline }};box-sizing:border-box;font-size:14px;font-weight:600">Export library</span></div>
+      </div></div><div style="font:500 11px 'IBM Plex Mono';color:#3A3936">{{ t.name }}</div></div>
+  </sc-for>
+  </div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1688,&quot;height&quot;:1200}}">
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const lin=v=>{v/=255;return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4};
+const lum=h=>{const[r,g,b]=rgb(h).map(lin);return .2126*r+.7152*g+.0722*b};
+const Ls=h=>{const Y=lum(h);return Y>0.008856?116*Math.cbrt(Y)-16:903.3*Y};
+const ratio=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const toHsl=h=>{let[r,g,b]=rgb(h).map(v=>v/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,S=0;const L=(mx+mn)/2;if(mx!==mn){const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H/=6}return[H,S,L]};
+const fromHsl=(h,s,l)=>{const f=n=>{const k=(n+h*12)%12,a=s*Math.min(l,1-l);return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1))))};return'#'+[f(0),f(8),f(4)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase()};
+const tn=(h,s,T)=>{let lo=0,hi=1;for(let i=0;i<32;i++){const m=(lo+hi)/2;Ls(fromHsl(h,s,m))<T?lo=m:hi=m}return fromHsl(h,s,(lo+hi)/2)};
+const tone=(seed,T,cap)=>{const[h,s0]=toHsl(seed);return tn(h,Math.min(s0,cap),T)};
+const BASE={
+ light:{bg:'#F7F6F3',c1:'#F0EEEA',c2:'#E9E7E2',on:'#1B1B1A',onVar:'#5E5D59',outline:'#85837E',outlineVar:'#D3D0CA',inv:'#2F2F2D',onInv:'#F2F0EB',modal:'#FFFFFF'},
+ dark:{bg:'#151515',c1:'#1E1E1D',c2:'#292927',on:'#E6E4DF',onVar:'#A3A19B',outline:'#7D7B75',outlineVar:'#3A3936',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#252524'},
+ black:{bg:'#000000',c1:'#0F0F0F',c2:'#1C1C1B',on:'#E6E4DF',onVar:'#A3A19B',outline:'#75736E',outlineVar:'#2E2D2B',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#0F0F0F'}};
+function tinted(seed,k){const h=toHsl(seed)[0],f=(s,T)=>tn(h,s,T);
+ if(k==='light')return{bg:f(.25,97),c1:f(.25,95),c2:f(.25,92),on:f(.1,10),onVar:f(.1,35),outline:f(.08,48),outlineVar:f(.15,82),inv:f(.1,20),onInv:f(.2,95),modal:f(.25,99)};
+ if(k==='dark')return{bg:f(.2,8),c1:f(.2,11),c2:f(.2,15),on:f(.1,90),onVar:f(.1,72),outline:f(.08,58),outlineVar:f(.15,24),inv:f(.1,90),onInv:f(.1,15),modal:f(.2,13)};
+ return{bg:'#000000',c1:f(.2,5),c2:f(.2,10),on:f(.1,90),onVar:f(.1,72),outline:f(.08,56),outlineVar:f(.15,18),inv:f(.1,90),onInv:f(.1,15),modal:f(.2,5)}}
+function roles(seed,k,t,fixed){
+  const L=k==='light',st=fixed?1.5:3;let T=L?40:80,p=tone(seed,T,.62),n=0;
+  const S=fixed?[t.bg,t.c1,t.c2,t.modal]:[t.bg];
+  while(Math.min(...S.map(s=>ratio(p,s)))<4.5&&n++<20){T+=L?-st:st;p=tone(seed,T,.62)}
+  const onP=L?'#FFFFFF':tone(seed,20,.6);
+  let pT=L?90:30,pc=tone(seed,pT,L?.5:.42),oT=L?10:90,onPc=tone(seed,oT,L?.6:.5);
+  let iT=L?80:40,invP=tone(seed,iT,.6);
+  if(fixed){n=0;while(ratio(invP,t.inv)<4.5&&n++<20){iT+=L?2:-2;invP=tone(seed,iT,.6)}
+    n=0;while(ratio(p,pc)<3&&n++<20){pT+=L?1:-1;pc=tone(seed,pT,L?.5:.42)}
+    n=0;while(ratio(onPc,pc)<4.5&&n++<20){oT+=L?-1:1;onPc=tone(seed,oT,L?.6:.5)}}
+  return{p,onP,pc,onPc,invP}}
+const SRC=[
+ {key:'Slate',label:'Curated · Slate',seed:'#4A6CB8',tint:0},
+ {key:'Clay',label:'Curated · Clay',seed:'#C0623F',tint:0},
+ {key:'WarmWall',label:'Material You · warm wallpaper',seed:'#C08A5A',tint:1},
+ {key:'CoolWall',label:'Material You · cool wallpaper',seed:'#5F86A8',tint:1},
+ {key:'Sunset',label:'Match my photo · sunset',seed:'#D9653B',tint:0},
+ {key:'Forest',label:'Match my photo · green forest',seed:'#3C7D4E',tint:0}];
+const MODES=[['light','Light'],['dark','Dark'],['black','True black']];
+const CH=[
+ ['T1','Text','onSurface on surface','on','bg',4.5,'on bg','H V C E S'],
+ ['T2','Text','onSurfaceVariant on surface','onVar','bg',4.5,'var bg','H V C E S'],
+ ['T3','Text','onSurfaceVariant on card','onVar','c1',4.5,'var c1','H V C E S'],
+ ['T4','Text','onSurfaceVariant on Ask bar / input','onVar','c2',4.5,'var c2','H'],
+ ['T5','Text','primary text button on surface','p','bg',4.5,'p bg','C S'],
+ ['T6','Text','primary text button on card','p','c1',4.5,'p c1','H V S'],
+ ['T7','Text','primary on Ask bar / input','p','c2',4.5,'p c2','H'],
+ ['T8','Text','primary on dialog / sheet','p','modal',4.5,'p sheet','dialogs'],
+ ['B1','Button','onPrimary on primary (filled)','onP','p',4.5,'fill','all'],
+ ['B2','Button','onPrimaryContainer on container (chip, nav)','onPc','pc',4.5,'chip','all'],
+ ['B3','Button','toast text on inverse','onInv','inv',4.5,'toast','C'],
+ ['B4','Button','toast action on inverse','invP','inv',4.5,'toast ▸','C'],
+ ['B5','Button','outline on surface (outlined button, chip)','outline','bg',3,'outl bg','all'],
+ ['B6','Button','outline on input / toggle track','outline','c2',3,'outl c2','H S'],
+ ['S1','Select','primary on surface (focus, active track)','p','bg',3,'p bg','E H'],
+ ['S2','Select','primary on card (toggle on, meter, radio)','p','c1',3,'p c1','E S'],
+ ['S3','Select','badge primary on selected field','p','pc',3,'badge','C'],
+ ['S4','Select','unselected ring on card','outline','c1',3,'ring','S']];
+const PH=['linear-gradient(160deg,#d8c7ad,#8f7a5e)','linear-gradient(170deg,#a9c4d8,#3f6a8a)','linear-gradient(150deg,#ebe5d8,#bfb39b)','linear-gradient(165deg,#9fb391,#4b6340)','linear-gradient(160deg,#e3b9a8,#9a5e4e)','linear-gradient(170deg,#4a4f6b,#1e2134)','linear-gradient(160deg,#c7ccc9,#7f8a86)','linear-gradient(150deg,#e9cf8f,#b0823a)','linear-gradient(165deg,#d6a7ae,#7d4a58)'];
+function build(fixed){const o=[];MODES.forEach(([k,ml])=>SRC.forEach(s=>{const n=s.tint?tinted(s.seed,k):BASE[k];const r=roles(s.seed,k,n,fixed);o.push({...n,...r,k,name:s.label+' · '+ml,srcLabel:s.label,seed:s.seed})}));return o}
+const audit=th=>th.map(t=>({name:t.name,seed:t.seed,cells:CH.map(c=>{const r=ratio(t[c[3]],t[c[4]]);return{r,ok:r>=c[5]}})}));
+class Component extends DCLogic {
+  renderVals(){
+    const sh=build(false),fx=build(true),as=audit(sh),af=audit(fx);
+    let fs=0,ff=0,mt=99;as.forEach(r=>r.cells.forEach(c=>{if(!c.ok)fs++}));
+    af.forEach(r=>r.cells.forEach((c,j)=>{if(!c.ok)ff++;if(CH[j][1]==='Text'||j==8||j==9)mt=Math.min(mt,c.r)}));
+    const failRows=[];
+    as.forEach((r,i)=>r.cells.forEach((c,j)=>{if(c.ok)return;const k=CH[j],a=af[i].cells[j];
+      const fg=k[3],bg=k[4];let fix;
+      if(sh[i][fg]!==fx[i][fg])fix=`${fg==='invP'?'inversePrimary':fg==='p'?'primary':fg==='pc'?'primaryContainer':fg} ${sh[i][fg]} → ${fx[i][fg]}`;
+      else if(sh[i][bg]!==fx[i][bg])fix=`${bg} ${sh[i][bg]} → ${fx[i][bg]}`;else fix='no change';
+      failRows.push({theme:r.name,pair:k[0]+' · '+k[2],before:c.r.toFixed(2),after:a.r.toFixed(2)+(a.ok?' ✓':' ✕'),afterC:a.ok?'#2D6A3E':'#B3261E',fix})}));
+    const px={};PH.forEach((v,i)=>px['ph'+i]=v);
+    const fmt=r=>r.cells.map(c=>({t:c.r.toFixed(1),c:c.ok?'#1B1B1A':'#B3261E',bg:c.ok?'transparent':'#F6D7D3'}));
+    return{...px,themes:fx,
+      sunset:'linear-gradient(180deg,#f6c58b 0%,#e8804f 38%,#b4476a 66%,#3b2a4f 100%)',
+      forest:'linear-gradient(170deg,#c5dcb9,#5f9a62 40%,#2d5a3a 70%,#14281c)',
+      nChecks:CH.length,nTotal:CH.length*fx.length,nFailShipped:fs,nFailFixed:ff,minAfter:mt.toFixed(2)+':1',
+      failRows,
+      checkHeads:CH.map(c=>({id:c[0],label:c[2],short:c[6],min:c[5],screens:c[7]})),
+      auditFixed:af.map(r=>({name:r.name,seed:r.seed,cells:fmt(r)})),
+      fixSummary:fs?'Primary is now stepped until it clears 4.5:1 on every surface it can sit on (surface, card, input, dialog), not only the base surface. Inverse primary on the toast is stepped against the inverse surface itself. Primary container is nudged until the selection badge clears 3:1, and onPrimaryContainer is re-checked afterwards. Wallpaper themes tint the neutrals with the seed hue at low chroma, and the same checks run against those tinted surfaces.':'No role changes needed.'
+    }}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0&display=block" rel="stylesheet">
+<style>
+body{margin:0;background:#EDECE8;color:#1B1B1A;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#3E5FA8;text-decoration:none}a:hover{color:#1B1B1A;text-decoration:underline}
+</style>
+</helmet>
+
+<header style="padding:64px 64px 0;display:flex;flex-direction:column;gap:20px;max-width:1200px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5E5D59">Stage 2 · Hero features · Pixel 10 Pro · 412 × 919 dp · accent {{ accentName }}</div>
+  <h1 style="margin:0;font-size:64px;line-height:1;font-weight:600;letter-spacing:-.03em">Sift, five hero features</h1>
+  <p style="margin:0;font-size:18px;line-height:28px;max-width:820px;color:#3A3936;text-wrap:pretty">Every AI element carries a short reason, a confidence meter and an origin badge. High (≥ 0.90) may act, always with Undo. Medium (0.70–0.89) suggests. Low (&lt; 0.70) asks instead of acting. Photos are color placeholders.</p>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:center;font-size:13px;color:#3A3936">
+    <span style="display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · acts + Undo</span></span>
+    <span style="display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px #85837E"></span></span><span style="font:500 12px 'IBM Plex Mono'">Medium · suggests</span></span>
+    <span style="display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;background:#1B1B1A"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px #85837E"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px #85837E"></span></span><span style="font:500 12px 'IBM Plex Mono'">Low · asks</span></span>
+    <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:#E9E7E2;font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span>
+    <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;box-shadow:inset 0 0 0 1px #85837E;font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">cloud</span>Cloud · asks first</span>
+  </div>
+</header>
+
+<section data-screen-label="01 Ask your photos" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">01</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Ask your photos</h2><span style="font-size:15px;color:#5E5D59">Home is a question, not a timeline. Idle, typing with suggestions, results.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1a</span><span style="font-size:15px;font-weight:600">Home · idle</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:12px;padding:8px 12px 8px 20px">
+              <svg width="28" height="28" viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="{{ t.on }}"></rect><rect x="14" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="27" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="40" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="14" y="27" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="27" y="27" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="40" y="31" width="10" height="10" rx="5" fill="{{ t.bg }}" opacity=".55"></rect><rect x="14" y="40" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="29" y="44" width="10" height="10" rx="5" fill="{{ t.bg }}" opacity=".35"></rect></svg>
+              <span style="font-size:22px;font-weight:600;letter-spacing:-.01em;flex:1">Sift</span>
+              <span role="button" aria-label="Cleanup" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">cleaning_services</span>
+              <span style="width:32px;height:32px;border-radius:999px;background:linear-gradient(160deg,#e3b9a8,#9a5e4e);margin:0 8px"></span>
+            </div>
+            <div style="padding:20px 16px 0;display:flex;flex-direction:column;gap:14px">
+              <div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em;padding:0 4px">Ask your photos</div>
+              <div style="min-height:56px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;gap:12px;padding:0 8px 0 18px">
+                <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">search</span>
+                <span style="flex:1;font-size:16px;color:{{ t.onVar }}">Receipts, people, places, anything</span>
+                <span style="display:flex;align-items:center;gap:4px;min-height:28px;padding:0 10px 0 8px;border-radius:8px;background:{{ t.c1 }};font-size:12px;font-weight:500;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 400">memory</span>On device</span>
+                <span role="button" aria-label="Voice search" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">mic</span>
+              </div>
+              <div style="display:flex;gap:8px;margin-right:-16px;overflow:hidden">
+                <span style="min-height:32px;flex:none;display:flex;align-items:center;padding:0 14px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500">receipts from May</span>
+                <span style="min-height:32px;flex:none;display:flex;align-items:center;padding:0 14px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500">Inês at the beach</span>
+                <span style="min-height:32px;flex:none;display:flex;align-items:center;padding:0 14px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500">tickets this month</span>
+              </div>
+            </div>
+            <div style="margin:20px 16px 0;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span aria-hidden="true" style="width:40px;height:40px;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 400">bolt</span>
+                <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Found this week · not acted on</div><div style="font-size:16px;line-height:22px;font-weight:600">3 photos can become actions</div></div>
+                <div style="display:flex;flex:none">
+                  <div style="width:30px;height:40px;border-radius:6px;background:linear-gradient(160deg,#8a6f55,#5a4636);display:flex;align-items:center;justify-content:center;border:2px solid {{ t.c1 }}"><div style="width:18px;height:30px;background:repeating-linear-gradient(180deg,#F4F1EA 0 4px,#CFC8BA 4px 5px)"></div></div>
+                  <div style="width:30px;height:40px;border-radius:6px;background:linear-gradient(150deg,#e9cf8f,#b0823a);border:2px solid {{ t.c1 }};margin-left:-10px"></div>
+                  <div style="width:30px;height:40px;border-radius:6px;background:linear-gradient(160deg,#c7ccc9,#7f8a86);border:2px solid {{ t.c1 }};margin-left:-10px"></div>
+                </div>
+              </div>
+              <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> a receipt, a concert ticket and a business card in photos from 13–18 Oct.</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span>
+                <span style="font:500 12px 'IBM Plex Mono'">High · 0.91</span><span style="flex:1"></span>
+                <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span>
+              </div>
+            </div>
+            <div style="padding:24px 20px 10px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">Today</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Mon 19 Oct · Lisbon</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px">
+              <sc-for list="{{ gridToday }}" as="c" hint-placeholder-count="6"><div style="aspect-ratio:1;background:{{ c.bg }};position:relative"><sc-if value="{{ c.dur }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:6px;top:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">{{ c.dur }}</span></sc-if><sc-if value="{{ c.icon }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position:absolute;left:6px;bottom:6px;width:24px;height:24px;border-radius:999px;background:rgba(0,0,0,.56);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 400">{{ c.icon }}</span></sc-if></div></sc-for>
+            </div>
+            <div style="padding:20px 20px 10px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">Yesterday</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Sun 18 Oct · Sintra</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px">
+              <sc-for list="{{ gridYesterday }}" as="c" hint-placeholder-count="6"><div style="aspect-ratio:1;background:{{ c.bg }};position:relative"><sc-if value="{{ c.dur }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;right:6px;top:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">{{ c.dur }}</span></sc-if><sc-if value="{{ c.icon }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position:absolute;left:6px;bottom:6px;width:24px;height:24px;border-radius:999px;background:rgba(0,0,0,.56);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 400">{{ c.icon }}</span></sc-if></div></sc-for>
+            </div>
+          </div>
+          <div style="background:{{ t.c1 }};flex:none;border-top:1px solid {{ t.navBorder }}">
+            <div style="height:80px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 400,'FILL' 1">photo_library</span><span style="font-size:12px;font-weight:600">Library</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">photo_album</span><span style="font-size:12px;font-weight:500">Albums</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300;position:relative">bolt<span style="position:absolute;right:16px;top:2px;width:8px;height:8px;border-radius:999px;background:{{ t.p }}"></span></span><span style="font-size:12px;font-weight:500">Actions</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">hard_drive</span><span style="font-size:12px;font-weight:500">Storage</span></div>
+            </div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1b</span><span style="font-size:15px;font-weight:600">Typing · suggestions</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 16px 8px 4px">
+              <span role="button" aria-label="Back" style="width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span>
+              <div style="flex:1;min-height:56px;border-radius:999px;background:{{ t.c2 }};outline:2px solid {{ t.p }};display:flex;align-items:center;gap:8px;padding:0 8px 0 18px">
+                <span style="flex:1;font-size:16px;display:flex;align-items:center">receipts fr<span style="width:2px;height:22px;background:{{ t.p }};margin-left:1px"></span></span>
+                <span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">close</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;padding-top:4px">
+              <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="4">
+                <div style="min-height:64px;display:flex;align-items:center;gap:16px;padding:0 12px 0 24px">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">{{ s.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">receipts fr<strong style="font-weight:600">{{ s.rest }}</strong></div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s.meta }}</div></div>
+                  <span role="button" aria-label="Use suggestion" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">north_west</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin:8px 16px 0;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Top match understood as</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 400">receipt_long</span>Type: receipt</span>
+                <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 400">calendar_month</span>1–31 May 2026</span>
+              </div>
+              <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> "May" read as your most recent May. Counts come from receipts already read on this phone.</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span>
+                <span style="font:500 12px 'IBM Plex Mono'">High · 0.96</span><span style="flex:1"></span>
+                <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span>
+              </div>
+            </div>
+            <div style="flex:1"></div>
+          </div>
+          <div style="background:{{ t.kb }};flex:none;padding:6px 6px 0;display:flex;flex-direction:column;gap:10px">
+            <div style="height:40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;text-align:center;font-size:16px"><span>from</span><span style="border-left:1px solid {{ t.outlineVar }};border-right:1px solid {{ t.outlineVar }};font-weight:600">from</span><span>Friday</span></div>
+            <div style="display:flex;gap:6px"><sc-for list="{{ kb1 }}" as="k" hint-placeholder-count="10"><span style="flex:1;height:46px;border-radius:8px;background:{{ t.keyc }};display:flex;align-items:center;justify-content:center;font-size:20px">{{ k }}</span></sc-for></div>
+            <div style="display:flex;gap:6px;padding:0 18px"><sc-for list="{{ kb2 }}" as="k" hint-placeholder-count="9"><span style="flex:1;height:46px;border-radius:8px;background:{{ t.keyc }};display:flex;align-items:center;justify-content:center;font-size:20px">{{ k }}</span></sc-for></div>
+            <div style="display:flex;gap:6px"><span aria-hidden="true" style="width:56px;height:46px;border-radius:8px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">shift</span><sc-for list="{{ kb3 }}" as="k" hint-placeholder-count="7"><span style="flex:1;height:46px;border-radius:8px;background:{{ t.keyc }};display:flex;align-items:center;justify-content:center;font-size:20px">{{ k }}</span></sc-for><span aria-hidden="true" style="width:56px;height:46px;border-radius:8px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">backspace</span></div>
+            <div style="display:flex;gap:6px"><span style="width:72px;height:46px;border-radius:8px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:500">?123</span><span style="width:40px;height:46px;border-radius:8px;background:{{ t.keyc }};display:flex;align-items:center;justify-content:center;font-size:20px">,</span><span style="flex:1;height:46px;border-radius:8px;background:{{ t.keyc }}"></span><span style="width:40px;height:46px;border-radius:8px;background:{{ t.keyc }};display:flex;align-items:center;justify-content:center;font-size:20px">.</span><span aria-hidden="true" style="width:72px;height:46px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 400">search</span></div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1c</span><span style="font-size:15px;font-weight:600">Results · "receipts from May"</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:25</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 16px 8px 4px">
+              <span role="button" aria-label="Back" style="width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span>
+              <div style="flex:1;min-height:56px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;gap:8px;padding:0 8px 0 18px"><span style="flex:1;font-size:16px">receipts from May</span><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">close</span></div>
+            </div>
+            <div style="display:flex;gap:8px;padding:4px 16px 12px">
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 8px 0 10px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500">Receipts<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 400">close</span></span>
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 8px 0 10px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500">May 2026<span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 400">close</span></span>
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300">add</span>Filter</span>
+            </div>
+            <div style="flex:none;margin:0 16px;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">1–31 May 2026 · totals in EUR</div><div style="font-size:22px;line-height:28px;font-weight:600">14 receipts · €612.40</div></div>
+              <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> date read from the printed receipt, not from when the photo was taken. 3 were photographed in June.</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span>
+                <span style="font:500 12px 'IBM Plex Mono'">High · 0.93</span><span style="flex:1"></span>
+                <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span>
+              </div>
+              <div style="display:flex;gap:8px">
+                <span style="min-height:40px;display:flex;align-items:center;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:600">Export CSV</span>
+                <span style="min-height:40px;display:flex;align-items:center;padding:0 18px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Add to expenses…</span>
+              </div>
+            </div>
+            <div style="margin:12px 16px 0;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1px {{ t.outlineVar }}">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span aria-hidden="true" style="width:40px;height:40px;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">help</span>
+                <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Asking before including</div><div style="font-size:16px;line-height:22px;font-weight:600">2 more might be from May</div></div>
+                <div style="display:flex;gap:4px;flex:none"><div style="width:30px;height:40px;border-radius:6px;background:linear-gradient(160deg,#6d6f73,#3b3d40);display:flex;align-items:center;justify-content:center"><div style="width:20px;height:30px;background:repeating-linear-gradient(180deg,#F4F1EA 0 4px,#CFC8BA 4px 5px)"></div></div><div style="width:40px;height:30px;margin-top:10px;border-radius:6px;background:linear-gradient(160deg,#b9a07a,#7a6248);display:flex;align-items:center;justify-content:center"><div style="width:26px;height:18px;background:repeating-linear-gradient(90deg,#F4F1EA 0 4px,#CFC8BA 4px 5px)"></div></div></div>
+              </div>
+              <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> no date printed. Photos taken Sat 30 May and Tue 2 Jun.</div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span></span>
+                <span style="font:500 12px 'IBM Plex Mono'">Low · 0.58</span><span style="flex:1"></span>
+                <span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 -4px"><span style="min-height:40px;display:flex;align-items:center;padding:0 16px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:600">Include both</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:500">Leave out</span></div>
+            </div>
+            <div style="padding:20px 20px 6px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">Receipts</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">by receipt date</span></div>
+            <sc-for list="{{ receipts }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:14px;padding:8px 20px">
+                <div style="width:44px;height:56px;flex:none;border-radius:8px;background:{{ r.bg }};display:flex;align-items:center;justify-content:center"><div style="width:26px;height:42px;background:repeating-linear-gradient(180deg,#F4F1EA 0 5px,#CFC8BA 5px 6px);transform:rotate({{ r.rot }})"></div></div>
+                <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.m }}</div><div style="font-size:13px;color:{{ t.onVar }}">{{ r.d }}</div></div>
+                <span style="font:500 14px 'IBM Plex Mono'">{{ r.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+
+<section data-screen-label="02 Smart cleanup" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">02</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Smart cleanup</h2><span style="font-size:15px;color:#5E5D59">Scan, review by group, confirm with a hold, recover from Trash for 30 days.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2a</span><span style="font-size:15px;font-weight:600">Scan summary</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:30</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 8px 8px 4px;min-height:48px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Cleanup</span><span role="button" aria-label="More options" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">more_vert</span></div>
+            <div style="padding:4px 20px 14px;display:flex;flex-direction:column;gap:4px;flex:none">
+              <div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Scanned 18,402 items on this phone · 2 min 10 s</div>
+              <div style="display:flex;align-items:baseline;gap:12px"><span style="font-size:57px;line-height:64px;font-weight:500;letter-spacing:-.01em">5.6 GB</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px;color:{{ t.onVar }};flex:1">could be freed after you review</span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            </div>
+            <div style="flex:none;margin:0 16px;background:{{ t.c1 }};border-radius:20px;display:flex;flex-direction:column">
+              <sc-for list="{{ t.cats }}" as="c" hint-placeholder-count="4">
+                <div style="padding:10px 16px;display:flex;flex-direction:column;gap:6px;border-top:1px solid {{ c.div }}">
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">{{ c.icon }}</span>
+                    <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px;font-weight:600">{{ c.name }}</div><div style="font-size:13px;color:{{ t.onVar }}">{{ c.count }}</div></div>
+                    <span style="font:500 14px 'IBM Plex Mono'">{{ c.size }}</span>
+                  </div>
+                  <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> {{ c.why }}</div>
+                  <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><sc-for list="{{ c.bars }}" as="b" hint-placeholder-count="4"><span style="width:14px;height:6px;border-radius:3px;background:{{ b.bg }};box-shadow:inset 0 0 0 1px {{ b.bd }}"></span></sc-for></span><span style="font:500 12px 'IBM Plex Mono'">{{ c.conf }}</span></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin:10px 16px 0;padding:12px 16px;border-radius:20px;box-shadow:inset 0 0 0 1px {{ t.outlineVar }};display:flex;gap:12px;flex:none">
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">shield_lock</span>
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:600">1,206 items always protected.</span> Favorites, shared albums, people you named, and anything edited in the last 30 days are never suggested.</div>
+            </div>
+          </div>
+          <div style="flex:none;padding:12px 16px 4px;display:flex;flex-direction:column;gap:8px;align-items:center">
+            <div style="min-height:56px;width:100%;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Review 4 groups</div>
+            <div style="font-size:13px;color:{{ t.onVar }}">Nothing is deleted until you confirm.</div>
+          </div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2b</span><span style="font-size:15px;font-weight:600">Grouped review · near-duplicates</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:31</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 8px 8px 4px;min-height:48px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">close</span><div style="flex:1"><div style="font-size:18px;line-height:22px;font-weight:600">Near-duplicates</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">set 3 of 96</div></div><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600">Keep all</span></div>
+            <div style="display:flex;gap:8px;padding:8px 16px 12px;overflow:hidden;flex:none">
+              <span style="min-height:32px;flex:none;display:flex;align-items:center;gap:6px;padding:0 12px 0 8px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">check</span>Duplicates 214</span>
+              <span style="min-height:32px;flex:none;display:flex;align-items:center;padding:0 12px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:600">Near-dupes 96</span>
+              <span style="min-height:32px;flex:none;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500">Blurry 61</span>
+              <span style="min-height:32px;flex:none;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500">Screenshots 388</span>
+            </div>
+            <div style="flex:none;margin:0 16px;background:{{ t.c1 }};border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px"><span style="font-size:16px;font-weight:600">Miradouro da Graça</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Sun 4 Oct · 18:41 · 6 shots</span></div>
+              <div style="height:180px;flex:none;border-radius:16px;background:linear-gradient(180deg,#f0c99a 0%,#e3956a 40%,#a86a5c 62%,#c8a07a 63%,#7a5a44 100%);position:relative">
+                <span style="position:absolute;left:10px;top:10px;height:28px;display:flex;align-items:center;gap:4px;padding:0 10px 0 6px;border-radius:8px;background:{{ t.p }};color:{{ t.onP }};font-size:13px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">check</span>Keep</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px">
+                <sc-for list="{{ burst }}" as="b" hint-placeholder-count="5"><div style="aspect-ratio:1;border-radius:8px;background:{{ b }};position:relative"><span role="img" aria-label="Delete" style="position:absolute;left:5px;top:5px;width:22px;height:22px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 600;box-shadow:0 0 0 2px {{ t.c1 }}">delete</span></div></sc-for>
+              </div>
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why keep this one:</span> sharpest of the set, Inês's eyes open, horizon level. The other 5 are within 0.6 s.</div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.91</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            </div>
+            <div style="flex:none;margin:12px 16px 0;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:12px;box-shadow:inset 0 0 0 1px {{ t.outlineVar }}">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 2px"><span style="font-size:16px;font-weight:600">Jonas's birthday cake</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Sat 10 Oct · 21:07 · 3 shots</span></div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px">
+                <div style="height:96px;border-radius:12px;background:radial-gradient(circle at 50% 58%,#f4e7cf 0 26%,#c98b4e 27% 38%,#5a3a26 39%);position:relative"><span style="position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:999px;border:2px solid #FFFFFF;background:rgba(0,0,0,.2);box-sizing:border-box"></span></div>
+                <div style="height:96px;border-radius:12px;background:radial-gradient(circle at 46% 56%,#f7ead2 0 27%,#cf9152 28% 39%,#4f3322 40%);position:relative"><span style="position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:999px;border:2px solid #FFFFFF;background:rgba(0,0,0,.2);box-sizing:border-box"></span></div>
+                <div style="height:96px;border-radius:12px;background:radial-gradient(circle at 54% 60%,#f2e3c8 0 25%,#c4864a 26% 37%,#5e3d28 38%);position:relative"><span style="position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:999px;border:2px solid #FFFFFF;background:rgba(0,0,0,.2);box-sizing:border-box"></span></div>
+              </div>
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why it's asking:</span> all three are equally sharp and faces differ. Pick the one to keep, or keep all.</div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">Low · 0.64</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            </div>
+          </div>
+          <div style="flex:none;background:{{ t.c1 }};border-top:1px solid {{ t.navBorder }}">
+            <div style="height:72px;display:flex;align-items:center;gap:12px;padding:0 16px 0 20px"><div style="flex:1"><div style="font-size:16px;font-weight:600">289 marked</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">3.3 GB · 2 groups left</div></div><span style="min-height:48px;display:flex;align-items:center;padding:0 24px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:15px;font-weight:600">Continue</span></div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2c</span><span style="font-size:15px;font-weight:600">Confirm · bulk-delete protection</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:34</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+            <div style="height:32px;width:180px;border-radius:8px;background:{{ t.c2 }}"></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;margin:0 -16px"><sc-for list="{{ trashA }}" as="c" hint-placeholder-count="9"><div style="aspect-ratio:1;background:{{ c }}"></div></sc-for></div>
+          </div>
+          <div style="position:absolute;inset:0;background:{{ t.scrim }}"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;background:{{ t.modal }};border-radius:28px 28px 0 0;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }};padding:8px 20px 0;display:flex;flex-direction:column;gap:14px">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 4px"></div>
+            <div><div style="font-size:22px;line-height:28px;font-weight:600">Move 342 items to Trash?</div><div style="font-size:14px;line-height:20px;color:{{ t.onVar }}">3.5 GB · from 3 groups you reviewed</div></div>
+            <div style="display:flex;flex-direction:column;background:{{ t.c1 }};border-radius:16px;padding:4px 14px">
+              <sc-for list="{{ confirmRows }}" as="r" hint-placeholder-count="4"><div style="display:flex;align-items:center;min-height:40px;font-size:14px;gap:8px"><span style="flex:1">{{ r.n }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ r.v }}</span></div></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;gap:12px;font-size:14px;line-height:20px;text-wrap:pretty"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">shield_lock</span><span><span style="font-weight:600">9 taken out of the selection.</span> <span style="color:{{ t.onVar }}">They're in the shared album "Porto weekend" with Tomás.</span></span></div>
+              <div style="display:flex;gap:12px;font-size:14px;line-height:20px;text-wrap:pretty"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">back_hand</span><span><span style="font-weight:600">Over 100 items, so this needs a hold.</span> <span style="color:{{ t.onVar }}">A tap alone won't do it.</span></span></div>
+              <div style="display:flex;gap:12px;font-size:14px;line-height:20px;text-wrap:pretty"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">restore_from_trash</span><span><span style="font-weight:600">Recoverable until Wed 18 Nov.</span> <span style="color:{{ t.onVar }}">Space is freed when Trash empties, or sooner if you empty it.</span></span></div>
+            </div>
+            <div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:600;position:relative;overflow:hidden;margin-top:4px"><span style="position:absolute;left:0;top:0;bottom:0;width:38%;background:{{ t.onP }};opacity:.18"></span><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 400">touch_app</span>Hold to move 342 items</div>
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">holding · 0.6 of 1.5 s</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600">Back to review</span></div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2d</span><span style="font-size:15px;font-weight:600">Recovery · Trash</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:35</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 8px 8px 4px;min-height:48px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Trash</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.err }};font-size:14px;font-weight:600">Empty…</span></div>
+            <div style="padding:4px 20px 16px;font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty">Items stay 30 days, then are deleted for good. Restored items return to their original albums and dates.</div>
+            <div style="flex:none;margin:0 16px;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 400">cleaning_services</span>
+                <div style="flex:1"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">From Cleanup · Mon 19 Oct, 10:34</div><div style="font-size:16px;line-height:22px;font-weight:600">342 items · 3.5 GB</div></div>
+                <span style="font:500 12px 'IBM Plex Mono'">30 d left</span>
+              </div>
+              <div style="display:flex;gap:8px"><span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 18px 0 14px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">restore</span>Restore all 342</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:500">Pick some</span></div>
+            </div>
+            <div style="padding:20px 20px 10px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">From Cleanup</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">342</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px"><sc-for list="{{ trashA }}" as="c" hint-placeholder-count="9"><div style="aspect-ratio:1;background:{{ c }};position:relative"><span style="position:absolute;left:6px;bottom:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">30 d</span></div></sc-for></div>
+            <div style="padding:20px 20px 10px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">Deleted by you</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Sat 17 Oct · 6</span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px"><sc-for list="{{ trashB }}" as="c" hint-placeholder-count="3"><div style="aspect-ratio:1;background:{{ c }};position:relative"><span style="position:absolute;left:6px;bottom:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">28 d</span></div></sc-for></div>
+          </div>
+          <div style="position:absolute;left:16px;right:16px;bottom:40px;background:{{ t.inv }};color:{{ t.onInv }};border-radius:12px;min-height:48px;display:flex;align-items:center;gap:12px;padding:0 8px 0 16px;box-shadow:0 4px 16px rgba(0,0,0,.18)"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">delete</span><span style="flex:1;font-size:14px">342 items moved to Trash</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.invP }};font-size:14px;font-weight:600">Undo</span></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="03 Transparent AI edit" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">03</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Transparent AI edit</h2><span style="font-size:15px;color:#5E5D59">Auto-edit applied, every change explained and individually undoable, marked with Content Credentials.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">3a</span><span style="font-size:15px;font-weight:600">Auto-edit applied</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:40</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 4px 8px;min-height:56px;flex:none"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><div style="flex:1"><div style="font-size:16px;line-height:22px;font-weight:600">Sun 4 Oct · 18:52</div><div style="font-size:13px;color:{{ t.onVar }}">Cais do Sodré, Lisbon</div></div><span role="button" aria-label="Info" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">info</span><span role="button" aria-label="More options" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">more_vert</span></div>
+          <div style="height:480px;flex:none;position:relative;background:radial-gradient(ellipse 26px 120px at 1% 82%,#2a2026 0 96%,transparent 100%),radial-gradient(ellipse 70px 150px at 60% 82%,#2a2026 0 97%,transparent 100%),radial-gradient(circle 34px at 60% 56%,#3a2b2e 0 96%,transparent 100%),linear-gradient(180deg,#f6d29a 0%,#ee9a62 40%,#c56f5a 60%,#4a3a3e 61%,#2a2228 100%)">
+            <span style="position:absolute;left:12px;top:12px;height:28px;display:flex;align-items:center;gap:6px;padding:0 10px 0 6px;border-radius:8px;background:rgba(0,0,0,.55);color:#FFFFFF;font-size:12px;font-weight:600"><span style="height:18px;padding:0 4px;border-radius:4px;border:1.5px solid #FFFFFF;display:flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.02em">CR</span>AI-edited</span>
+            <span style="position:absolute;right:12px;bottom:12px;height:28px;display:flex;align-items:center;gap:6px;padding:0 10px 0 8px;border-radius:8px;background:rgba(0,0,0,.55);color:#FFFFFF;font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 400">compare</span>Hold to see original</span>
+          </div>
+          <div style="flex:1;overflow:hidden;padding:12px 16px 0">
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 400">auto_fix_high</span>
+                <div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Auto-edit applied · original kept</div><div style="font-size:16px;line-height:22px;font-weight:600">4 changes, 1 waiting for you</div></div>
+              </div>
+              <div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> Inês's face was 1.3 stops under the sky, and the shade made her skin read cool.</div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.92</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+              <div style="display:flex;gap:8px;margin:0 -4px"><span style="min-height:40px;display:flex;align-items:center;padding:0 18px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:600">What changed</span><span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">undo</span>Revert all</span></div>
+            </div>
+          </div>
+          <div style="flex:none;height:64px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;justify-items:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300"><span>share</span><span>tune</span><span>favorite</span><span>delete</span></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">3b</span><span style="font-size:15px;font-weight:600">What changed and why · per-adjustment undo</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:41</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="height:236px;flex:none;position:relative;display:flex;background:radial-gradient(ellipse 18px 80px at 1% 84%,#2a2026 0 96%,transparent 100%),radial-gradient(ellipse 46px 100px at 60% 84%,#2a2026 0 97%,transparent 100%),radial-gradient(circle 22px at 60% 58%,#3a2b2e 0 96%,transparent 100%),linear-gradient(180deg,#f6d29a 0%,#ee9a62 40%,#c56f5a 60%,#4a3a3e 61%,#2a2228 100%)">
+            <div style="width:50%;height:100%;background:rgba(30,40,70,.32);border-right:2px solid #FFFFFF;position:relative"><span style="position:absolute;left:12px;bottom:12px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px">Before</span></div>
+            <span style="position:absolute;right:12px;bottom:12px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px">After</span>
+            <span style="position:absolute;right:12px;top:12px;height:28px;display:flex;align-items:center;gap:6px;padding:0 10px 0 6px;border-radius:8px;background:rgba(0,0,0,.55);color:#FFFFFF;font-size:12px;font-weight:600"><span style="height:18px;padding:0 4px;border-radius:4px;border:1.5px solid #FFFFFF;display:flex;align-items:center;font-size:11px;font-weight:700">CR</span>AI-edited</span>
+          </div>
+          <div style="flex:1;background:{{ t.modal }};border-radius:28px 28px 0 0;margin-top:-20px;position:relative;border-top:1px solid {{ t.modalBorder }};padding:8px 0 0;display:flex;flex-direction:column;overflow:hidden">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 12px"></div>
+            <div style="padding:0 20px 8px;display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:22px;line-height:28px;font-weight:600">What changed and why</span></div>
+            <div style="padding:0 20px 8px;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_3318.HEIC · original kept · 5 steps</div>
+            <sc-for list="{{ t.edits }}" as="e" hint-placeholder-count="5">
+              <div style="padding:12px 20px;display:flex;gap:12px;border-top:1px solid {{ t.outlineVar }};opacity:{{ e.op }}">
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+                  <div style="display:flex;align-items:baseline;gap:8px"><span style="font-size:15px;font-weight:600">{{ e.name }}</span><span style="font:500 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ e.val }}</span></div>
+                  <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">{{ e.why }}</div>
+                  <div style="display:flex;align-items:center;gap:8px"><span aria-hidden="true" style="display:flex;gap:3px"><sc-for list="{{ e.bars }}" as="b" hint-placeholder-count="4"><span style="width:12px;height:5px;border-radius:3px;background:{{ b.bg }};box-shadow:inset 0 0 0 1px {{ b.bd }}"></span></sc-for></span><span style="font:500 11px 'IBM Plex Mono'">{{ e.conf }}</span><span style="display:flex;align-items:center;gap:3px;height:20px;padding:0 6px 0 4px;border-radius:6px;background:{{ e.bBg }};box-shadow:inset 0 0 0 1px {{ e.bBd }};font-size:11px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:13px;font-variation-settings:'wght' 400">{{ e.bIcon }}</span>{{ e.bText }}</span></div>
+                </div>
+                <span style="min-height:36px;flex:none;align-self:center;display:flex;align-items:center;gap:4px;padding:0 14px 0 10px;border-radius:999px;background:{{ e.btnBg }};color:{{ e.btnFg }};box-shadow:inset 0 0 0 1px {{ e.btnBd }};font-size:13px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 500">{{ e.btnIcon }}</span>{{ e.btn }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">3c</span><span style="font-size:15px;font-weight:600">AI-edited marker · Content Credentials (C2PA)</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:42</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="height:340px;flex:none;position:relative;background:radial-gradient(ellipse 18px 110px at 1% 84%,#2a2026 0 96%,transparent 100%),radial-gradient(ellipse 60px 130px at 60% 84%,#2a2026 0 97%,transparent 100%),radial-gradient(circle 30px at 60% 58%,#3a2b2e 0 96%,transparent 100%),linear-gradient(180deg,#f6d29a 0%,#ee9a62 40%,#c56f5a 60%,#4a3a3e 61%,#2a2228 100%)">
+            <span style="position:absolute;left:12px;top:12px;height:28px;display:flex;align-items:center;gap:6px;padding:0 10px 0 6px;border-radius:8px;background:rgba(0,0,0,.55);color:#FFFFFF;font-size:12px;font-weight:600;outline:2px solid #FFFFFF;outline-offset:2px"><span style="height:18px;padding:0 4px;border-radius:4px;border:1.5px solid #FFFFFF;display:flex;align-items:center;font-size:11px;font-weight:700">CR</span>AI-edited</span>
+          </div>
+          <div style="flex:1;background:{{ t.modal }};border-radius:28px 28px 0 0;margin-top:-20px;position:relative;border-top:1px solid {{ t.modalBorder }};padding:8px 20px 0;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 0"></div>
+            <div style="display:flex;align-items:center;gap:14px">
+              <span style="width:44px;height:44px;flex:none;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">CR</span>
+              <div><div style="font-size:22px;line-height:28px;font-weight:600">Content Credentials</div><div style="font-size:14px;color:{{ t.onVar }}">This photo is marked AI-edited</div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;background:{{ t.c1 }};border-radius:16px;padding:4px 16px">
+              <sc-for list="{{ c2pa }}" as="r" hint-placeholder-count="5"><div style="display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid {{ t.outlineVar }};font-size:14px;line-height:20px"><span style="color:{{ t.onVar }}">{{ r.k }}</span><span>{{ r.v }}</span></div></sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:16px;padding:4px 0">
+              <div style="flex:1"><div style="font-size:16px;font-weight:500">Marker on shared copies</div><div style="font-size:13px;color:{{ t.onVar }}">Always on for AI edits</div></div>
+              <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">lock</span>
+              <span style="width:52px;height:32px;border-radius:999px;background:{{ t.p }};display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box;opacity:.6"><span aria-hidden="true" style="width:24px;height:24px;border-radius:999px;background:{{ t.onP }};color:{{ t.p }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 600">check</span></span>
+            </div>
+            <div style="display:flex;gap:8px"><span style="min-height:40px;display:flex;align-items:center;padding:0 16px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:600">Share original instead</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600">View manifest</span></div>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="04 Photos that act" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">04</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Photos that act</h2><span style="font-size:15px;color:#5E5D59">Receipt to expense, ticket to calendar, card to contact. Nothing happens until you confirm; unsure fields become questions.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">4a</span><span style="font-size:15px;font-weight:600">Receipt → expense · confirm</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>11:02</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 4px 8px;min-height:56px;flex:none"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><div style="flex:1"><div style="font-size:16px;line-height:22px;font-weight:600">Fri 15 May · 22:14</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_2207.HEIC · Anjos, Lisbon</div></div></div>
+          <div style="height:260px;flex:none;background:linear-gradient(160deg,#a1876b,#5e4a39);display:flex;align-items:center;justify-content:center;position:relative">
+            <div style="width:150px;height:236px;background:repeating-linear-gradient(180deg,#F4F1EA 0 9px,#D6CFC0 9px 10px);transform:rotate(-3deg);position:relative;box-shadow:0 6px 16px rgba(0,0,0,.3)">
+              <span style="position:absolute;left:14px;right:14px;top:10px;height:22px;border-radius:4px;box-shadow:0 0 0 2px {{ t.p }}"></span>
+              <span style="position:absolute;left:14px;width:60px;top:40px;height:12px;border-radius:4px;box-shadow:0 0 0 2px {{ t.p }}"></span>
+              <span style="position:absolute;right:12px;width:56px;bottom:30px;height:18px;border-radius:4px;box-shadow:0 0 0 2px {{ t.p }}"></span>
+            </div>
+          </div>
+          <div style="flex:1;background:{{ t.modal }};border-radius:28px 28px 0 0;margin-top:-20px;position:relative;border-top:1px solid {{ t.modalBorder }};padding:8px 20px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 0"></div>
+            <div><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Suggested · not done yet</div><div style="font-size:22px;line-height:28px;font-weight:600">Add to expenses</div></div>
+            <div style="display:flex;align-items:center;gap:12px;min-height:48px;padding:0 12px 0 14px;border-radius:12px;box-shadow:inset 0 0 0 1px {{ t.outlineVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">work</span><span style="flex:1;font-size:15px">Work · Expensify</span><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">expand_more</span></div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:{{ t.outlineVar }};border-radius:16px;overflow:hidden">
+              <sc-for list="{{ receiptFields }}" as="f" hint-placeholder-count="4"><div style="background:{{ t.c1 }};padding:10px 14px"><div style="font-size:12px;color:{{ t.onVar }}">{{ f.k }}</div><div style="font-size:16px;line-height:22px;font-weight:500">{{ f.v }}</div></div></sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:{{ t.c1 }}">
+              <div style="flex:1"><div style="font-size:12px;color:{{ t.onVar }}">Category · suggested</div><div style="font-size:16px;font-weight:500">Meals · client</div></div>
+              <span aria-hidden="true" style="display:flex;gap:3px"><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span></span><span style="font:500 11px 'IBM Plex Mono'">Med · 0.81</span>
+            </div>
+            <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> merchant, date, total and VAT printed clearly; line items add up to the total. You filed 6 similar dinners as Meals · client.</div>
+            <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.95</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            <div style="display:flex;gap:8px;margin-top:2px"><span style="min-height:48px;display:flex;align-items:center;padding:0 20px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:15px;font-weight:600">Edit</span><span style="flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:15px;font-weight:600">Add expense</span></div>
+            <div style="font-size:12px;color:{{ t.onVar }};text-align:center">Nothing is sent to Expensify until you tap Add.</div>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">4b</span><span style="font-size:15px;font-weight:600">Ticket → calendar · confirm</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>11:05</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 4px 8px;min-height:56px;flex:none"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><div style="flex:1"><div style="font-size:16px;line-height:22px;font-weight:600">Fri 16 Oct · 13:20</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Screenshot_20261016.png</div></div></div>
+          <div style="height:220px;flex:none;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center">
+            <div style="width:340px;height:150px;border-radius:10px;background:linear-gradient(120deg,#6b1f2a,#a3342f 55%,#d9a54a);display:flex;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.25)">
+              <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:8px"><div style="width:120px;height:12px;border-radius:3px;background:rgba(255,255,255,.85)"></div><div style="width:180px;height:20px;border-radius:3px;background:rgba(255,255,255,.95)"></div><div style="width:90px;height:10px;border-radius:3px;background:rgba(255,255,255,.6)"></div><div style="flex:1"></div><div style="width:140px;height:10px;border-radius:3px;background:rgba(255,255,255,.6)"></div></div>
+              <div style="width:80px;border-left:2px dashed rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center"><div style="width:52px;height:52px;background:repeating-linear-gradient(90deg,#FFFFFF 0 3px,transparent 3px 6px),repeating-linear-gradient(0deg,#FFFFFF 0 3px,transparent 3px 6px)"></div></div>
+            </div>
+          </div>
+          <div style="flex:1;background:{{ t.modal }};border-radius:28px 28px 0 0;margin-top:-20px;position:relative;border-top:1px solid {{ t.modalBorder }};padding:8px 20px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 0"></div>
+            <div><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Suggested · not done yet</div><div style="font-size:22px;line-height:28px;font-weight:600">Add to calendar</div></div>
+            <div style="display:flex;flex-direction:column;background:{{ t.c1 }};border-radius:16px;padding:4px 14px">
+              <sc-for list="{{ ticketFields }}" as="f" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid {{ t.outlineVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">{{ f.icon }}</span><div style="flex:1;min-width:0"><div style="font-size:15px;line-height:20px;font-weight:500">{{ f.v }}</div><div style="font-size:12px;color:{{ t.onVar }}">{{ f.k }}</div></div></div></sc-for>
+              <div style="display:flex;align-items:center;gap:14px;padding:9px 0"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300;color:{{ t.onVar }}">schedule</span><div style="flex:1"><div style="font-size:15px;line-height:20px;font-weight:500">Ends 23:30?</div><div style="font-size:12px;color:{{ t.onVar }}">Not on the ticket · estimated 2 h · Low 0.52</div></div><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:13px;font-weight:600">Set end</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:{{ t.onVar }}"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 300;color:{{ t.on }}">event_available</span>Free that evening in Personal and Work</div>
+            <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> ticket layout with venue, date, time and seat; matched the venue's address from your maps cache.</div>
+            <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.93</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            <div style="display:flex;gap:8px;margin-top:2px"><span style="min-height:48px;display:flex;align-items:center;padding:0 20px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:15px;font-weight:600">Edit</span><span style="flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:15px;font-weight:600">Add event</span></div>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">4c</span><span style="font-size:15px;font-weight:600">Card → contact · low confidence asks</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>11:08</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="display:flex;align-items:center;gap:4px;padding:4px 4px 8px;min-height:56px;flex:none"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><div style="flex:1"><div style="font-size:16px;line-height:22px;font-weight:600">Thu 15 Oct · 17:46</div><div style="font-size:13px;color:{{ t.onVar }}">LX Factory, Lisbon</div></div></div>
+          <div style="height:200px;flex:none;background:linear-gradient(160deg,#5b5f5c,#2f3230);display:flex;align-items:center;justify-content:center">
+            <div style="width:250px;height:146px;border-radius:6px;background:radial-gradient(ellipse 70px 30px at 62% 70%,rgba(255,255,255,1) 0 40%,rgba(255,255,255,0) 100%),#ECEAE4;transform:rotate(4deg);padding:18px;box-sizing:border-box;display:flex;flex-direction:column;gap:7px;box-shadow:0 6px 16px rgba(0,0,0,.3)"><div style="width:130px;height:14px;border-radius:2px;background:#2A2A28"></div><div style="width:110px;height:8px;border-radius:2px;background:#7A7873"></div><div style="flex:1"></div><div style="width:120px;height:8px;border-radius:2px;background:#4A4945"></div><div style="width:150px;height:8px;border-radius:2px;background:#4A4945;opacity:.35"></div><div style="width:240px;height:8px;border-radius:2px;background:#4A4945"></div></div>
+          </div>
+          <div style="flex:1;background:{{ t.modal }};border-radius:28px 28px 0 0;margin-top:-20px;position:relative;border-top:1px solid {{ t.modalBorder }};padding:8px 20px 0;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 0"></div>
+            <div><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Not saved · 2 fields need you</div><div style="font-size:22px;line-height:28px;font-weight:600">Save contact: Mara Lindqvist</div></div>
+            <div style="padding:12px 14px;border-radius:16px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why it's asking:</span> glare covers part of the email, and the website is cut off at the card's edge.</div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span><span style="width:14px;height:6px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">Low · 0.62</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:{{ t.outlineVar }};border-radius:16px;overflow:hidden">
+              <sc-for list="{{ cardFields }}" as="f" hint-placeholder-count="4"><div style="background:{{ t.c1 }};padding:9px 14px"><div style="font-size:12px;color:{{ t.onVar }}">{{ f.k }}</div><div style="font-size:15px;line-height:20px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.v }}</div></div></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:14px;font-weight:600">Which email is it?</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap"><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font:500 13px 'IBM Plex Mono'">mara.lindqvist@nordvik.se</span><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font:500 13px 'IBM Plex Mono'">m.lindqvist@nordvik.se</span><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:13px;font-weight:500">Type it</span></div>
+              <div style="font-size:14px;font-weight:600;margin-top:4px">Website</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap"><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font:500 13px 'IBM Plex Mono'">nordvik.se</span><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font:500 13px 'IBM Plex Mono'">nordvikstudio.se</span><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:13px;font-weight:500">Leave empty</span></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:2px"><span style="min-height:48px;display:flex;align-items:center;gap:6px;padding:0 16px 0 12px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 400">cloud</span>Read with cloud once</span><span style="flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;border-radius:999px;background:{{ t.c2 }};color:{{ t.onVar }};font-size:15px;font-weight:600">Save contact</span></div><div style="display:flex;gap:6px;font-size:12px;line-height:16px;color:{{ t.onVar }};text-wrap:pretty"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:16px;font-variation-settings:'wght' 300">cloud</span><span>Cloud reads only this card image, once, then deletes it. Nothing is kept or used for training. Undo removes the saved fields.</span></div>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="05 Storage freedom" style="padding:72px 64px 120px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">05</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Storage freedom</h2><span style="font-size:15px;color:#5E5D59">Your storage, your choice. Plain files, no plans to buy, offload that keeps thumbnails local.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">5a</span><span style="font-size:15px;font-weight:600">Choose where originals live</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>11:20</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 8px 8px 4px;min-height:48px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">close</span><span style="flex:1"></span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }};padding-right:12px">step 2 of 3</span></div>
+            <div style="padding:0 24px 12px;display:flex;flex-direction:column;gap:8px;flex:none">
+              <div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em;text-wrap:pretty">Where should your originals live?</div>
+              <div style="font-size:15px;line-height:22px;color:{{ t.onVar }};text-wrap:pretty">Sift doesn't sell storage. Use a place you already have. You can move everything later.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;margin:0 16px;background:{{ t.c1 }};border-radius:20px;overflow:hidden">
+              <sc-for list="{{ t.providers }}" as="p" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;gap:14px;min-height:54px;padding:5px 16px;background:{{ p.bg }};border-top:1px solid {{ p.div }}">
+                  <span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">{{ p.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px;font-weight:500">{{ p.name }}</div><div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.detail }}</div></div>
+                  <span style="width:20px;height:20px;flex:none;border-radius:999px;border:2px solid {{ p.ring }};box-sizing:border-box;display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:999px;background:{{ p.dot }}"></span></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin:12px 16px 0;padding:12px 16px;border-radius:16px;box-shadow:inset 0 0 0 1px {{ t.outlineVar }};display:flex;gap:12px;font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300;color:{{ t.on }}">folder</span><span>Plain folders by year and month. HEIC, JPEG, RAW and MP4 stay as they are; edits go in XMP sidecars.</span></div>
+          </div>
+          <div style="flex:none;padding:12px 16px 4px"><div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Continue with Home NAS</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">5b</span><span style="font-size:15px;font-weight:600">Usage breakdown</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>11:24</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:12px;padding:0 16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 4px 0"><span style="font-size:32px;line-height:40px;font-weight:500">Storage</span><span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:18px;font-variation-settings:'wght' 500">download</span>Export all</span></div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">312 GB library</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">3 locations</span></div>
+              <div style="display:flex;height:12px;gap:2px"><span style="width:18%;background:{{ t.p }};border-radius:6px 2px 2px 6px"></span><span style="width:64%;background:{{ t.onVar }};border-radius:2px"></span><span style="width:18%;background:{{ t.outline }};border-radius:2px 6px 6px 2px;opacity:.6"></span></div>
+              <div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
+                <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.p }}"></span><span style="flex:1">This phone</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">56 GB · originals</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.onVar }}"></span><span style="flex:1">Home NAS · synced 11:12</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">200 GB · originals</span></div>
+                <div style="display:flex;align-items:center;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.outline }};opacity:.6"></span><span style="flex:1">Dropbox · synced 10:58</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">56 GB · backup</span></div>
+              </div>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:16px;font-weight:600">By type</div>
+              <sc-for list="{{ t.types }}" as="y" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:5px"><div style="display:flex;justify-content:space-between;font-size:14px"><span>{{ y.n }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ y.v }}</span></div><div style="height:6px;border-radius:3px;background:{{ t.c2 }}"><div style="height:6px;border-radius:3px;width:{{ y.w }};background:{{ t.on }}"></div></div></div>
+              </sc-for>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">This phone</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">41.2 GB free of 256 GB</span></div>
+              <div style="display:flex;height:12px;gap:2px"><span style="width:22%;background:{{ t.p }};border-radius:6px 2px 2px 6px"></span><span style="width:62%;background:{{ t.outline }};border-radius:2px"></span><span style="width:16%;background:{{ t.c2 }};border-radius:2px 6px 6px 2px"></span></div>
+              <div style="display:flex;gap:16px;font-size:13px;color:{{ t.onVar }}"><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.p }}"></span>Sift 56 GB</span><span style="display:flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:3px;background:{{ t.outline }}"></span>Other apps 158.8 GB</span></div>
+            </div>
+            <div style="border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;box-shadow:inset 0 0 0 1px {{ t.outlineVar }}">
+              <div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:22px;font-variation-settings:'wght' 300">cloud_upload</span><div style="flex:1"><div style="font-size:15px;font-weight:600">Free 38.4 GB on this phone</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }}"><span style="color:{{ t.on }};font-weight:500">Why:</span> old originals already copied to Home NAS</div></div><span style="min-height:36px;display:flex;align-items:center;padding:0 14px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};font-size:13px;font-weight:600">Review</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.97</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            </div>
+          </div>
+          <div style="background:{{ t.c1 }};flex:none;border-top:1px solid {{ t.navBorder }}">
+            <div style="height:80px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">photo_library</span><span style="font-size:12px;font-weight:500">Library</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">photo_album</span><span style="font-size:12px;font-weight:500">Albums</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ t.onVar }}"><span aria-hidden="true" style="width:64px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">bolt</span><span style="font-size:12px;font-weight:500">Actions</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 400,'FILL' 1">hard_drive</span><span style="font-size:12px;font-weight:600">Storage</span></div>
+            </div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">5c</span><span style="font-size:15px;font-weight:600">Smart offload · thumbnails stay local</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>11:25</span><span style="display:flex;gap:4px;font-family:'Material Symbols Rounded';font-size:17px;font-variation-settings:'wght' 400,'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 8px 8px 4px;min-height:48px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:24px;font-variation-settings:'wght' 300">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Smart offload</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;color:{{ t.p }};font-size:14px;font-weight:600">Rules</span></div>
+            <div style="padding:8px 20px 14px"><div style="font-size:57px;line-height:64px;font-weight:500;letter-spacing:-.01em">38.4 GB</div><div style="font-size:15px;color:{{ t.onVar }}">freed on this phone · originals stay on Home NAS</div></div>
+            <div style="flex:none;margin:0 16px;background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="font-size:16px;line-height:22px;font-weight:600">1,284 originals can leave this phone</div>
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> older than 12 months, not opened since April, and each has a verified copy on Home NAS (checksum match).</div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.97</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+              <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;border-radius:12px;overflow:hidden">
+                <sc-for list="{{ offloadCells }}" as="c" hint-placeholder-count="4"><div style="aspect-ratio:1;background:{{ c }};position:relative"><span role="img" aria-label="dns" style="position:absolute;right:5px;bottom:5px;width:22px;height:22px;border-radius:999px;background:rgba(0,0,0,.56);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-family:'Material Symbols Rounded';font-size:14px;font-variation-settings:'wght' 400">dns</span></div></sc-for>
+              </div>
+            </div>
+            <div style="padding:16px 20px 6px;font-size:14px;font-weight:600">Stays on this phone</div>
+            <div style="display:flex;flex-direction:column;gap:10px;padding:0 20px">
+              <div style="display:flex;gap:12px;font-size:14px;line-height:20px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">image</span><span style="flex:1">Thumbnails of all 1,284 at 1080 px</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">1.1 GB</span></div>
+              <div style="display:flex;gap:12px;font-size:14px;line-height:20px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">favorite</span><span style="flex:1">Favorites, the last 90 days, albums set to Offline</span></div>
+              <div style="display:flex;gap:12px;font-size:14px;line-height:20px"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:20px;font-variation-settings:'wght' 300">wifi</span><span style="flex:1;color:{{ t.onVar }}">Open any photo to fetch its original, about 2 s at home</span></div>
+            </div>
+            <div style="margin:14px 16px 0;padding:12px 14px;border-radius:16px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:14px;line-height:20px;text-wrap:pretty"><span style="font-weight:600">6 videos changed after their NAS copy.</span> <span style="color:{{ t.onVar }}">Keep them here until they sync?</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span><span style="width:12px;height:5px;border-radius:3px;box-shadow:inset 0 0 0 1px {{ t.outline }}"></span></span><span style="font:500 11px 'IBM Plex Mono'">Low · 0.55</span><span style="flex:1"></span><span style="min-height:32px;display:flex;align-items:center;padding:0 12px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};font-size:13px;font-weight:600">Keep here</span></div>
+            </div>
+          </div>
+          <div style="flex:none;padding:12px 16px 4px"><div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Offload 1,284 originals</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultAccent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Slate&quot;,&quot;Moss&quot;,&quot;Clay&quot;,&quot;Plum&quot;,&quot;Ochre&quot;,&quot;Tide&quot;],&quot;default&quot;:&quot;Slate&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;showTrueBlack&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const lin=v=>{v/=255;return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4};
+const lum=h=>{const[r,g,b]=rgb(h).map(lin);return .2126*r+.7152*g+.0722*b};
+const Lstar=h=>{const Y=lum(h);return Y>0.008856?116*Math.cbrt(Y)-16:903.3*Y};
+const ratio=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const toHsl=h=>{let[r,g,b]=rgb(h).map(v=>v/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,S=0;const L=(mx+mn)/2;if(mx!==mn){const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H/=6}return[H,S,L]};
+const fromHsl=(h,s,l)=>{const f=n=>{const k=(n+h*12)%12,a=s*Math.min(l,1-l);return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1))))};return'#'+[f(0),f(8),f(4)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase()};
+const tone=(seed,T,cap)=>{const[h,s0]=toHsl(seed);const s=Math.min(s0,cap);let lo=0,hi=1;for(let i=0;i<32;i++){const m=(lo+hi)/2;Lstar(fromHsl(h,s,m))<T?lo=m:hi=m}return fromHsl(h,s,(lo+hi)/2)};
+function roles(seed,light,bg){let T=light?40:80,p=tone(seed,T,.62),n=0;while(ratio(p,bg)<4.5&&n<10){T+=light?-3:3;p=tone(seed,T,.62);n++}
+  return{p,onP:light?'#FFFFFF':tone(seed,20,.6),pc:light?tone(seed,90,.5):tone(seed,30,.42),onPc:light?tone(seed,10,.6):tone(seed,90,.5),invP:light?tone(seed,80,.6):tone(seed,40,.62)}}
+const BASE=[
+ {key:'light',label:'Light',bg:'#F7F6F3',c1:'#F0EEEA',c2:'#E9E7E2',on:'#1B1B1A',onVar:'#5E5D59',outline:'#85837E',outlineVar:'#D3D0CA',inv:'#2F2F2D',onInv:'#F2F0EB',modal:'#FFFFFF',scrim:'rgba(27,27,26,.32)',shadow:'0 1px 2px rgba(27,27,26,.08), 0 8px 24px rgba(27,27,26,.12)',modalBorder:'transparent',navBorder:'transparent',kb:'#E9E7E2',keyc:'#FFFFFF',err:'#B3261E',viewer:'#F7F6F3'},
+ {key:'dark',label:'Dark',bg:'#151515',c1:'#1E1E1D',c2:'#292927',on:'#E6E4DF',onVar:'#A3A19B',outline:'#7D7B75',outlineVar:'#3A3936',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#252524',scrim:'rgba(0,0,0,.5)',shadow:'none',modalBorder:'transparent',navBorder:'transparent',kb:'#1E1E1D',keyc:'#3A3936',err:'#F2B8B5',viewer:'#151515'},
+ {key:'black',label:'True black',bg:'#000000',c1:'#0F0F0F',c2:'#1C1C1B',on:'#E6E4DF',onVar:'#A3A19B',outline:'#75736E',outlineVar:'#2E2D2B',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#0F0F0F',scrim:'rgba(0,0,0,.6)',shadow:'none',modalBorder:'#2E2D2B',navBorder:'#2E2D2B',kb:'#0F0F0F',keyc:'#2E2D2B',err:'#F2B8B5',viewer:'#000000'}];
+const ACC={Slate:'#4A6CB8',Moss:'#4F8A5B',Clay:'#C0623F',Plum:'#8E5A9C',Ochre:'#C99A2E',Tide:'#2A8C92'};
+const G={sand:'linear-gradient(160deg,#d8c7ad,#8f7a5e)',sky:'linear-gradient(170deg,#a9c4d8,#3f6a8a)',paper:'linear-gradient(150deg,#ebe5d8,#bfb39b)',moss:'linear-gradient(165deg,#9fb391,#4b6340)',rose:'linear-gradient(160deg,#e3b9a8,#9a5e4e)',night:'linear-gradient(170deg,#4a4f6b,#1e2134)',fog:'linear-gradient(160deg,#c7ccc9,#7f8a86)',gold:'linear-gradient(150deg,#e9cf8f,#b0823a)',wine:'linear-gradient(165deg,#d6a7ae,#7d4a58)',sunset:'linear-gradient(180deg,#f3c58f 0%,#e07b54 48%,#5b3b4a 100%)',sea:'linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)',tram:'linear-gradient(160deg,#f2d36b,#d19a2a 55%,#4a3b2a)',tile:'linear-gradient(135deg,#2f5f9e,#9cc0e6 50%,#2f5f9e)',forest:'linear-gradient(175deg,#7f9e7a,#2d4a33)',shot:'linear-gradient(180deg,#FFFFFF 0 14%,#E3E8EF 14% 100%)',cake:'radial-gradient(circle at 50% 58%,#f4e7cf 0 28%,#c98b4e 29% 40%,#5a3a26 41%)'};
+const B=(n,t)=>[0,1,2,3].map(i=>i<n?{bg:t.p,bd:t.p}:{bg:'transparent',bd:t.outline});
+class Component extends DCLogic {
+  renderVals(){
+    const name=this.props.defaultAccent??'Slate',seed=ACC[name]||ACC.Slate;
+    const list=(this.props.showTrueBlack??false)?BASE:BASE.slice(0,2);
+    const themes=list.map(b=>{const t={...b,...roles(seed,b.key==='light',b.bg)};
+      t.cats=[['content_copy','Duplicates','214 exact copies','1.8 GB','byte-identical files. One copy of each is kept.',4,'High · 1.00'],['burst_mode','Near-duplicates','96 sets · 431 photos','3.1 GB','same scene within 10 s. One suggested to keep per set.',4,'High · 0.91'],['blur_on','Blurry','61 photos','240 MB','motion or focus blur. 8 below 0.70 are left for you.',3,'Medium · 0.82'],['screenshot','Screenshots','388 older than 30 days','410 MB','never reopened. Ones with tickets or receipts are excluded.',4,'High · 0.95']].map(([icon,name,count,size,why,n,conf],i)=>({icon,name,count,size,why,conf,bars:B(n,t),div:i?t.outlineVar:'transparent'}));
+      const dev={bIcon:'memory',bText:'On device',bBg:t.c2,bBd:'transparent'};
+      const undo={btn:'Undo',btnIcon:'undo',btnBg:'transparent',btnFg:t.on,btnBd:t.outline,op:1};
+      t.edits=[{name:'Exposure',val:'+0.4 EV',why:'Face metered 1.3 stops under the sky.',bars:B(4,t),conf:'High · 0.94',...dev,...undo},
+        {name:'White balance',val:'5200 → 5650 K',why:'Shade cast a blue tone on skin.',bars:B(4,t),conf:'High · 0.90',...dev,...undo},
+        {name:'Highlights',val:'−22 · undone',why:'Undone by you. Sky clipping back to 4%.',bars:B(4,t),conf:'High · 0.93',...dev,btn:'Redo',btnIcon:'redo',btnBg:t.c2,btnFg:t.on,btnBd:'transparent',op:.6},
+        {name:'Straighten',val:'−1.2°',why:'Horizon tilted against the river wall.',bars:B(4,t),conf:'High · 0.97',...dev,...undo},
+        {name:'Remove person, left edge',val:'not applied',why:'Partly cut off and may be someone you know. Would generate ~6% of the frame.',bars:B(2,t),conf:'Low · 0.64',bIcon:'cloud',bText:'Cloud · asks first',bBg:'transparent',bBd:t.outline,btn:'Preview',btnIcon:'visibility',btnBg:t.p,btnFg:t.onP,btnBd:'transparent',op:1}];
+      t.providers=[['smartphone','This phone only','41.2 GB free · nothing leaves'],['dns','Home NAS','found on Wi‑Fi · Raman-NAS · SMB · 1.6 TB free',1],['cloud','Dropbox','connected · 88 GB free'],['add_to_drive','Google Drive','sign in to connect'],['cloud_circle','OneDrive','sign in to connect'],['lan','Nextcloud or WebDAV','your server address'],['database','S3-compatible','Backblaze B2, Wasabi, MinIO']].map(([icon,name,detail,s],i)=>({icon,name,detail,bg:s?t.c2:'transparent',ring:s?t.p:t.outline,dot:s?t.p:'transparent',div:i?t.outlineVar:'transparent'}));
+      t.types=[['Photos','148 GB · 21,882','47%'],['Videos','141 GB · 4,210','45%'],['RAW','18 GB · 612','6%'],['Screenshots','5 GB · 1,940','2%']].map(([n,v,w])=>({n,v,w}));
+      return t});
+    return {
+      accentName:name,themes,
+      gridToday:[{bg:G.tram},{bg:G.sky,dur:'0:14'},{bg:G.paper,icon:'receipt_long'},{bg:G.tile},{bg:G.rose},{bg:G.shot,icon:'screenshot'}],
+      gridYesterday:[{bg:G.forest},{bg:G.fog},{bg:G.moss,dur:'1:02'},{bg:G.gold},{bg:G.sand},{bg:G.wine}],
+      suggestions:[{icon:'receipt_long',rest:'om May',meta:'14 photos · May 2026'},{icon:'receipt_long',rest:'om Lisbon trip',meta:'9 photos · 2–7 Oct 2026'},{icon:'storefront',rest:'om Fnac',meta:'3 photos · Fnac Chiado'},{icon:'group',rest:'om Jonas',meta:'5 photos · shared by Jonas Weber'}],
+      burst:['linear-gradient(180deg,#ecc596 0%,#df9068 40%,#a36658 62%,#c39c76 63%,#75563f 100%)','linear-gradient(180deg,#eec796 0%,#e1926a 42%,#a5685a 62%,#c49d78 63%,#77583f 100%)','linear-gradient(182deg,#f0c99a 0%,#e3956a 40%,#a86a5c 60%,#c8a07a 61%,#7a5a44 100%)','linear-gradient(178deg,#e9c292 0%,#dc8d66 40%,#a06356 62%,#bf9873 63%,#725440 100%)','linear-gradient(180deg,#e5bf90 0%,#d98a64 44%,#9d6155 62%,#bc9571 63%,#6f5240 100%)'],
+      trashA:[G.sunset,G.fog,G.shot,G.sea,G.sand,G.night,G.moss,G.shot,G.rose],
+      trashB:[G.wine,G.gold,G.sky],
+      offloadCells:[G.sea,G.forest,G.night,G.gold],
+      confirmRows:[{n:'Duplicates',v:'214 · 1.8 GB'},{n:'Near-duplicates',v:'75 · 1.5 GB'},{n:'Blurry',v:'53 · 210 MB'},{n:'Screenshots',v:'not reviewed · skipped'}],
+      c2pa:[{k:'Captured',v:'Pixel 10 Pro · Sun 4 Oct 2026, 18:52'},{k:'Edited',v:'Sift 1.0 on this phone · Mon 19 Oct, 10:41'},{k:'AI-assisted',v:'Exposure, white balance, straighten'},{k:'Generated',v:'None. Removal was not applied.'},{k:'Signed',v:'Sift · C2PA 2.1 · valid'}],
+      receiptFields:[{k:'Merchant',v:'Cervejaria Ramiro'},{k:'Date',v:'Fri 15 May 2026'},{k:'Total',v:'€86.40'},{k:'VAT 23%',v:'€16.16'}],
+      ticketFields:[{icon:'music_note',v:'Rodrigo Leão',k:'Coliseu dos Recreios'},{icon:'event',v:'Sat 7 Nov 2026 · 21:30',k:'Doors 20:30 · reminder 1 h before'},{icon:'location_on',v:'Rua das Portas de Santo Antão 96',k:'Lisboa'},{icon:'event_seat',v:'Plateia · Row F · Seat 12',k:'Personal calendar'}],
+      cardFields:[{k:'Name',v:'Mara Lindqvist'},{k:'Title',v:'Head of Partnerships'},{k:'Company',v:'Nordvik Studio'},{k:'Phone',v:'+46 70 412 88 31'}],
+      kb1:'qwertyuiop'.split(''),kb2:'asdfghjkl'.split(''),kb3:'zxcvbnm'.split(''),
+      receipts:[{m:'Time Out Market Lisboa',d:'Sun 3 May · Cais do Sodré',v:'€38.50',bg:'linear-gradient(160deg,#8a6f55,#5a4636)',rot:'-4deg'},{m:'Uber',d:'Sat 9 May · screenshot',v:'€14.20',bg:G.shot,rot:'0deg'},{m:'Fnac Chiado',d:'Tue 12 May · Chiado',v:'€129.00',bg:'linear-gradient(160deg,#6d6f73,#3b3d40)',rot:'3deg'},{m:'Cervejaria Ramiro',d:'Fri 15 May · Anjos',v:'€86.40',bg:'linear-gradient(160deg,#a1876b,#5e4a39)',rot:'-2deg'},{m:'Continente Amoreiras',d:'Mon 18 May · Amoreiras',v:'€46.12',bg:'linear-gradient(160deg,#c3c6c4,#868b88)',rot:'5deg'},{m:'CP Comboios de Portugal',d:'Sun 24 May · Lisboa–Porto',v:'€24.85',bg:'linear-gradient(160deg,#8a6f55,#5a4636)',rot:'-3deg'}]
+    };
+  }
+}
+</script>
+</body>
+</html>

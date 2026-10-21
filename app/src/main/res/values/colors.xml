@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sift_surface">#F7F6F3</color>
+    <color name="sift_mark">#1B1B1A</color>
+    <color name="sift_tile">#F7F6F3</color>
+</resources>

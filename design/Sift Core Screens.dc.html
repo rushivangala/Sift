@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0&display=block" rel="stylesheet">
+<style>
+body{margin:0;background:#EDECE8;color:#1B1B1A;font-family:'Hanken Grotesk',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#3E5FA8;text-decoration:none}a:hover{color:#1B1B1A;text-decoration:underline}
+</style>
+</helmet>
+
+<header style="padding:64px 64px 0;display:flex;flex-direction:column;gap:20px;max-width:1200px">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5E5D59">Stage 3 · Core screens · Pixel 10 Pro · 412 × 919 dp · accent {{ accentName }}</div>
+  <h1 style="margin:0;font-size:64px;line-height:1;font-weight:600;letter-spacing:-.03em">Sift, core screens</h1>
+  <p style="margin:0;font-size:18px;line-height:28px;max-width:820px;text-wrap:pretty;color:#3A3936">Ten flows in light and dark, built only from Stage 1 components and the Stage 2 conventions: reason, confidence and origin on every AI element, cloud always outlined, private choice always primary. Photos are color placeholders. New components are listed at the end.</p>
+</header>
+
+<section data-screen-label="01 Onboarding" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">01</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Onboarding</h2><span style="font-size:15px;color:#5E5D59">Permissions, storage choice, Google Photos import, first sync.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1a</span><span style="font-size:15px;font-weight:600">Permissions</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:32px 20px 0;gap:20px">
+            <svg width="56" height="56" viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="{{ t.on }}"></rect><rect x="14" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="27" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="40" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="14" y="27" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="27" y="27" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="40" y="31" width="10" height="10" rx="5" fill="{{ t.bg }}" opacity=".55"></rect><rect x="14" y="40" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="29" y="44" width="10" height="10" rx="5" fill="{{ t.bg }}" opacity=".35"></rect></svg>
+            <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em">Allow what Sift needs</div><div style="font-size:16px;line-height:24px;color:{{ t.onVar }};text-wrap:pretty">Everything is processed on this phone. You can change each permission later in Settings.</div></div>
+            <div style="background:{{ t.c1 }};border-radius:20px;display:flex;flex-direction:column">
+              <sc-for list="{{ perms }}" as="p" hint-placeholder-count="4">
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-top:1px solid {{ p.div }}">
+                  <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font:400 22px 'Material Symbols Rounded'">{{ p.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px;font-weight:600">{{ p.name }}</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">{{ p.why }}</div></div>
+                  <span style="flex:none;min-height:24px;display:flex;align-items:center;padding:0 8px;border-radius:6px;background:{{ p.tbg }};color:{{ p.tfg }};font-size:12px;font-weight:500">{{ p.tag }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:{{ t.onVar }};padding:0 4px"><span aria-hidden="true" style="font:400 18px 'Material Symbols Rounded'">memory</span>No account needed. Nothing is uploaded.</div>
+          </div>
+          <div style="flex:none;padding:12px 16px 0;display:flex;flex-direction:column;gap:4px"><div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Allow photo access</div><div style="min-height:56px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Select photos only</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1b</span><span style="font-size:15px;font-weight:600">Storage choice</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:25</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:16px 16px 0;gap:16px">
+            <div style="display:flex;align-items:center;min-height:48px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1"></span><span style="font:500 12px 'IBM Plex Mono';color:{{ t.onVar }};padding-right:12px">2 / 4</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:0 4px"><div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em">Where should originals live?</div><div style="font-size:16px;line-height:24px;color:{{ t.onVar }};text-wrap:pretty">Sift keeps plain files in plain folders. Add more locations any time.</div></div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <sc-for list="{{ t.provs }}" as="p" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;gap:14px;min-height:56px;padding:6px 16px;border-radius:16px;background:{{ p.bg }}">
+                  <span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded'">{{ p.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">{{ p.name }}</div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">{{ p.detail }}</div></div>
+                  <span style="width:20px;height:20px;border-radius:999px;border:2px solid {{ p.ring }};box-sizing:border-box;display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:999px;background:{{ p.dot }}"></span></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-size:12px;line-height:16px;color:{{ t.onVar }};padding:0 4px">Standard files, sidecar XMP. Export everything anytime.</div>
+          </div>
+          <div style="flex:none;padding:12px 16px 0"><div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Use Home NAS</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1c</span><span style="font-size:15px;font-weight:600">Google Photos import</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:27</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:12px 16px 0;gap:12px">
+            <div style="display:flex;align-items:center;min-height:48px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1"></span><span style="font:500 12px 'IBM Plex Mono';color:{{ t.onVar }};padding-right:12px">3 / 4</span></div>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:0 4px"><div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em">Bring your Google Photos</div><div style="font-size:16px;line-height:24px;color:{{ t.onVar }};text-wrap:pretty">Copied to your chosen storage with dates, locations and albums intact. Google keeps its copy.</div></div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;gap:12px"><span style="width:40px;height:40px;border-radius:999px;background:linear-gradient(160deg,#d6a7ae,#7d4a58);flex:none"></span><div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px;font-weight:600">raman.k@gmail.com</div><div style="font-size:13px;color:{{ t.onVar }}">Google Photos · read-only access</div></div><span style="min-height:24px;display:flex;align-items:center;gap:4px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font:500 15px 'Material Symbols Rounded'">check</span>Connected</span></div>
+              <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 16px;border-top:1px solid {{ t.outlineVar }};padding-top:10px">
+                <sc-for list="{{ importStats }}" as="s" hint-placeholder-count="4"><div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s.k }}</div><div style="font:500 20px/28px 'IBM Plex Mono'">{{ s.v }}</div></div></sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;background:{{ t.c1 }};border-radius:20px">
+              <sc-for list="{{ t.importOpts }}" as="o" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:16px;padding:6px 16px;border-top:1px solid {{ o.div }}">
+                  <div style="flex:1"><div style="font-size:16px;font-weight:500">{{ o.name }}</div><div style="font-size:13px;color:{{ t.onVar }}">{{ o.sub }}</div></div>
+                  <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ o.tg.sbg }};border:2px solid {{ o.tg.sbd }};display:flex;align-items:center;justify-content:{{ o.tg.sj }};padding:0 {{ o.tg.spad }};box-sizing:border-box"><span aria-hidden="true" style="width:{{ o.tg.kw }};height:{{ o.tg.kw }};border-radius:999px;background:{{ o.tg.kbg }};color:{{ o.tg.sc }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">{{ o.tg.sk }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">Importing</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">18,430 of 52,116</span></div>
+              <div style="display:flex;height:12px;gap:2px"><span style="width:35%;background:{{ t.p }};border-radius:6px 2px 2px 6px"></span><span style="flex:1;background:{{ t.c2 }};border-radius:2px 6px 6px 2px"></span></div>
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }}">About 41 min on Wi‑Fi. You can use the library while this runs.</div>
+            </div>
+          </div>
+          <div style="flex:none;padding:12px 16px 0;display:flex;flex-direction:column;gap:4px"><div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Continue in background</div><div style="min-height:48px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:{{ t.p }}">Pause import</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">1d</span><span style="font-size:15px;font-weight:600">First sync</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:31</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_charging_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:16px 16px 0;gap:20px">
+            <div style="display:flex;align-items:center;min-height:48px"><span style="flex:1"></span><span style="font:500 12px 'IBM Plex Mono';color:{{ t.onVar }};padding-right:12px">4 / 4</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:20px;padding:20px 0 4px">
+              <svg width="96" height="96" viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="{{ t.on }}"></rect><rect x="14" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="27" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="40" y="14" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="14" y="27" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="27" y="27" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="40" y="31" width="10" height="10" rx="5" fill="{{ t.bg }}" opacity=".55"></rect><rect x="14" y="40" width="10" height="10" rx="3" fill="{{ t.bg }}"></rect><rect x="29" y="44" width="10" height="10" rx="5" fill="{{ t.bg }}" opacity=".35"></rect></svg>
+              <div style="text-align:center;display:flex;flex-direction:column;gap:6px"><div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em">Sifting your library</div><div style="font-size:16px;line-height:24px;color:{{ t.onVar }}">52,116 items · charging · Wi‑Fi</div></div>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;display:flex;flex-direction:column">
+              <sc-for list="{{ t.syncSteps }}" as="s" hint-placeholder-count="4">
+                <div style="display:flex;gap:14px;padding:14px 16px;border-top:1px solid {{ s.div }}">
+                  <span aria-hidden="true" style="width:24px;height:24px;flex:none;color:{{ s.icc }};font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ s.fill }}">{{ s.icon }}</span>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;line-height:22px;font-weight:500;color:{{ s.nameC }}">{{ s.name }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s.val }}</span></div>
+                    <div style="display:flex;height:6px;gap:2px;opacity:{{ s.bo }}"><span style="width:{{ s.w }};background:{{ t.p }};border-radius:3px"></span><span style="flex:1;background:{{ t.c2 }};border-radius:3px"></span></div>
+                    <div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">{{ s.detail }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:0 4px"><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font:400 15px 'Material Symbols Rounded'">memory</span>On device</span><span style="flex:1;font-size:13px;line-height:18px;color:{{ t.onVar }}">Results appear as they finish. Nothing is acted on without Undo.</span></div>
+          </div>
+          <div style="flex:none;padding:12px 16px 0"><div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Open library</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="02 Timeline" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">02</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Timeline</h2><span style="font-size:15px;color:#5E5D59">Year, month and day zoom. Fast scrubber while dragging.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2a</span><span style="font-size:15px;font-weight:600">Years</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 12px 8px 20px"><span style="font-size:22px;font-weight:600;letter-spacing:-.01em;flex:1">Library</span><span role="button" aria-label="Search" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">search</span><span style="width:32px;height:32px;border-radius:999px;background:linear-gradient(160deg,#e3b9a8,#9a5e4e);margin:0 8px"></span></div>
+            <div style="display:flex;gap:8px;padding:4px 16px 12px">
+              <sc-for list="{{ t.zy }}" as="z" hint-placeholder-count="3"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:24px;padding:0 44px 0 0">
+              <sc-for list="{{ years }}" as="y" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 16px"><span style="font-size:24px;line-height:32px;font-weight:500">{{ y.y }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ y.n }} items</span></div>
+                  <div style="display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:2px;height:244px">
+                    <div style="grid-row:span 2;background:{{ y.a }}"></div><div style="background:{{ y.b }}"></div><div style="background:{{ y.c }}"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="position:absolute;right:0;top:112px;bottom:8px;width:44px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 0;box-sizing:border-box">
+              <sc-for list="{{ scrubY }}" as="s" hint-placeholder-count="5"><span style="font:500 11px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s }}</span></sc-for>
+            </div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.navLib }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2b</span><span style="font-size:15px;font-weight:600">Months</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 12px 8px 20px"><span style="font-size:22px;font-weight:600;letter-spacing:-.01em;flex:1">Library</span><span role="button" aria-label="Search" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">search</span><span style="width:32px;height:32px;border-radius:999px;background:linear-gradient(160deg,#e3b9a8,#9a5e4e);margin:0 8px"></span></div>
+            <div style="display:flex;gap:8px;padding:4px 16px 12px">
+              <sc-for list="{{ t.zm }}" as="z" hint-placeholder-count="3"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+            </div>
+            <div style="padding:0 44px 0 0"><div style="padding:0 16px 8px;font-size:24px;line-height:32px;font-weight:500">2026</div></div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;padding:0 44px 0 0">
+              <sc-for list="{{ months }}" as="m" hint-placeholder-count="8">
+                <div style="aspect-ratio:1.2;background:{{ m.bg }};position:relative"><span style="position:absolute;left:8px;bottom:8px;display:flex;align-items:baseline;gap:6px;background:rgba(0,0,0,.56);color:#FFFFFF;border-radius:6px;padding:3px 8px;font-size:14px;font-weight:600">{{ m.m }}<span style="font:500 11px 'IBM Plex Mono'">{{ m.n }}</span></span></div>
+              </sc-for>
+            </div>
+            <div style="position:absolute;right:0;top:112px;bottom:8px;width:44px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:8px 0;box-sizing:border-box">
+              <sc-for list="{{ scrubY }}" as="s" hint-placeholder-count="5"><span style="font:500 11px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s }}</span></sc-for>
+            </div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.navLib }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">2c</span><span style="font-size:15px;font-weight:600">Days · fast scrubber dragging</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;position:relative">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 12px 8px 20px"><span style="font-size:22px;font-weight:600;letter-spacing:-.01em;flex:1">Library</span><span role="button" aria-label="Search" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">search</span><span style="width:32px;height:32px;border-radius:999px;background:linear-gradient(160deg,#e3b9a8,#9a5e4e);margin:0 8px"></span></div>
+            <div style="display:flex;gap:8px;padding:4px 16px 12px">
+              <sc-for list="{{ t.zd }}" as="z" hint-placeholder-count="3"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:16px;padding:0 36px 0 0">
+              <sc-for list="{{ days }}" as="d" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;align-items:baseline;gap:8px;padding:0 16px"><span style="font-size:16px;line-height:24px;font-weight:600">{{ d.label }}</span><span style="font-size:13px;color:{{ t.onVar }}">{{ d.sub }}</span></div>
+                  <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px">
+                    <sc-for list="{{ d.cells }}" as="c" hint-placeholder-count="4"><div style="aspect-ratio:1;background:{{ c.bg }};position:relative"><span style="display:{{ c.dd }};position:absolute;right:5px;top:5px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 5px;border-radius:6px">{{ c.dur }}</span></div></sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="position:absolute;right:17px;top:116px;bottom:12px;width:2px;border-radius:1px;background:{{ t.outlineVar }}"></div>
+            <div style="position:absolute;right:0;top:112px;bottom:8px;width:36px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;padding:8px 8px 8px 0;box-sizing:border-box">
+              <sc-for list="{{ scrubM }}" as="s" hint-placeholder-count="6"><span style="font:500 11px 'IBM Plex Mono';color:{{ t.onVar }};background:{{ t.bg }};padding:2px 0">{{ s }}</span></sc-for>
+            </div>
+            <div style="position:absolute;right:10px;top:316px;width:16px;height:48px;border-radius:8px;background:{{ t.p }}"></div>
+            <div style="position:absolute;right:38px;top:322px;height:36px;display:flex;align-items:center;padding:0 14px;border-radius:12px;background:{{ t.inv }};color:{{ t.onInv }};font:500 14px 'IBM Plex Mono'">Sep 2026</div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.navLib }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+
+<section data-screen-label="03 Photo viewer" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">03</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Photo viewer</h2><span style="font-size:15px;color:#5E5D59">Info panel as a bottom sheet in portrait, a side panel in landscape.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">3a</span><span style="font-size:15px;font-weight:600">Viewer · info panel open</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 4px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1"></span><span role="button" aria-label="Cast" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">cast</span><span role="button" aria-label="More options" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">more_vert</span></div>
+          <div style="height:300px;flex:none;background:linear-gradient(180deg,#f3c58f 0%,#e07b54 48%,#5b3b4a 100%);position:relative"><span style="position:absolute;right:8px;bottom:8px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px 0 6px;border-radius:6px;background:rgba(0,0,0,.56);color:#FFFFFF;font-size:12px;font-weight:500"><span aria-hidden="true" style="font:400 15px 'Material Symbols Rounded'">memory</span>On device</span></div>
+          <div style="min-height:56px;flex:none;display:flex;justify-content:space-around;align-items:center"><span role="button" aria-label="Favorite" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">favorite</span><span role="button" aria-label="Share" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">share</span><span role="button" aria-label="Edit" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">tune</span><span role="button" aria-label="Delete" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">delete</span></div>
+          <div style="flex:1;overflow:hidden;background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 20px 0;display:flex;flex-direction:column;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }}">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 14px"></div>
+            <div style="font-size:22px;line-height:28px;font-weight:600">Info</div>
+            <div style="font-size:14px;color:{{ t.onVar }};margin:2px 0 8px">Add a description</div>
+            <sc-for list="{{ infoRows }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:16px;min-height:52px;padding:4px 0">
+                <span aria-hidden="true" style="width:24px;flex:none;font:300 24px 'Material Symbols Rounded';color:{{ t.onVar }}">{{ r.icon }}</span>
+                <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">{{ r.a }}</div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">{{ r.b }}</div></div>
+                <div style="width:48px;height:48px;border-radius:12px;background:{{ r.thumb }};display:{{ r.td }};flex:none"></div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">3b</span><span style="font-size:15px;font-weight:600">Viewer · landscape</span></div>
+        <div style="width:919px;height:412px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:32px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 36px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;display:flex;min-height:0">
+            <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;padding:0 0 0 16px">
+              <div style="height:100%;aspect-ratio:4/3;background:linear-gradient(180deg,#f3c58f 0%,#e07b54 48%,#5b3b4a 100%);border-radius:0;max-width:100%;position:relative">
+                <span role="img" aria-label="Back" style="position:absolute;left:8px;top:8px;width:40px;height:40px;border-radius:999px;background:rgba(0,0,0,.24);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span>
+                <div style="position:absolute;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:8px">
+                  <span role="button" aria-label="Favorite" style="width:40px;height:40px;border-radius:999px;background:rgba(0,0,0,.24);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:300 22px 'Material Symbols Rounded'">favorite</span>
+                  <span role="button" aria-label="Share" style="width:40px;height:40px;border-radius:999px;background:rgba(0,0,0,.24);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:300 22px 'Material Symbols Rounded'">share</span>
+                  <span role="button" aria-label="Edit" style="width:40px;height:40px;border-radius:999px;background:rgba(0,0,0,.24);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:300 22px 'Material Symbols Rounded'">tune</span>
+                  <span role="button" aria-label="Delete" style="width:40px;height:40px;border-radius:999px;background:rgba(0,0,0,.24);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:300 22px 'Material Symbols Rounded'">delete</span>
+                </div>
+              </div>
+            </div>
+            <div style="width:352px;flex:none;margin:0 0 8px 16px;background:{{ t.modal }};border-radius:28px 0 0 28px;padding:12px 20px 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:{{ t.shadow }};border:1px solid {{ t.modalBorder }};border-right:0">
+              <div style="display:flex;align-items:center;min-height:40px"><span style="flex:1;font-size:22px;line-height:28px;font-weight:600">Info</span><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span></div>
+              <sc-for list="{{ infoRows }}" as="r" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:14px;min-height:44px;padding:2px 0">
+                  <span aria-hidden="true" style="width:24px;flex:none;font:300 22px 'Material Symbols Rounded';color:{{ t.onVar }}">{{ r.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:15px;line-height:20px">{{ r.a }}</div><div style="font:400 11px/14px 'IBM Plex Mono';color:{{ t.onVar }}">{{ r.b }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="04 Albums" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">04</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Albums</h2><span style="font-size:15px;color:#5E5D59">List with places, locked folder and trash; album detail with a suggested trip.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">4a</span><span style="font-size:15px;font-weight:600">Albums list</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 12px 8px 20px"><span style="font-size:22px;font-weight:600;letter-spacing:-.01em;flex:1">Albums</span><span role="button" aria-label="Add" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">add</span><span style="width:32px;height:32px;border-radius:999px;background:linear-gradient(160deg,#e3b9a8,#9a5e4e);margin:0 8px"></span></div>
+            <div style="display:flex;gap:8px;padding:4px 16px 14px">
+              <sc-for list="{{ t.fAll }}" as="z" hint-placeholder-count="4"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 16px">
+              <sc-for list="{{ albums }}" as="a" hint-placeholder-count="4">
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <div style="aspect-ratio:1.35;border-radius:20px;background:{{ a.bg }};position:relative"><span aria-hidden="true" style="position:absolute;left:8px;bottom:8px;width:24px;height:24px;border-radius:999px;background:rgba(0,0,0,.56);color:#FFFFFF;display:flex;align-items:center;justify-content:center;font:400 16px 'Material Symbols Rounded'">{{ a.icon }}</span></div>
+                  <div style="padding:0 4px"><div style="font-size:16px;line-height:22px;font-weight:600">{{ a.name }}</div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">{{ a.n }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:20px 20px 6px;font:500 11px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;color:{{ t.onVar }}">Places and private</div>
+            <div style="display:flex;flex-direction:column;padding:0 8px">
+              <sc-for list="{{ utilRows }}" as="u" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:16px;height:60px;padding:0 12px">
+                  <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">{{ u.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">{{ u.name }}</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }}">{{ u.sub }}</div></div>
+                  <span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded';color:{{ t.onVar }}">chevron_right</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.navAlb }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">4b</span><span style="font-size:15px;font-weight:600">Album detail</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;padding:4px 4px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1"></span><span role="button" aria-label="Share" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">share</span><span role="button" aria-label="More options" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">more_vert</span></div>
+            <div style="padding:0 20px 14px;display:flex;flex-direction:column;gap:2px"><div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em">Lisbon, Oct 2026</div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">214 photos · 2–7 Oct 2026</div></div>
+            <div style="display:flex;gap:8px;padding:0 16px 14px">
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">person_add</span>Share</span>
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">add_photo_alternate</span>Add photos</span>
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">map</span>Map</span>
+            </div>
+            <div style="margin:0 16px 14px;background:{{ t.c1 }};border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:12px"><span aria-hidden="true" style="width:40px;height:40px;border-radius:12px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font:400 22px 'Material Symbols Rounded'">luggage</span><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:500;color:{{ t.onVar }}">Trip album · made by Sift</div><div style="font-size:16px;line-height:22px;font-weight:600">4 places in 6 days</div></div></div>
+              <div style="display:flex;gap:8px;font-size:14px;line-height:20px;color:{{ t.onVar }}"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded';margin-top:1px">info</span><span style="text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> 214 photos taken 2–7 Oct, 280 km from home, grouped by place and day.</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span><span style="width:14px;height:6px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 12px 'IBM Plex Mono'">High · 0.96</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font:400 15px 'Material Symbols Rounded'">memory</span>On device</span></div><div style="display:flex;gap:8px;border-top:1px solid {{ t.outlineVar }};padding-top:8px;margin:0 -4px;flex-wrap:wrap"><span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;color:{{ t.p }};font-size:14px;font-weight:600"><span aria-hidden="true" style="font:500 18px 'Material Symbols Rounded'">undo</span>Undo album</span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500">Rename</span><span style="flex:1"></span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;border-radius:999px;color:{{ t.onVar }};font-size:14px;font-weight:500">Don't do this again</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:6px"><div style="display:flex;align-items:baseline;gap:8px;padding:0 16px"><span style="font-size:16px;font-weight:600">Sun 4 Oct</span><span style="font-size:13px;color:{{ t.onVar }}">Cais do Sodré · 38 photos</span></div>
+                <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px"><sc-for list="{{ albumCells }}" as="c" hint-placeholder-count="9"><div style="aspect-ratio:1;background:{{ c.bg }};position:relative"><span style="display:{{ c.dd }};position:absolute;right:6px;top:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">{{ c.dur }}</span></div></sc-for></div></div>
+            </div>
+          </div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="05 Family sharing" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">05</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Shared family library and sharing</h2><span style="font-size:15px;color:#5E5D59">Strip location, set permissions, send.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">5a</span><span style="font-size:15px;font-weight:600">Family library</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;padding:4px 4px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Family library</span><span role="button" aria-label="Settings" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">settings</span></div>
+            <div style="display:flex;gap:16px;padding:8px 20px 16px">
+              <sc-for list="{{ members }}" as="m" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:64px"><span style="width:56px;height:56px;border-radius:999px;background:{{ m.bg }}"></span><span style="font-size:12px;font-weight:500;text-align:center;line-height:16px">{{ m.name }}</span><span style="font:400 11px/12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ m.role }}</span></div></sc-for>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:64px"><span aria-hidden="true" style="width:56px;height:56px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">person_add</span><span style="font-size:12px;font-weight:500">Invite</span></div>
+            </div>
+            <div style="margin:0 16px 12px;background:{{ t.c1 }};border-radius:20px;display:flex;flex-direction:column">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 16px"><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded'">dns</span><div style="flex:1"><div style="font-size:16px;font-weight:500">Stored on Home NAS</div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">6,204 items · 38 GB · members read over your VPN</div></div></div>
+              <div style="display:flex;align-items:center;gap:16px;padding:12px 16px;border-top:1px solid {{ t.outlineVar }}">
+                <div style="flex:1"><div style="font-size:16px;font-weight:500">Add photos of Inês and Tomás</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">Matched on this phone. Medium confidence asks before adding.</div></div>
+                <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ t.on1.sbg }};border:2px solid {{ t.on1.sbd }};display:flex;align-items:center;justify-content:{{ t.on1.sj }};padding:0 {{ t.on1.spad }};box-sizing:border-box"><span aria-hidden="true" style="width:{{ t.on1.kw }};height:{{ t.on1.kw }};border-radius:999px;background:{{ t.on1.kbg }};color:{{ t.on1.sc }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">{{ t.on1.sk }}</span></span>
+              </div>
+            </div>
+            <div style="margin:0 16px 12px;display:flex;align-items:center;gap:12px;padding:0 4px"><span style="display:flex"><span style="width:28px;height:28px;border-radius:999px;background:linear-gradient(165deg,#d6a7ae,#7d4a58);border:2px solid {{ t.bg }}"></span><span style="width:28px;height:28px;border-radius:999px;background:linear-gradient(170deg,#a9c4d8,#3f6a8a);border:2px solid {{ t.bg }};margin-left:-8px"></span></span><span style="flex:1;font-size:14px;line-height:20px"><span style="font-weight:600">Jonas Weber</span> added 24 photos <span style="color:{{ t.onVar }}">· 2 h ago</span></span></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px">
+              <sc-for list="{{ familyCells }}" as="c" hint-placeholder-count="12"><div style="aspect-ratio:1;background:{{ c.bg }};position:relative"><span style="position:absolute;right:6px;bottom:6px;width:20px;height:20px;border-radius:999px;background:{{ c.av }};border:2px solid #FFFFFF;box-sizing:border-box"></span></div></sc-for>
+            </div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.navAlb }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">5b</span><span style="font-size:15px;font-weight:600">Share sheet · strip location, permissions, send</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:26</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;gap:4px;padding:0 8px;background:{{ t.c1 }}"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span><span style="flex:1;font-size:18px;font-weight:600">12 selected</span></div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px">
+            <sc-for list="{{ selCells }}" as="c" hint-placeholder-count="6"><div style="aspect-ratio:1;background:{{ t.pc }};display:flex"><div style="margin:12px;flex:1;border-radius:16px;background:{{ c.bg }}"></div></div></sc-for>
+          </div>
+          <div style="position:absolute;inset:0;background:{{ t.scrim }}"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 20px 0;display:flex;flex-direction:column;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }}">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 12px"></div>
+            <div style="font-size:22px;line-height:28px;font-weight:600">Share 12 photos</div>
+            <div style="display:flex;gap:8px;margin:12px 0 4px">
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 10px 0 4px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span style="width:24px;height:24px;border-radius:999px;background:linear-gradient(170deg,#a9c4d8,#3f6a8a)"></span>Jonas Weber<span aria-hidden="true" style="font:500 16px 'Material Symbols Rounded'">close</span></span>
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 10px 0 4px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span style="width:24px;height:24px;border-radius:999px;background:linear-gradient(165deg,#d6a7ae,#7d4a58)"></span>Inês<span aria-hidden="true" style="font:500 16px 'Material Symbols Rounded'">close</span></span>
+              <span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">add</span>Add</span>
+            </div>
+            <div style="font:500 11px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;color:{{ t.onVar }};padding:14px 0 2px">Privacy</div>
+            <sc-for list="{{ t.shareToggles }}" as="o" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:16px;padding:10px 0;min-height:52px">
+                <div style="flex:1"><div style="font-size:16px;line-height:22px;font-weight:500">{{ o.name }}</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">{{ o.sub }}</div></div>
+                <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ o.tg.sbg }};border:2px solid {{ o.tg.sbd }};display:flex;align-items:center;justify-content:{{ o.tg.sj }};padding:0 {{ o.tg.spad }};box-sizing:border-box"><span aria-hidden="true" style="width:{{ o.tg.kw }};height:{{ o.tg.kw }};border-radius:999px;background:{{ o.tg.kbg }};color:{{ o.tg.sc }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">{{ o.tg.sk }}</span></span>
+              </div>
+            </sc-for>
+            <div style="font:500 11px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;color:{{ t.onVar }};padding:10px 0 2px">They can</div>
+            <sc-for list="{{ t.perms2 }}" as="p" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:14px;min-height:48px"><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded'">{{ p.icon }}</span><span style="flex:1;font-size:16px">{{ p.name }}</span><span style="width:20px;height:20px;border-radius:999px;border:2px solid {{ p.ring }};box-sizing:border-box;display:flex;align-items:center;justify-content:center"><span style="width:10px;height:10px;border-radius:999px;background:{{ p.dot }}"></span></span></div>
+            </sc-for>
+            <div style="display:flex;align-items:center;gap:14px;min-height:48px;border-top:1px solid {{ t.outlineVar }}"><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded'">schedule</span><span style="flex:1;font-size:16px">Access expires</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">in 7 days</span><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded';color:{{ t.onVar }}">chevron_right</span></div>
+            <div style="display:flex;gap:8px;font-size:12px;line-height:16px;color:{{ t.onVar }};padding:6px 0 10px"><span aria-hidden="true" style="font:300 16px 'Material Symbols Rounded'">lock</span>End-to-end encrypted. Sift cannot read what you send.</div>
+            <div style="min-height:56px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600">Send to 2 people</div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="06 Editor" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">06</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Editor</h2><span style="font-size:15px;color:#5E5D59">Crop, light, color, and a pro view with curves and levels. Edits are non-destructive and stay in the history.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">6a</span><span style="font-size:15px;font-weight:600">Crop</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 12px 0 4px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span><span style="flex:1;text-align:center;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_2041.HEIC</span><span style="min-height:40px;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Save</span></div>
+          <div style="height:400px;flex:none;position:relative;overflow:hidden;background:{{ t.c1 }}">
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)"></div>
+            <div style="position:absolute;left:28px;right:28px;top:36px;bottom:36px;border:2px solid #FFFFFF;box-shadow:0 0 0 999px rgba(0,0,0,.45);background:linear-gradient(90deg,transparent 33%,rgba(255,255,255,.5) 33% calc(33% + 1px),transparent calc(33% + 1px) 66%,rgba(255,255,255,.5) 66% calc(66% + 1px),transparent calc(66% + 1px)),linear-gradient(180deg,transparent 33%,rgba(255,255,255,.5) 33% calc(33% + 1px),transparent calc(33% + 1px) 66%,rgba(255,255,255,.5) 66% calc(66% + 1px),transparent calc(66% + 1px))">
+              <span style="position:absolute;left:-4px;top:-4px;width:24px;height:24px;border-left:5px solid #FFFFFF;border-top:5px solid #FFFFFF"></span><span style="position:absolute;right:-4px;top:-4px;width:24px;height:24px;border-right:5px solid #FFFFFF;border-top:5px solid #FFFFFF"></span><span style="position:absolute;left:-4px;bottom:-4px;width:24px;height:24px;border-left:5px solid #FFFFFF;border-bottom:5px solid #FFFFFF"></span><span style="position:absolute;right:-4px;bottom:-4px;width:24px;height:24px;border-right:5px solid #FFFFFF;border-bottom:5px solid #FFFFFF"></span>
+            </div>
+          </div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:14px;padding:16px 16px 0">
+            <div style="display:flex;align-items:center;gap:12px"><span style="font:500 12px 'IBM Plex Mono';width:44px">−1.2°</span><div style="flex:1;height:32px;position:relative;background:repeating-linear-gradient(90deg,{{ t.outline }} 0 1px,transparent 1px 12px);-webkit-mask:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent);mask:linear-gradient(90deg,transparent,#000 20%,#000 80%,transparent)"></div><span style="position:absolute;left:50%;margin-left:-1px;width:3px;height:32px;border-radius:2px;background:{{ t.p }};display:none"></span><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded'">rotate_90_degrees_ccw</span><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded'">flip</span></div>
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ t.aspect }}" as="z" hint-placeholder-count="5"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px;font-size:14px;line-height:20px"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded';color:{{ t.onVar }}">info</span><span style="flex:1"><span style="font-weight:500">Straighten −1.2°</span> <span style="color:{{ t.onVar }}">· horizon tilted against the river wall</span></span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span aria-hidden="true" style="display:flex;gap:3px"><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span><span style="width:12px;height:5px;border-radius:3px;background:{{ t.p }}"></span></span><span style="font:500 11px 'IBM Plex Mono'">High · 0.97</span><span style="flex:1"></span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font:400 15px 'Material Symbols Rounded'">memory</span>On device</span><span style="font-size:14px;font-weight:600;color:{{ t.p }};padding-left:6px">Undo</span></div>
+            </div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.ed0 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">6b</span><span style="font-size:15px;font-weight:600">Light</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 12px 0 4px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span><span style="flex:1;text-align:center;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_2041.HEIC</span><span style="min-height:40px;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Save</span></div>
+          <div style="height:340px;flex:none;background:linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)"></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:12px 20px 0">
+            <div style="display:flex;align-items:center;gap:8px;min-height:36px"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;background:{{ t.pc }};color:{{ t.onPc }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:500 18px 'Material Symbols Rounded'">auto_fix_high</span>Auto</span><span style="flex:1;min-width:0;font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty"><span style="color:{{ t.on }};font-weight:500">Why:</span> subject 0.4 EV darker than the sky · High 0.94 · tap Auto to undo</span><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font-family:'Material Symbols Rounded';font-size:15px;font-variation-settings:'wght' 400">memory</span>On device</span></div>
+            <sc-for list="{{ t.light }}" as="s" hint-placeholder-count="5">
+              <div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:500"><span>{{ s.label }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s.val }}</span></div>
+              <div style="position:relative;min-height:28px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:14px;border-radius:7px;background:{{ t.c2 }}"></div><div style="position:absolute;left:{{ s.l }};width:{{ s.w }};height:14px;background:{{ t.p }};opacity:.55"></div><div style="position:absolute;left:{{ s.th }};margin-left:-2px;width:4px;height:28px;border-radius:2px;background:{{ t.p }}"></div></div></div>
+            </sc-for>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.ed1 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">6c</span><span style="font-size:15px;font-weight:600">Color</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 12px 0 4px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span><span style="flex:1;text-align:center;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_2041.HEIC</span><span style="min-height:40px;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Save</span></div>
+          <div style="height:340px;flex:none;background:linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)"></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:6px;padding:12px 20px 0">
+            <div style="display:flex;gap:10px;padding-bottom:6px">
+              <sc-for list="{{ looks }}" as="l" hint-placeholder-count="5"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:64px"><span style="width:64px;height:64px;border-radius:12px;background:{{ l.bg }};box-shadow:0 0 0 {{ l.rw }} {{ t.p }};filter:{{ l.f }}"></span><span style="font-size:12px;font-weight:500">{{ l.n }}</span></div></sc-for>
+            </div>
+            <sc-for list="{{ t.color }}" as="s" hint-placeholder-count="4">
+              <div><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:500"><span>{{ s.label }}</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">{{ s.val }}</span></div>
+              <div style="position:relative;min-height:28px;display:flex;align-items:center"><div style="position:absolute;left:0;right:0;height:14px;border-radius:7px;background:{{ t.c2 }}"></div><div style="position:absolute;left:{{ s.l }};width:{{ s.w }};height:14px;background:{{ t.p }};opacity:.55"></div><div style="position:absolute;left:{{ s.th }};margin-left:-2px;width:4px;height:28px;border-radius:2px;background:{{ t.p }}"></div></div></div>
+            </sc-for>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.ed2 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">6d</span><span style="font-size:15px;font-weight:600">Pro · curves</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 12px 0 4px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span><span style="flex:1;text-align:center;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_2041.HEIC</span><span style="min-height:40px;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Save</span></div>
+          <div style="height:240px;flex:none;background:linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)"></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:12px;padding:14px 16px 0">
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ t.proTabs0 }}" as="z" hint-placeholder-count="2"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+              <span style="flex:1"></span>
+              <sc-for list="{{ t.chan }}" as="z" hint-placeholder-count="4"><span style="min-height:32px;min-width:32px;display:flex;align-items:center;justify-content:center;padding:0 8px;border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font:500 12px 'IBM Plex Mono'">{{ z.l }}</span></sc-for>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:14px 14px 10px">
+              <svg viewBox="0 0 364 180" width="100%" height="180" preserveAspectRatio="none" style="display:block;overflow:visible">
+                <polygon points="{{ histPts }}" fill="{{ t.on }}" opacity=".14"></polygon>
+                <path d="M91 0V180M182 0V180M273 0V180M0 45H364M0 90H364M0 135H364" stroke="{{ t.outlineVar }}" stroke-width="1" fill="none"></path>
+                <path d="M0 180L364 0" stroke="{{ t.outline }}" stroke-width="1" stroke-dasharray="4 4" fill="none"></path>
+                <path d="M0 180C45 174 70 160 91 152S150 106 182 86S240 52 273 38S330 10 364 0" stroke="{{ t.p }}" stroke-width="3" fill="none" stroke-linecap="round"></path>
+                <circle cx="91" cy="152" r="6" fill="{{ t.c1 }}" stroke="{{ t.p }}" stroke-width="2"></circle><circle cx="273" cy="38" r="6" fill="{{ t.c1 }}" stroke="{{ t.p }}" stroke-width="2"></circle>
+                <circle cx="182" cy="86" r="14" fill="{{ t.p }}" opacity=".25"></circle><circle cx="182" cy="86" r="7" fill="{{ t.p }}"></circle>
+              </svg>
+              <div style="display:flex;justify-content:space-between;padding-top:10px;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}"><span>Input 128</span><span style="color:{{ t.on }};font-weight:500">Output 142</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="min-height:40px;display:flex;align-items:center;gap:6px;padding:0 12px;border-radius:999px;font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">colorize</span>Sample point</span><span style="flex:1"></span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:600;color:{{ t.p }}">Reset curve</span></div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.ed3 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">6e</span><span style="font-size:15px;font-weight:600">Pro · levels</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 12px 0 4px"><span role="button" aria-label="Close" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">close</span><span style="flex:1;text-align:center;font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">IMG_2041.HEIC</span><span style="min-height:40px;display:flex;align-items:center;padding:0 20px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};font-size:14px;font-weight:600">Save</span></div>
+          <div style="height:240px;flex:none;background:linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)"></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;gap:12px;padding:14px 16px 0">
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ t.proTabs1 }}" as="z" hint-placeholder-count="2"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+              <span style="flex:1"></span>
+              <sc-for list="{{ t.chan }}" as="z" hint-placeholder-count="4"><span style="min-height:32px;min-width:32px;display:flex;align-items:center;justify-content:center;padding:0 8px;border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font:500 12px 'IBM Plex Mono'">{{ z.l }}</span></sc-for>
+            </div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:14px 14px 10px">
+              <svg viewBox="0 0 364 180" width="100%" height="150" preserveAspectRatio="none" style="display:block"><polygon points="{{ histPts }}" fill="{{ t.on }}" opacity=".5"></polygon></svg>
+              <div style="position:relative;height:22px;margin-top:2px"><span style="position:absolute;left:3%;top:2px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid {{ t.on }};margin-left:-8px"></span><span style="position:absolute;left:46%;top:2px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid {{ t.p }};margin-left:-8px"></span><span style="position:absolute;left:96%;top:2px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid {{ t.outline }};margin-left:-8px"></span></div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding-top:10px">
+                <sc-for list="{{ levelFields }}" as="f" hint-placeholder-count="3"><div style="border-radius:12px;box-shadow:inset 0 0 0 1px {{ t.outline }};padding:6px 12px"><div style="font-size:11px;color:{{ t.onVar }}">{{ f.k }}</div><div style="font:500 16px/22px 'IBM Plex Mono'">{{ f.v }}</div></div></sc-for>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding:0 4px"><div style="display:flex;justify-content:space-between;font-size:14px;font-weight:500"><span>Output</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">0 – 255</span></div><div style="height:14px;border-radius:7px;background:linear-gradient(90deg,#000,#fff);box-shadow:inset 0 0 0 1px {{ t.outline }}"></div></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 8px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">auto_fix_high</span>Auto levels</span><span style="flex:1"></span><span style="min-height:40px;display:flex;align-items:center;padding:0 12px;font-size:14px;font-weight:600;color:{{ t.p }}">Reset levels</span></div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.ed3 }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="07 Map" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">07</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Map view</h2><span style="font-size:15px;color:#5E5D59">Photo clusters on a quiet base map. Only map tiles use the network.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">7a</span><span style="font-size:15px;font-weight:600">Map · peek sheet</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;position:relative;overflow:hidden;background:{{ t.c1 }}">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 92px,{{ t.outlineVar }} 92px 94px),repeating-linear-gradient(0deg,transparent 0 118px,{{ t.outlineVar }} 118px 120px);opacity:.7"></div>
+            <div style="position:absolute;left:-60px;right:-60px;top:410px;height:110px;background:{{ t.c2 }};transform:rotate(-8deg);box-shadow:0 0 0 1px {{ t.outlineVar }}"></div>
+            <div style="position:absolute;left:30px;top:150px;width:130px;height:90px;border-radius:20px;background:{{ t.outlineVar }};opacity:.45"></div>
+            <div style="position:absolute;left:230px;top:240px;width:120px;height:70px;border-radius:20px;background:{{ t.outlineVar }};opacity:.45"></div>
+            <sc-for list="{{ pins }}" as="p" hint-placeholder-count="6"><div style="position:absolute;left:{{ p.x }}px;top:{{ p.y }}px;width:{{ p.s }}px;height:{{ p.s }}px;border-radius:{{ p.r }}px;background:{{ p.bg }};border:3px solid {{ t.bg }};box-sizing:border-box"><span style="position:absolute;right:-10px;top:-10px;min-width:22px;height:22px;padding:0 5px;box-sizing:border-box;border-radius:11px;background:{{ t.p }};color:{{ t.onP }};border:2px solid {{ t.bg }};display:{{ p.cd }};align-items:center;justify-content:center;font:500 11px 'IBM Plex Mono'">{{ p.n }}</span></div></sc-for>
+            <div style="position:absolute;left:16px;right:16px;top:8px;height:56px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;gap:12px;padding:0 8px 0 18px"><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded';color:{{ t.onVar }}">search</span><span style="flex:1;font-size:16px;color:{{ t.onVar }}">Search places</span><span style="display:flex;align-items:center;gap:4px;min-height:28px;padding:0 10px 0 8px;border-radius:8px;background:{{ t.c1 }};font-size:12px;font-weight:500;color:{{ t.onVar }}"><span aria-hidden="true" style="font:400 16px 'Material Symbols Rounded'">memory</span>On device</span></div>
+            <div style="position:absolute;left:16px;right:16px;top:74px;display:flex;gap:8px">
+              <sc-for list="{{ t.mapChips }}" as="z" hint-placeholder-count="3"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg2 }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for>
+            </div>
+            <span style="position:absolute;left:12px;bottom:204px;display:flex;align-items:center;gap:4px;height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.bg }};box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:12px;font-weight:500"><span aria-hidden="true" style="font:400 15px 'Material Symbols Rounded'">cloud</span>Cloud · map tiles only</span>
+            <div style="position:absolute;left:0;right:0;bottom:0;height:190px;background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 20px 0;display:flex;flex-direction:column;gap:10px;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }}">
+              <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 4px"></div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:22px;line-height:28px;font-weight:600">Lisbon</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">1,284 photos · 14 places</span></div>
+              <div style="display:flex;gap:8px;margin-right:-20px;overflow:hidden"><sc-for list="{{ strip }}" as="c" hint-placeholder-count="6"><div style="width:84px;height:84px;flex:none;border-radius:12px;background:{{ c.bg }}"></div></sc-for></div>
+            </div>
+          </div>
+          <div style="height:80px;flex:none;background:{{ t.c1 }};display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;border-top:1px solid {{ t.navBorder }}">
+            <sc-for list="{{ t.navAlb }}" as="n" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:{{ n.lc }}"><span aria-hidden="true" style="width:64px;height:32px;border-radius:999px;background:{{ n.bg }};color:{{ n.ic }};display:flex;align-items:center;justify-content:center;font:400 24px 'Material Symbols Rounded';font-variation-settings:'FILL' {{ n.fill }}">{{ n.icon }}</span><span style="font-size:12px;font-weight:{{ n.w }}">{{ n.label }}</span></div></sc-for>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.c1 }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">7b</span><span style="font-size:15px;font-weight:600">Map · place open</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;position:relative;overflow:hidden;background:{{ t.c1 }}">
+            <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 92px,{{ t.outlineVar }} 92px 94px),repeating-linear-gradient(0deg,transparent 0 118px,{{ t.outlineVar }} 118px 120px);opacity:.7"></div>
+            <div style="position:absolute;left:-60px;right:-60px;top:230px;height:110px;background:{{ t.c2 }};transform:rotate(-8deg);box-shadow:0 0 0 1px {{ t.outlineVar }}"></div>
+            <div style="position:absolute;left:150px;top:96px;width:56px;height:56px;border-radius:16px;background:linear-gradient(160deg,#f2d36b,#d19a2a 55%,#4a3b2a);border:3px solid {{ t.p }};box-sizing:border-box"><span style="position:absolute;right:-10px;top:-10px;min-width:22px;height:22px;padding:0 5px;box-sizing:border-box;border-radius:11px;background:{{ t.p }};color:{{ t.onP }};border:2px solid {{ t.bg }};display:flex;align-items:center;justify-content:center;font:500 11px 'IBM Plex Mono'">38</span></div>
+            <div style="position:absolute;left:12px;top:8px;width:48px;height:48px;border-radius:999px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</div>
+            <div style="position:absolute;left:0;right:0;bottom:0;top:200px;background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 0 0;display:flex;flex-direction:column;gap:10px;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }}">
+              <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 4px"></div>
+              <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 20px"><span style="font-size:22px;line-height:28px;font-weight:600">Cais do Sodré</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">38 photos · 4–5 Oct</span></div>
+              <div style="display:flex;gap:8px;padding:0 16px 4px"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">directions</span>Open in Maps</span><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;border-radius:8px;box-shadow:inset 0 0 0 1px {{ t.outline }};font-size:14px;font-weight:500"><span aria-hidden="true" style="font:300 18px 'Material Symbols Rounded'">edit_location</span>Fix location</span></div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;overflow:hidden"><sc-for list="{{ placeCells }}" as="c" hint-placeholder-count="9"><div style="aspect-ratio:1;background:{{ c.bg }}"></div></sc-for></div>
+            </div>
+          </div>
+          <div style="min-height:24px;flex:none;background:{{ t.modal }};display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="08 Locked folder" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">08</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Locked folder</h2><span style="font-size:15px;color:#5E5D59">Biometric prompt, then contents. Items are excluded from sync, search, AI and the map.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">8a</span><span style="font-size:15px;font-weight:600">Biometric prompt</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:0 32px 120px;text-align:center">
+            <span aria-hidden="true" style="width:72px;height:72px;border-radius:20px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font:300 36px 'Material Symbols Rounded'">lock</span>
+            <div style="font-size:32px;line-height:40px;font-weight:500;letter-spacing:-.01em">Locked folder</div>
+            <div style="font-size:16px;line-height:24px;color:{{ t.onVar }};max-width:300px;text-wrap:pretty">9 items. Not backed up, not synced, hidden from search and shared albums.</div>
+          </div>
+          <div style="position:absolute;inset:0;background:{{ t.scrim }}"></div>
+          <div style="position:absolute;left:0;right:0;bottom:0;background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 24px 0;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }}">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};margin:6px 0 10px"></div>
+            <div style="font-size:22px;line-height:28px;font-weight:600">Unlock Locked folder</div>
+            <div style="font-size:14px;line-height:20px;color:{{ t.onVar }}">Confirm it's you with your fingerprint.</div>
+            <span aria-hidden="true" style="width:88px;height:88px;border-radius:999px;background:{{ t.pc }};color:{{ t.onPc }};display:flex;align-items:center;justify-content:center;font:300 48px 'Material Symbols Rounded';margin:12px 0;box-shadow:0 0 0 8px {{ t.c2 }}">fingerprint</span>
+            <div style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">Touch the sensor</div>
+            <div style="align-self:stretch;display:flex;justify-content:space-between;padding:16px 0 12px"><span style="min-height:48px;display:flex;align-items:center;font-size:14px;font-weight:600;color:{{ t.p }}">Use PIN</span><span style="min-height:48px;display:flex;align-items:center;font-size:14px;font-weight:600;color:{{ t.p }}">Cancel</span></div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">8b</span><span style="font-size:15px;font-weight:600">Unlocked</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;padding:4px 4px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Locked folder</span><span role="button" aria-label="More options" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">more_vert</span></div>
+            <div style="margin:8px 16px 16px;background:{{ t.c1 }};border-radius:20px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start"><span aria-hidden="true" style="font:300 22px 'Material Symbols Rounded';color:{{ t.onVar }}">info</span><div style="font-size:14px;line-height:20px;color:{{ t.onVar }};text-wrap:pretty">Stored only on this phone. If you uninstall Sift or lose this phone, these 9 items are gone.</div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px"><sc-for list="{{ lockedCells }}" as="c" hint-placeholder-count="9"><div style="aspect-ratio:1;background:{{ c.bg }};position:relative"><span style="display:{{ c.dd }};position:absolute;right:6px;top:6px;font:500 11px 'IBM Plex Mono';color:#FFFFFF;background:rgba(0,0,0,.56);padding:2px 6px;border-radius:6px">{{ c.dur }}</span></div></sc-for></div>
+          </div>
+          <div style="padding:12px 16px 0;display:flex;gap:8px"><div style="flex:1;min-height:48px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600"><span aria-hidden="true" style="font:300 20px 'Material Symbols Rounded'">add</span>Move photos here</div><div style="flex:1;min-height:48px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:600"><span aria-hidden="true" style="font:300 20px 'Material Symbols Rounded'">lock_open</span>Lock now</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="09 Trash" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">09</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Trash</h2><span style="font-size:15px;color:#5E5D59">30-day recovery. Per-photo edit history sits in the detail sheet.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">9a</span><span style="font-size:15px;font-weight:600">Trash</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;padding:4px 4px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Trash</span><span role="button" aria-label="More options" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">more_vert</span></div>
+            <div style="margin:8px 16px 16px;background:{{ t.c1 }};border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">38 items · 612 MB</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">kept 30 days</span></div>
+              <div style="display:flex;height:6px;gap:2px"><span style="width:22%;background:{{ t.err }};border-radius:3px 1px 1px 3px"></span><span style="flex:1;background:{{ t.c2 }};border-radius:1px 3px 3px 1px"></span></div>
+              <div style="font-size:13px;line-height:18px;color:{{ t.onVar }}">Items are deleted from all storage locations when their timer ends.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;padding:0 8px">
+              <sc-for list="{{ t.trashRows }}" as="r" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:14px;min-height:72px;padding:6px 8px">
+                  <div style="width:56px;height:56px;flex:none;border-radius:12px;background:{{ r.bg }}"></div>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">{{ r.name }}</div><div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }}">{{ r.sub }}</div></div>
+                  <span style="min-height:24px;display:flex;align-items:center;padding:0 8px;border-radius:6px;background:{{ t.c2 }};font:500 12px 'IBM Plex Mono';color:{{ r.urg }}">{{ r.left }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:12px 16px 0;display:flex;gap:8px"><div style="flex:1;min-height:48px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">Empty trash</div><div style="flex:1;min-height:48px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">Restore all</div></div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">9b</span><span style="font-size:15px;font-weight:600">Item detail · edit history</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.viewer }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="min-height:56px;flex:none;display:flex;align-items:center;padding:0 4px"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">arrow_back</span><span style="flex:1"></span><span style="font:500 12px 'IBM Plex Mono';color:{{ t.err }};padding-right:16px">Deletes in 3 days</span></div>
+          <div style="height:260px;flex:none;background:linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)"></div>
+          <div style="flex:1;overflow:hidden;background:{{ t.modal }};border-radius:28px 28px 0 0;padding:8px 20px 0;display:flex;flex-direction:column;margin-top:12px;box-shadow:{{ t.shadow }};border-top:1px solid {{ t.modalBorder }}">
+            <div style="width:32px;height:4px;border-radius:2px;background:{{ t.outline }};align-self:center;margin:6px 0 14px"></div>
+            <div style="font-size:22px;line-height:28px;font-weight:600">Edit history</div>
+            <div style="font:400 12px/16px 'IBM Plex Mono';color:{{ t.onVar }};margin:2px 0 10px">IMG_2041.HEIC · original kept</div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ t.history }}" as="h" hint-placeholder-count="5">
+                <div style="display:flex;gap:14px;min-height:52px">
+                  <div style="width:24px;flex:none;display:flex;flex-direction:column;align-items:center"><span style="width:12px;height:12px;border-radius:999px;background:{{ h.dot }};box-shadow:inset 0 0 0 2px {{ h.ring }};margin-top:6px"></span><span style="flex:1;width:2px;background:{{ t.outlineVar }};display:{{ h.line }}"></span></div>
+                  <div style="flex:1;padding-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;line-height:22px;font-weight:{{ h.w }}">{{ h.a }}</span><span style="font:400 11px 'IBM Plex Mono';color:{{ t.onVar }}">{{ h.when }}</span></div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }}">{{ h.b }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:auto;padding-top:8px"><div style="flex:1;min-height:48px;border-radius:999px;box-shadow:inset 0 0 0 1px {{ t.outline }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">Delete now</div><div style="flex:1;min-height:48px;border-radius:999px;background:{{ t.p }};color:{{ t.onP }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">Restore</div></div>
+            <div style="min-height:24px;display:flex;align-items:center;justify-content:center;margin-top:4px"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="10 Settings" style="padding:72px 64px 0;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">10</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Settings</h2><span style="font-size:15px;color:#5E5D59">Appearance, storage, privacy, and AI with a global off switch.</span></div>
+  <sc-for list="{{ themes }}" as="t" hint-placeholder-count="2">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font:500 12px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.08em;color:#5E5D59">{{ t.label }}</div>
+    <div style="display:flex;gap:40px;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">10a</span><span style="font-size:15px;font-weight:600">Settings · appearance, storage, privacy</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:0 16px">
+            <div style="display:flex;align-items:center;padding:4px 0"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded';margin-left:-12px">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Settings</span></div>
+            <div style="font:500 11px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;color:{{ t.onVar }};padding:10px 4px 6px">Appearance</div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:500">Theme</span>
+                <div style="display:flex;gap:8px"><sc-for list="{{ t.themeChips }}" as="z" hint-placeholder-count="3"><span style="min-height:32px;display:flex;align-items:center;gap:6px;padding:0 14px 0 {{ z.pl }};border-radius:8px;background:{{ z.bg }};color:{{ z.fg }};box-shadow:inset 0 0 0 1px {{ z.bd }};font-size:14px;font-weight:500"><span aria-hidden="true" style="display:{{ z.d }};font:500 18px 'Material Symbols Rounded'">check</span>{{ z.l }}</span></sc-for></div></div>
+              <div style="display:flex;flex-direction:column;gap:10px"><span style="font-size:14px;font-weight:500">Accent</span>
+                <div style="display:flex;gap:14px"><sc-for list="{{ t.swatches }}" as="s" hint-placeholder-count="6"><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><span aria-hidden="true" style="width:40px;height:40px;border-radius:999px;background:{{ s.c }};box-shadow:0 0 0 {{ s.rw }} {{ t.c1 }},0 0 0 {{ s.ro }} {{ t.on }};display:flex;align-items:center;justify-content:center;color:#FFFFFF;font:600 20px 'Material Symbols Rounded'">{{ s.ck }}</span><span style="font-size:11px;color:{{ t.onVar }}">{{ s.n }}</span></div></sc-for></div></div>
+            </div>
+            <div style="font:500 11px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;color:{{ t.onVar }};padding:18px 4px 6px">Storage</div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-size:16px;font-weight:600">Home NAS</span><span style="font:400 12px 'IBM Plex Mono';color:{{ t.onVar }}">412 GB of 2 TB</span></div>
+              <div style="display:flex;height:12px;gap:2px"><span style="width:14%;background:{{ t.p }};border-radius:6px 2px 2px 6px"></span><span style="width:6%;background:{{ t.on }};opacity:.5"></span><span style="flex:1;background:{{ t.c2 }};border-radius:2px 6px 6px 2px"></span></div>
+              <div style="display:flex;gap:16px;font-size:12px;color:{{ t.onVar }}"><span>Photos 290 GB</span><span>Videos 122 GB</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;margin-top:4px">
+              <sc-for list="{{ storageRows }}" as="r" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:16px;min-height:52px;padding:0 4px"><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded';color:{{ t.onVar }}">{{ r.icon }}</span><div style="flex:1"><div style="font-size:16px">{{ r.a }}</div><div style="font-size:13px;color:{{ t.onVar }}">{{ r.b }}</div></div><span aria-hidden="true" style="font:300 24px 'Material Symbols Rounded';color:{{ t.onVar }}">chevron_right</span></div></sc-for>
+            </div>
+            <div style="font:500 11px 'IBM Plex Mono';text-transform:uppercase;letter-spacing:.06em;color:{{ t.onVar }};padding:14px 4px 2px">Privacy</div>
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ t.privacy }}" as="o" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:16px;min-height:56px;padding:0 4px"><div style="flex:1"><div style="font-size:16px">{{ o.name }}</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }}">{{ o.sub }}</div></div><span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ o.tg.sbg }};border:2px solid {{ o.tg.sbd }};display:flex;align-items:center;justify-content:{{ o.tg.sj }};padding:0 {{ o.tg.spad }};box-sizing:border-box"><span aria-hidden="true" style="width:{{ o.tg.kw }};height:{{ o.tg.kw }};border-radius:999px;background:{{ o.tg.kbg }};color:{{ o.tg.sc }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">{{ o.tg.sk }}</span></span></div></sc-for>
+            </div>
+          </div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">10b</span><span style="font-size:15px;font-weight:600">AI controls · on</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:0 16px">
+            <div style="display:flex;align-items:center;padding:4px 0"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded';margin-left:-12px">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Smart features</span></div>
+            <div style="background:{{ t.pc }};color:{{ t.onPc }};border-radius:20px;padding:16px;display:flex;align-items:center;gap:16px;margin:8px 0 12px">
+              <div style="flex:1"><div style="font-size:18px;line-height:24px;font-weight:600">Smart features</div><div style="font-size:13px;line-height:18px;text-wrap:pretty">Master switch. Off stops every feature below and clears nothing.</div></div>
+              <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ t.p }};border:2px solid {{ t.p }};display:flex;align-items:center;justify-content:flex-end;padding:0 4px;box-sizing:border-box"><span aria-hidden="true" style="width:24px;height:24px;border-radius:999px;background:{{ t.onP }};color:{{ t.p }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">check</span></span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:center;padding:0 4px 8px;font-size:13px;line-height:18px;color:{{ t.onVar }}"><span style="display:flex;align-items:center;gap:4px;min-height:24px;padding:0 8px 0 6px;border-radius:6px;background:{{ t.c2 }};font-size:12px;font-weight:500;color:{{ t.on }}"><span aria-hidden="true" style="font:400 15px 'Material Symbols Rounded'">memory</span>On device</span>All features run on this phone. Cloud processing is off and asks each time.</div>
+            <sc-for list="{{ t.aiOn }}" as="o" hint-placeholder-count="7">
+              <div style="display:flex;align-items:center;gap:14px;min-height:64px;padding:6px 4px;border-top:1px solid {{ t.outlineVar }}">
+                <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">{{ o.icon }}</span>
+                <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">{{ o.name }}</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">{{ o.sub }}</div></div>
+                <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ o.tg.sbg }};border:2px solid {{ o.tg.sbd }};display:flex;align-items:center;justify-content:{{ o.tg.sj }};padding:0 {{ o.tg.spad }};box-sizing:border-box"><span aria-hidden="true" style="width:{{ o.tg.kw }};height:{{ o.tg.kw }};border-radius:999px;background:{{ o.tg.kbg }};color:{{ o.tg.sc }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">{{ o.tg.sk }}</span></span>
+              </div>
+            </sc-for>
+            <div style="font-size:12px;line-height:16px;color:{{ t.onVar }};padding:12px 4px 0;text-wrap:pretty">Every suggestion shows why it was made and how sure Sift is, and can be undone.</div>
+          </div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;gap:10px;align-items:baseline;padding:0 4px"><span style="font:500 12px 'IBM Plex Mono';color:#5E5D59">10c</span><span style="font-size:15px;font-weight:600">AI controls · global off</span></div>
+        <div style="width:412px;height:919px;flex:none;border-radius:40px;overflow:hidden;background:{{ t.bg }};color:{{ t.on }};display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px {{ t.outlineVar }},0 24px 48px rgba(0,0,0,.10)">
+          <div style="min-height:40px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 24px 0 28px;font-size:14px;font-weight:600"><span>10:24</span><span style="display:flex;gap:4px;font:400 17px 'Material Symbols Rounded';font-variation-settings:'FILL' 1"><span>signal_cellular_alt</span><span>wifi</span><span>battery_full</span></span></div>
+          <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding:0 16px">
+            <div style="display:flex;align-items:center;padding:4px 0"><span role="button" aria-label="Back" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded';margin-left:-12px">arrow_back</span><span style="flex:1;font-size:22px;font-weight:600">Smart features</span></div>
+            <div style="background:{{ t.c1 }};border-radius:20px;padding:16px;display:flex;align-items:center;gap:16px;margin:8px 0 12px">
+              <div style="flex:1"><div style="font-size:18px;line-height:24px;font-weight:600">Smart features</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }};text-wrap:pretty">Off. Search, faces, suggestions and cleanup are paused. Your library still works.</div></div>
+              <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ t.c2 }};border:2px solid {{ t.outline }};display:flex;align-items:center;justify-content:flex-start;padding:0 6px;box-sizing:border-box"><span style="width:16px;height:16px;border-radius:999px;background:{{ t.outline }}"></span></span>
+            </div>
+            <div style="opacity:.38;display:flex;flex-direction:column">
+              <sc-for list="{{ t.aiOff }}" as="o" hint-placeholder-count="7">
+                <div style="display:flex;align-items:center;gap:14px;min-height:64px;padding:6px 4px;border-top:1px solid {{ t.outlineVar }}">
+                  <span aria-hidden="true" style="width:40px;height:40px;flex:none;border-radius:12px;background:{{ t.c2 }};display:flex;align-items:center;justify-content:center;font:300 24px 'Material Symbols Rounded'">{{ o.icon }}</span>
+                  <div style="flex:1;min-width:0"><div style="font-size:16px;line-height:22px">{{ o.name }}</div><div style="font-size:13px;line-height:18px;color:{{ t.onVar }}">{{ o.sub }}</div></div>
+                  <span style="width:52px;height:32px;flex:none;border-radius:999px;background:{{ o.tg.sbg }};border:2px solid {{ o.tg.sbd }};display:flex;align-items:center;justify-content:{{ o.tg.sj }};padding:0 {{ o.tg.spad }};box-sizing:border-box"><span aria-hidden="true" style="width:{{ o.tg.kw }};height:{{ o.tg.kw }};border-radius:999px;background:{{ o.tg.kbg }};color:{{ o.tg.sc }};display:flex;align-items:center;justify-content:center;font:600 16px 'Material Symbols Rounded'">{{ o.tg.sk }}</span></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:14px;background:{{ t.c1 }};border-radius:20px;padding:14px 16px;display:flex;gap:12px;font-size:13px;line-height:18px;color:{{ t.onVar }}"><span aria-hidden="true" style="font:300 22px 'Material Symbols Rounded'">info</span><span style="text-wrap:pretty">Existing faces and tags stay on this phone. <span style="color:{{ t.on }};font-weight:600">Delete AI data</span> removes them.</span></div>
+          </div>
+          <div style="min-height:24px;flex:none;display:flex;align-items:center;justify-content:center"><span style="width:108px;height:4px;border-radius:2px;background:{{ t.on }};opacity:.45"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </sc-for>
+</section>
+
+<section data-screen-label="11 New components" style="padding:72px 64px 96px;display:flex;flex-direction:column;gap:20px;max-width:1000px">
+  <div style="display:flex;align-items:baseline;gap:16px;border-top:1px solid #1B1B1A;padding-top:16px"><span style="font-family:'IBM Plex Mono',monospace;font-size:13px">11</span><h2 style="margin:0;font-size:32px;font-weight:600;letter-spacing:-.01em">Components not in Stage 1</h2></div>
+  <p style="margin:0;font-size:16px;line-height:24px;color:#3A3936;max-width:760px">Each is assembled from existing tokens (radii 6, 8, 12, 20, 28, full; 4 dp spacing grid; Hanken Grotesk and IBM Plex Mono). Promote or replace before build.</p>
+  <div style="display:flex;flex-direction:column">
+    <sc-for list="{{ newComps }}" as="c" hint-placeholder-count="8">
+      <div style="display:grid;grid-template-columns:220px 1fr 140px;gap:24px;padding:14px 0;border-top:1px solid #D3D0CA"><span style="font-size:16px;font-weight:600">{{ c.n }}</span><span style="font-size:15px;line-height:22px;color:#3A3936;text-wrap:pretty">{{ c.d }}</span><span style="font:400 12px 'IBM Plex Mono';color:#5E5D59">{{ c.s }}</span></div>
+    </sc-for>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultAccent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Slate&quot;,&quot;Moss&quot;,&quot;Clay&quot;,&quot;Plum&quot;,&quot;Ochre&quot;,&quot;Tide&quot;],&quot;default&quot;:&quot;Slate&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;showTrueBlack&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
+const rgb=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const lin=v=>{v/=255;return v<=0.04045?v/12.92:((v+0.055)/1.055)**2.4};
+const lum=h=>{const[r,g,b]=rgb(h).map(lin);return .2126*r+.7152*g+.0722*b};
+const Lstar=h=>{const Y=lum(h);return Y>0.008856?116*Math.cbrt(Y)-16:903.3*Y};
+const ratio=(a,b)=>{const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const toHsl=h=>{let[r,g,b]=rgb(h).map(v=>v/255);const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,S=0;const L=(mx+mn)/2;if(mx!==mn){const d=mx-mn;S=L>.5?d/(2-mx-mn):d/(mx+mn);H=mx===r?(g-b)/d+(g<b?6:0):mx===g?(b-r)/d+2:(r-g)/d+4;H/=6}return[H,S,L]};
+const fromHsl=(h,s,l)=>{const f=n=>{const k=(n+h*12)%12,a=s*Math.min(l,1-l);return Math.round(255*(l-a*Math.max(-1,Math.min(k-3,9-k,1))))};return'#'+[f(0),f(8),f(4)].map(v=>v.toString(16).padStart(2,'0')).join('').toUpperCase()};
+const tone=(seed,T,cap)=>{const[h,s0]=toHsl(seed);const s=Math.min(s0,cap);let lo=0,hi=1;for(let i=0;i<32;i++){const m=(lo+hi)/2;Lstar(fromHsl(h,s,m))<T?lo=m:hi=m}return fromHsl(h,s,(lo+hi)/2)};
+function roles(seed,light,bg){let T=light?40:80,p=tone(seed,T,.62),n=0;while(ratio(p,bg)<4.5&&n<10){T+=light?-3:3;p=tone(seed,T,.62);n++}
+  return{p,onP:light?'#FFFFFF':tone(seed,20,.6),pc:light?tone(seed,90,.5):tone(seed,30,.42),onPc:light?tone(seed,10,.6):tone(seed,90,.5),invP:light?tone(seed,80,.6):tone(seed,40,.62)}}
+const BASE=[
+ {key:'light',label:'Light',bg:'#F7F6F3',c1:'#F0EEEA',c2:'#E9E7E2',on:'#1B1B1A',onVar:'#5E5D59',outline:'#85837E',outlineVar:'#D3D0CA',inv:'#2F2F2D',onInv:'#F2F0EB',modal:'#FFFFFF',scrim:'rgba(27,27,26,.32)',shadow:'0 1px 2px rgba(27,27,26,.08), 0 8px 24px rgba(27,27,26,.12)',modalBorder:'transparent',navBorder:'transparent',err:'#B3261E',viewer:'#F7F6F3'},
+ {key:'dark',label:'Dark',bg:'#151515',c1:'#1E1E1D',c2:'#292927',on:'#E6E4DF',onVar:'#A3A19B',outline:'#7D7B75',outlineVar:'#3A3936',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#252524',scrim:'rgba(0,0,0,.5)',shadow:'none',modalBorder:'transparent',navBorder:'transparent',err:'#F2B8B5',viewer:'#151515'},
+ {key:'black',label:'True black',bg:'#000000',c1:'#0F0F0F',c2:'#1C1C1B',on:'#E6E4DF',onVar:'#A3A19B',outline:'#75736E',outlineVar:'#2E2D2B',inv:'#E6E4DF',onInv:'#1B1B1A',modal:'#0F0F0F',scrim:'rgba(0,0,0,.6)',shadow:'none',modalBorder:'#2E2D2B',navBorder:'#2E2D2B',err:'#F2B8B5',viewer:'#000000'}];
+const TRASH=[['IMG_2022.HEIC','Lisbon · deleted 22 Sep','sea','3 d',1],['VID_0381.MP4','0:14 · deleted 27 Sep','night','8 d'],['Screenshot_20260930','Deleted 30 Sep','shot','11 d'],['IMG_1987.HEIC','Duplicate · deleted 7 Oct','tram','18 d'],['IMG_1950.HEIC','Deleted 12 Oct','cake','23 d'],['IMG_1902.HEIC','Deleted 17 Oct','forest','28 d']];
+const ACC={Slate:'#4A6CB8',Moss:'#4F8A5B',Clay:'#C0623F',Plum:'#8E5A9C',Ochre:'#C99A2E',Tide:'#2A8C92'};
+const G={sand:'linear-gradient(160deg,#d8c7ad,#8f7a5e)',sky:'linear-gradient(170deg,#a9c4d8,#3f6a8a)',paper:'linear-gradient(150deg,#ebe5d8,#bfb39b)',moss:'linear-gradient(165deg,#9fb391,#4b6340)',rose:'linear-gradient(160deg,#e3b9a8,#9a5e4e)',night:'linear-gradient(170deg,#4a4f6b,#1e2134)',fog:'linear-gradient(160deg,#c7ccc9,#7f8a86)',gold:'linear-gradient(150deg,#e9cf8f,#b0823a)',wine:'linear-gradient(165deg,#d6a7ae,#7d4a58)',sunset:'linear-gradient(180deg,#f3c58f 0%,#e07b54 48%,#5b3b4a 100%)',sea:'linear-gradient(180deg,#bcd9e8 0%,#4f86a8 58%,#d9c9a6 59%,#b9a37c 100%)',tram:'linear-gradient(160deg,#f2d36b,#d19a2a 55%,#4a3b2a)',tile:'linear-gradient(135deg,#2f5f9e,#9cc0e6 50%,#2f5f9e)',forest:'linear-gradient(175deg,#7f9e7a,#2d4a33)',shot:'linear-gradient(180deg,#FFFFFF 0 14%,#E3E8EF 14% 100%)',cake:'radial-gradient(circle at 50% 58%,#f4e7cf 0 28%,#c98b4e 29% 40%,#5a3a26 41%)'};
+const GK=Object.keys(G);
+const ph=(n,o=0)=>Array.from({length:n},(_,i)=>({bg:G[GK[(i*5+o)%GK.length]],dd:'none',dur:''}));
+const tg=(t,on)=>on?{sbg:t.p,sbd:t.p,sj:'flex-end',spad:'4px',kw:'24px',kbg:t.onP,sk:'check',sc:t.p}:{sbg:t.c2,sbd:t.outline,sj:'flex-start',spad:'6px',kw:'16px',kbg:t.outline,sk:'',sc:t.outline};
+const nav=(t,a)=>[['photo_library','Library'],['photo_album','Albums'],['bolt','Actions'],['hard_drive','Storage']].map(([icon,label],i)=>({icon,label,fill:i===a?1:0,bg:i===a?t.pc:'transparent',ic:i===a?t.onPc:t.onVar,lc:i===a?t.on:t.onVar,w:i===a?600:500}));
+const chips=(t,L,a)=>L.map((l,i)=>i===a?{l,bg:t.pc,fg:t.onPc,bd:'transparent',pl:'8px',d:'block'}:{l,bg:'transparent',fg:t.on,bd:t.outline,pl:'14px',d:'none'});
+const zoom=(t,a)=>chips(t,['Years','Months','Days'],a);
+const AV={rose:G.rose,wine:G.wine,sky:G.sky,gold:G.gold};
+class Component extends DCLogic {
+  renderVals(){
+    const name=this.props.defaultAccent??'Slate',seed=ACC[name]||ACC.Slate;
+    const list=(this.props.showTrueBlack??false)?BASE:BASE.slice(0,2);
+    const themes=list.map(b=>{const t={...b,...roles(seed,b.key==='light',b.bg)};
+      t.on1=tg(t,1);t.fAll=chips(t,['All','Mine','Shared','Auto'],0);
+      t.shareToggles=[['Remove location','3 of 12 photos have GPS. Lisbon, Cascais.',1],['Remove camera details','Hides model, lens and serial number.',0]].map(([name,sub,on])=>({name,sub,tg:tg(t,on)}));
+      t.perms2=[['visibility','View only',0],['add_photo_alternate','Add photos',1],['edit','Edit and add',0]].map(([icon,name,s])=>({icon,name,ring:s?t.p:t.outline,dot:s?t.p:'transparent'}));
+      const edn=a=>[['crop','Crop'],['brightness_6','Light'],['palette','Color'],['show_chart','Pro']].map(([icon,label],i)=>({icon,label,fill:i===a?1:0,bg:i===a?t.pc:'transparent',ic:i===a?t.onPc:t.onVar,lc:i===a?t.on:t.onVar,w:i===a?600:500}));
+      t.ed0=edn(0);t.ed1=edn(1);t.ed2=edn(2);t.ed3=edn(3);
+      t.aspect=chips(t,['Free','1:1','4:5','3:2','16:9'],0);
+      t.proTabs0=chips(t,['Curves','Levels'],0);t.proTabs1=chips(t,['Curves','Levels'],1);
+      t.chan=chips(t,['RGB','R','G','B'],0).map(c=>({...c,l:c.l,pl:'8px'}));
+      const sl=(label,val,v)=>{const p=50+v/2;return{label,val,th:p+'%',l:Math.min(50,p)+'%',w:Math.abs(p-50)+'%'}};
+      t.light=[sl('Exposure','+0.4 EV',16),sl('Contrast','+12',12),sl('Highlights','−22',-22),sl('Shadows','+18',18),sl('Whites','0',0)];
+      t.color=[sl('Saturation','+8',8),sl('Vibrance','+24',24),sl('Warmth','5650 K',14),sl('Tint','0',0)];
+      t.mapChips=chips(t,['All time','2026','Last 30 days'],1).map(c=>({...c,bg2:c.bg==='transparent'?t.bg:c.bg}));
+      t.history=[['Straighten −1.2°','Crop · auto, High 0.97','2 d ago',1],['Exposure +0.4 EV','Light · Auto','2 d ago'],['Warmth 5650 K','Color · manual','2 d ago'],['Curves, RGB','Pro · 3 points','2 d ago'],['Original','IMG_2041.HEIC, untouched','4 Oct',0,1]].map(([a,b,when,cur,last],i,arr)=>({a,b,when,w:i===0?600:500,dot:i===0?t.p:'transparent',ring:i===0?t.p:t.outline,line:i===arr.length-1?'none':'block'}));
+      t.themeChips=chips(t,['System','Light','Dark'],t.key==='light'?1:2);
+      t.swatches=Object.keys(ACC).map(n=>{const c=roles(ACC[n],t.key==='light',t.bg).p,s=n===name;return{n,c,ck:s?'check':'',rw:s?'3px':'0px',ro:s?'5px':'0px'}});
+      t.privacy=[['Strip location when sharing','Default for new shares',1],['Require biometrics for Locked folder','',1],['Hide previews in app switcher','',0]].map(([name,sub,on])=>({name,sub,tg:tg(t,on)}));
+      const ai=[['search','Search by text and objects','"beach", "passport", "red car"'],['face','People and pets','Groups faces. Names stay on this phone.'],['receipt_long','Receipts and documents','Reads text for search and filing'],['content_copy','Duplicate finder','Never deletes without review'],['luggage','Trip and event albums','Suggests albums with a reason'],['auto_fix_high','Edit suggestions','Auto straighten, exposure, crop'],['image_search','Place names','Matches GPS to nearby places']];
+      t.aiOn=ai.map(([icon,name,sub],i)=>({icon,name,sub,tg:tg(t,i!==6)}));
+      t.aiOff=ai.map(([icon,name,sub],i)=>({icon,name,sub,tg:tg(t,0)}));
+      t.trashRows=TRASH.map(([name,sub,g,left,u])=>({name,sub,bg:G[g],left,urg:u?t.err:'inherit'}));t.mapKeep=0;
+      t.navLib=nav(t,0);t.navAlb=nav(t,1);t.zy=zoom(t,0);t.zm=zoom(t,1);t.zd=zoom(t,2);
+      t.provs=[['smartphone','This phone only','41.2 GB free · nothing leaves'],['dns','Home NAS','Raman-NAS · SMB · 1.6 TB free',1],['cloud','Dropbox','connected · 88 GB free'],['add_to_drive','Google Drive','sign in to connect'],['cloud_circle','OneDrive','sign in to connect'],['lan','Nextcloud or WebDAV','your server address'],['database','S3-compatible','Backblaze B2, Wasabi, MinIO']].map(([icon,name,detail,s])=>({icon,name,detail,bg:s?t.c2:'transparent',ring:s?t.p:t.outline,dot:s?t.p:'transparent'}));
+      t.importOpts=[['Keep album structure','86 albums become folders and albums',1],['Keep dates and locations','Reads the Takeout JSON next to each file',1],['Skip items already on this phone','Matched by file hash, 2,140 found',0]].map(([n,s,on],i)=>({name:n,sub:s,tg:tg(t,on),div:i?t.outlineVar:'transparent'}));
+      const done={icc:t.p,fill:1,icon:'check_circle',bo:0,w:'0%',nameC:t.on},run={icc:t.on,fill:0,icon:'progress_activity',bo:1,w:'61%',nameC:t.on},wait={icc:t.outline,fill:0,icon:'radio_button_unchecked',bo:0,w:'0%',nameC:t.onVar};
+      t.syncSteps=[{...done,name:'Indexing files',val:'52,116',detail:'Read dates, sizes and EXIF. Nothing moved.'},{...run,name:'Reading text and faces',val:'31,790 / 52,116',detail:'Receipts, tickets and people, on this phone.'},{...wait,name:'Finding duplicates',val:'queued',detail:'Starts after reading. Review before anything is deleted.'},{...wait,name:'Copying originals to Home NAS',val:'queued',detail:'Waits for Wi‑Fi and charging.'}].map((s,i)=>({...s,div:i?t.outlineVar:'transparent'}));
+      return t});
+    const yc=(a,b,c)=>({a:G[a],b:G[b],c:G[c]});
+    return {
+      accentName:name,themes,
+      lockedCells:[...ph(8,9),{bg:G.night,dd:'block',dur:'0:41'}],
+      
+      storageRows:[{icon:'add_circle',a:'Add a location',b:'Dropbox, Drive, WebDAV, S3'},{icon:'cloud_sync',a:'Back up on Wi‑Fi and charging',b:'Home NAS first, then Dropbox'},{icon:'delete_sweep',a:'Free up space',b:'4.1 GB already backed up'}],
+      newComps:[{n:'Toggle (switch)',d:'52 × 32 dp, full radius. On uses the accent fill with a check in the thumb; off uses an outlined track. Used in onboarding, sharing, settings and AI controls.',s:'5, 10, 1'},{n:'Radio row',d:'20 dp ring with a 10 dp dot for single choice lists: storage providers and share permissions.',s:'1, 5'},{n:'Contact chip',d:'Filter chip with a 24 dp avatar and a remove icon for share recipients.',s:'5'},{n:'Timeline scrubber',d:'Right-edge rail with year or month ticks, a 16 × 48 dp accent handle and an inverse date bubble while dragging.',s:'2'},{n:'Slider with centered fill',d:'14 dp track, 4 × 28 dp thumb, fill from the midpoint for signed adjustments.',s:'6'},{n:'Crop frame and straighten dial',d:'White rule-of-thirds frame with corner handles, plus a tick ruler for rotation.',s:'6'},{n:'Curve and levels graph',d:'Histogram, grid and spline with draggable points; triangle input markers and numeric fields for levels.',s:'6'},{n:'Channel chip',d:'32 dp square mono-label filter chip (RGB, R, G, B).',s:'6'},{n:'Look swatch',d:'64 dp preview tile with 12 dp radius and accent ring when selected.',s:'6'},{n:'Map pin cluster',d:'Rounded photo thumbnail with a count badge on a neutral base map.',s:'7'},{n:'Timeline step',d:'Dot and rail with title, detail and timestamp for edit history.',s:'9'},{n:'Biometric sheet',d:'Modal bottom sheet with a 88 dp fingerprint disc, PIN fallback and cancel.',s:'8'},{n:'Master switch card',d:'Container-tinted card holding the global AI toggle; children dim to 38% when off.',s:'10'},{n:'Avatar and member stack',d:'56 dp circles with name and role, and a 28 dp overlapped pair for activity.',s:'5'},{n:'Segmented storage bar',d:'12 dp bar with 2 dp gaps showing used, category and free.',s:'1, 10'}],
+      histPts:(()=>{const p=['0,180'];for(let x=0;x<=364;x+=4){const h=14+98*Math.exp(-(((x-110)/62)**2))+74*Math.exp(-(((x-250)/54)**2))+10*Math.abs(Math.sin(x/7))+6*Math.abs(Math.sin(x/3));p.push(x+','+Math.max(4,180-h).toFixed(1))}p.push('364,180');return p.join(' ')})(),
+      levelFields:[{k:'Black',v:'6'},{k:'Gamma',v:'1.12'},{k:'White',v:'250'}],
+      looks:[['Original',0,'none'],['Clear',1,'saturate(1.2) contrast(1.1)'],['Warm',0,'sepia(.35) saturate(1.1)'],['Fade',0,'contrast(.85) brightness(1.1)'],['Mono',0,'grayscale(1)']].map(([n,s,f])=>({n,f,bg:G.sea,rw:s?'3px':'0px'})),
+      pins:[[40,300,64,16,'sea',212],[190,150,56,16,'tram',38],[250,330,44,22,'forest',0],[70,500,52,16,'sunset',64],[290,520,40,20,'tile',9],[150,610,48,16,'rose',27]].map(([x,y,s,r,g,n])=>({x,y,s,r,bg:G[g],n,cd:n?'flex':'none'})),
+      strip:ph(7,5),
+      placeCells:ph(12,7),
+      infoRows:[['event','Sun 4 Oct 2026 · 18:52','GMT+1 · Lisbon'],['photo_camera','Pixel 10 Pro','f/1.7 · 1/320 s · ISO 50 · 24 mm'],['image','IMG_2041.HEIC','3.2 MB · 12.4 MP · 4080 × 3072'],['location_on','Cais das Colunas, Lisbon','38.7066, −9.1363',1],['memory','On this phone · copied to Home NAS','original untouched · 1 edit']].map(([icon,a,b,m])=>({icon,a,b,thumb:G.sea,td:m?'block':'none'})),
+      albums:[['Lisbon, Oct 2026','214 items','sea','luggage'],['Family','3,420 items · shared','rose','group'],['Receipts','128 items · auto','paper','memory'],['Porto weekend','96 items','tile','']].map(([name,n,g,icon])=>({name,n,bg:G[g],icon})),
+      utilRows:[{icon:'map',name:'Map',sub:'1,284 places'},{icon:'lock',name:'Locked folder',sub:'9 items · not backed up'},{icon:'delete',name:'Trash',sub:'38 items · deleted after 60 days'}],
+      albumCells:[...ph(8,1),{bg:G.sky,dd:'block',dur:'0:14'}],
+      members:[{name:'You',role:'owner',bg:AV.rose},{name:'Inês',role:'can add',bg:AV.wine},{name:'Jonas',role:'can view',bg:AV.sky},{name:'Tomás',role:'can add',bg:AV.gold}],
+      familyCells:ph(12,2).map((c,i)=>({...c,av:[AV.wine,AV.sky,AV.gold,AV.rose][i%4]})),
+      selCells:ph(6,4),
+      perms:[['photo_library','Photos and videos','Needed to build your library. Files never move without your say.','Required'],['location_on','Photo locations','Reads GPS stored in your photos to power the map.','Optional'],['notifications','Notifications','Tells you when an import or sync finishes.','Optional'],['fingerprint','Biometrics','Unlocks the Locked folder. Sift never sees your fingerprint.','Optional']].map(([icon,name,why,tag],i)=>({icon,name,why,tag,tbg:i?'transparent':'rgba(128,128,128,.18)',tfg:'inherit',div:i?'rgba(128,128,128,.22)':'transparent'})),
+      importStats:[{k:'Photos',v:'48,212'},{k:'Videos',v:'3,904'},{k:'Albums',v:'86'},{k:'Size',v:'412 GB'}],
+      years:[{y:'2026',n:'12,408',...yc('sea','sunset','forest')},{y:'2025',n:'15,931',...yc('tram','tile','rose')},{y:'2024',n:'14,226',...yc('moss','sky','gold')}],
+      scrubY:['2026','2025','2024','2023','2022','2021','2020'],
+      scrubM:['Oct','Sep','Aug','Jul','Jun','May','Apr','Mar','Feb','Jan'],
+      months:[['October','412','sea'],['September','238','forest'],['August','604','sunset'],['July','351','tile'],['June','187','moss'],['May','522','paper'],['April','296','rose'],['March','143','sky']].map(([m,n,g])=>({m,n,bg:G[g]})),
+      days:[{label:'Today',sub:'Mon 19 Oct',cells:ph(4,0)},{label:'Sun 18 Oct',sub:'Cascais',cells:[...ph(7,3),{bg:G.sky,dd:'block',dur:'0:14'}]},{label:'Sat 17 Oct',sub:'',cells:ph(8,6)},{label:'Fri 16 Oct',sub:'',cells:ph(4,2)}]
+    };
+  }
+}
+</script>
+</body>
+</html>
