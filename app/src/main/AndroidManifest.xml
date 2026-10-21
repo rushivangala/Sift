@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- Optional "Media management" access: favorite and trash without a system dialog each time. -->
+    <uses-permission android:name="android.permission.MANAGE_MEDIA" />
 
     <!-- Sift never needs the network: no INTERNET permission. Nothing can leave the phone. -->
 

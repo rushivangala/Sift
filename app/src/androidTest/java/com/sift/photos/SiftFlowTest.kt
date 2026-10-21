@@ -23,6 +23,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
@@ -84,7 +85,7 @@ class SiftFlowTest {
         launch(onboarded = false, sample = false)
         compose.onNodeWithText("Allow what Sift needs").assertExists()
         shot("01-onboarding")
-        compose.onNodeWithText("Explore with the sample library").performClick()
+        compose.onNodeWithText("Explore with the demo library").performClick()
         waitForText("Ask your photos")
         compose.onNodeWithText("3 photos can become actions").assertExists()
         compose.onAllNodes(hasText("Why:", substring = true)).onFirst().assertExists()
@@ -137,6 +138,21 @@ class SiftFlowTest {
         waitForText("What changed and why")
         compose.onNodeWithText("Remove person, left edge").assertExists()
         shot("09-what-changed")
+    }
+
+    @Test
+    fun favoriteTogglesAndEditorOpens() {
+        launch(onboarded = true, sample = true)
+        compose.onAllNodes(hasContentDescription("Photo,", substring = true)).onFirst().performClick()
+        compose.onNodeWithContentDescription("Add to favorites").performClick()
+        compose.onNodeWithContentDescription("Remove from favorites").assertExists()
+        compose.onNodeWithContentDescription("Remove from favorites").performClick()
+        compose.onNodeWithContentDescription("Add to favorites").assertExists()
+        compose.onNodeWithContentDescription("Edit").performClick()
+        waitForText("Exposure")
+        compose.onNodeWithText("Color").performClick()
+        waitForText("Saturation")
+        shot("20-editor")
     }
 
     @Test
@@ -223,5 +239,17 @@ class SiftFlowTest {
         compose.onNodeWithContentDescription("Info").performClick()
         waitForText("sift_test_", substring = true)
         shot("19-real-viewer-info")
+        // Edit a real photo: the editor saves a new copy and leaves the original alone.
+        androidx.test.espresso.Espresso.pressBack()
+        compose.onNodeWithContentDescription("Edit").performClick()
+        waitForText("Exposure")
+        compose.onNodeWithContentDescription("Exposure").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(0.5f) }
+        compose.onNodeWithText("Save").performClick()
+        compose.waitUntil(15_000) {
+            ctx.contentResolver.query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, arrayOf(MediaStore.Images.Media._ID),
+                "${MediaStore.Images.Media.DISPLAY_NAME} LIKE ?", arrayOf("%_edit_%"), null,
+            )?.use { c -> while (c.moveToNext()) inserted += android.content.ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, c.getLong(0)); c.count > 0 } == true
+        }
     }
 }

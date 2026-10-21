@@ -102,7 +102,7 @@ fun ViewerScreen(vm: SiftViewModel, screen: Screen.Viewer) {
     val items = screen.items
     if (items.isEmpty()) { vm.pop(); return }
     val pager = rememberPagerState(initialPage = screen.index.coerceIn(0, items.lastIndex)) { items.size }
-    val item = items[pager.currentPage.coerceIn(0, items.lastIndex)]
+    val item = vm.live(items[pager.currentPage.coerceIn(0, items.lastIndex)])
     var chrome by remember { mutableStateOf(true) }
     var info by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
@@ -192,20 +192,7 @@ fun ViewerScreen(vm: SiftViewModel, screen: Screen.Viewer) {
                     val fav = vm.isFavorite(item)
                     IconBtn("favorite", if (fav) "Remove from favorites" else "Add to favorites", { actions.favorite(item, !fav) }, fill = fav, tint = c.onSurface)
                     IconBtn("share", "Share", { actions.share(listOf(item)) }, tint = c.onSurface)
-                    IconBtn("tune", "Edit", {
-                        when (val ref = item.ref) {
-                            is PhotoRef.Media -> runCatching {
-                                context.startActivity(
-                                    Intent.createChooser(
-                                        Intent(Intent.ACTION_EDIT).setDataAndType(ref.uri, item.mime ?: "image/*")
-                                            .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION),
-                                        "Edit with",
-                                    )
-                                )
-                            }
-                            is PhotoRef.Art -> vm.push(Screen.EditPanel(item))
-                        }
-                    }, tint = c.onSurface)
+                    IconBtn("tune", "Edit", { vm.push(Screen.Editor(item)) }, tint = c.onSurface)
                     IconBtn("delete", "Move to Trash", {
                         actions.trash(listOf(item))
                         if (item.ref is PhotoRef.Art) vm.pop()

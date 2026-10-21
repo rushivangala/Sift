@@ -151,11 +151,27 @@ fun SettingsScreen(vm: SiftViewModel) {
             Overline("Library")
             SiftCard(spacing = 0.dp, padding = PaddingValues(vertical = 4.dp)) {
                 ToggleRow(
-                    "Sample library", "Lisbon, Oct 2026. Placeholder photos that show every flow. Your own photos are untouched.",
+                    "Demo library",
+                    if (s.sampleLibrary) "On. You're seeing made-up photos (Lisbon, Oct 2026) that show every feature. Turn off to see your own photos."
+                    else "Off. Turn on to try every feature with made-up photos. Your own photos are never changed.",
                     s.sampleLibrary, { s.sampleLibrary = it },
                 )
                 if (!s.sampleLibrary) {
                     val actions = LocalActions.current
+                    val ctx = androidx.compose.ui.platform.LocalContext.current
+                    val managed = remember(vm.access) { android.provider.MediaStore.canManageMedia(ctx) }
+                    Divider(Modifier.padding(horizontal = 16.dp))
+                    LinkRow(
+                        "verified", "Media management",
+                        if (managed) "Allowed · favorite and trash without asking each time" else "Allow so favorites and Trash don't ask each time",
+                    ) {
+                        runCatching {
+                            ctx.startActivity(
+                                android.content.Intent(android.provider.Settings.ACTION_REQUEST_MANAGE_MEDIA)
+                                    .setData(android.net.Uri.parse("package:" + ctx.packageName))
+                            )
+                        }
+                    }
                     Divider(Modifier.padding(horizontal = 16.dp))
                     LinkRow("photo_library", "Photo access", when (vm.access) {
                         com.sift.photos.data.MediaAccess.Full -> "All photos and videos"
@@ -353,7 +369,7 @@ fun OnboardingScreen(vm: SiftViewModel) {
                 actions.requestAccess()
                 vm.finishOnboarding(sample = false)
             }, Modifier.fillMaxWidth(), large = true)
-            Btn("Explore with the sample library", { vm.finishOnboarding(sample = true) }, Modifier.fillMaxWidth(), kind = BtnKind.Outlined, large = true)
+            Btn("Explore with the demo library", { vm.finishOnboarding(sample = true) }, Modifier.fillMaxWidth(), kind = BtnKind.Outlined, large = true)
         }
     }
 }

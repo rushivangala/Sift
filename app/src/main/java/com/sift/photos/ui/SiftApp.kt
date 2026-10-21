@@ -109,11 +109,12 @@ fun SiftApp(vm: SiftViewModel) {
     LaunchedEffect(s.hidePreviews) { activity?.setRecentsScreenshotEnabled(!s.hidePreviews) }
 
     // One entry per system request, so results line up with what was asked. Empty = no Undo toast.
-    val pending = remember { ArrayDeque<List<PhotoItem>>() }
+    val pending = remember { ArrayDeque<Pair<List<PhotoItem>, () -> Unit>>() }
     val restoreRef = remember { arrayOfNulls<(List<PhotoItem>) -> Unit>(1) }
     val senderLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
-        val trashed = pending.removeFirstOrNull().orEmpty()
+        val (trashed, onOk) = pending.removeFirstOrNull() ?: (emptyList<PhotoItem>() to {})
         if (result.resultCode == Activity.RESULT_OK) {
+            onOk()
             vm.refresh()
             if (trashed.isNotEmpty()) {
                 vm.toast.show("${trashed.size} ${if (trashed.size == 1) "item" else "items"} moved to Trash", icon = "delete") {
@@ -133,7 +134,7 @@ fun SiftApp(vm: SiftViewModel) {
                 if (sampleKeys.isNotEmpty()) vm.trashSample(sampleKeys)
                 val uris = items.mapNotNull { (it.ref as? PhotoRef.Media)?.uri }
                 if (uris.isNotEmpty()) {
-                    pending.addLast(items.filter { it.ref is PhotoRef.Media })
+                    pending.addLast(items.filter { it.ref is PhotoRef.Media } to {})
                     val pi = MediaStore.createTrashRequest(context.contentResolver, uris, true)
                     senderLauncher.launch(IntentSenderRequest.Builder(pi.intentSender).build())
                 }
@@ -141,7 +142,7 @@ fun SiftApp(vm: SiftViewModel) {
             restore = { items ->
                 val uris = items.mapNotNull { (it.ref as? PhotoRef.Media)?.uri }
                 if (uris.isNotEmpty()) {
-                    pending.addLast(emptyList())
+                    pending.addLast(emptyList<PhotoItem>() to {})
                     val pi = MediaStore.createTrashRequest(context.contentResolver, uris, false)
                     senderLauncher.launch(IntentSenderRequest.Builder(pi.intentSender).build())
                 }
@@ -150,7 +151,8 @@ fun SiftApp(vm: SiftViewModel) {
                 when (val ref = item.ref) {
                     is PhotoRef.Art -> vm.toggleSampleFavorite(item)
                     is PhotoRef.Media -> {
-                        pending.addLast(emptyList())
+                        // Shown at once; the system asks for consent unless Sift has "Media management" access.
+                        pending.addLast(emptyList<PhotoItem>() to { vm.favorites[item.key] = fav })
                         val pi = MediaStore.createFavoriteRequest(context.contentResolver, listOf(ref.uri), fav)
                         senderLauncher.launch(IntentSenderRequest.Builder(pi.intentSender).build())
                     }
@@ -230,6 +232,7 @@ private fun ScreenContent(vm: SiftViewModel, screen: Screen) {
         Screen.Trash -> TrashScreen(vm)
         is Screen.Viewer -> ViewerScreen(vm, screen)
         is Screen.EditPanel -> EditPanelScreen(vm, screen.item)
+        is Screen.Editor -> com.sift.photos.ui.screens.EditorScreen(vm, screen.item)
         is Screen.Credentials -> CredentialsScreen(vm, screen.item)
         Screen.Receipt -> ReceiptScreen(vm)
         Screen.Ticket -> TicketScreen(vm)

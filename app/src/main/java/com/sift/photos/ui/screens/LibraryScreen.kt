@@ -141,6 +141,20 @@ fun LibraryScreen(vm: SiftViewModel) {
                         if (vm.ai && (vm.sample || vm.access != MediaAccess.None)) IconBtn("cleaning_services", "Cleanup", { vm.push(Screen.Cleanup) }, tint = c.onSurface)
                         IconBtn("settings", "Settings", { vm.push(Screen.Settings) }, tint = c.onSurface)
                     }
+                    if (vm.sample) {
+                        Row(
+                            Modifier.fillMaxWidth().clip(Shapes.l).background(c.containerHigh).padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Sym("info", size = 20.dp, tint = c.onSurfaceVariant)
+                            Spacer(Modifier.width(10.dp))
+                            T("Demo library · made-up photos", Sift.type.bodyS, Modifier.weight(1f), color = c.onSurface)
+                            Btn("Show my photos", {
+                                vm.settings.sampleLibrary = false
+                                if (vm.access == MediaAccess.None) actions.requestAccess()
+                            }, kind = BtnKind.Text, color = c.primary)
+                        }
+                    }
                     if (showLibrary) {
                         Spacer(Modifier.height(8.dp))
                         T(if (vm.ai && vm.settings.feature(SmartFeature.Search)) "Ask your photos" else "Search your photos", Sift.type.headlineL, color = c.onSurface)
@@ -192,7 +206,7 @@ fun LibraryScreen(vm: SiftViewModel) {
                 body = "Photos and videos on this phone appear here once Sift can see them. It all stays on this phone.",
             ) {
                 Btn("Allow photo access", { actions.requestAccess() }, Modifier.fillMaxWidth(), large = true)
-                Btn("Explore the sample library", { vm.settings.sampleLibrary = true }, Modifier.fillMaxWidth(), kind = BtnKind.Outlined, large = true)
+                Btn("Explore the demo library", { vm.settings.sampleLibrary = true }, Modifier.fillMaxWidth(), kind = BtnKind.Outlined, large = true)
             }
         } else if (vm.sections.isEmpty() && !vm.loading) {
             Box(Modifier.fillMaxSize().padding(top = 280.dp)) {

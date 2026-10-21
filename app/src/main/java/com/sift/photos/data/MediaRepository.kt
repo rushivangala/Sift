@@ -170,6 +170,42 @@ class MediaRepository(private val context: Context) {
         }.getOrNull()
     }
 
+    /** Renders [params] into a new JPEG in Pictures/Sift. The original file is never modified. */
+    suspend fun saveEdited(item: PhotoItem, ref: PhotoRef.Media, params: EditParams): Uri? = withContext(Dispatchers.IO) {
+        runCatching {
+            val src = ImageDecoder.decodeBitmap(ImageDecoder.createSource(resolver, ref.uri)) { decoder, info, _ ->
+                val longest = maxOf(info.size.width, info.size.height)
+                val scale = maxOf(1f, longest / 8192f)
+                decoder.setTargetSize((info.size.width / scale).toInt(), (info.size.height / scale).toInt())
+                decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+            }
+            val m = android.graphics.Matrix().apply {
+                if (params.flip) postScale(-1f, 1f)
+                postRotate(-params.rotation.toFloat())
+            }
+            val turned = Bitmap.createBitmap(src, 0, 0, src.width, src.height, m, true)
+            val out = Bitmap.createBitmap(turned.width, turned.height, Bitmap.Config.ARGB_8888)
+            android.graphics.Canvas(out).drawBitmap(turned, 0f, 0f, android.graphics.Paint().apply {
+                colorFilter = android.graphics.ColorMatrixColorFilter(params.colorMatrix())
+                isFilterBitmap = true
+            })
+            val base = item.name.substringBeforeLast('.')
+            val values = android.content.ContentValues().apply {
+                put(MediaStore.MediaColumns.DISPLAY_NAME, "${base}_edit_${System.currentTimeMillis() / 1000}.jpg")
+                put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/Sift")
+                put(MediaStore.Images.Media.DATE_TAKEN, item.dateMillis)
+                put(MediaStore.MediaColumns.IS_PENDING, 1)
+            }
+            val uri = resolver.insert(MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY), values)!!
+            resolver.openOutputStream(uri)!!.use { out.compress(Bitmap.CompressFormat.JPEG, 95, it) }
+            resolver.update(uri, android.content.ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }, null, null)
+            uri
+        }.getOrNull()
+    }
+
+    fun deleteOwn(uri: Uri) = runCatching { resolver.delete(uri, null, null) }
+
     /** A small software bitmap for color sampling ("Match my photo"). */
     suspend fun samplePixels(ref: PhotoRef.Media): IntArray? = withContext(Dispatchers.IO) {
         val bmp = runCatching { resolver.loadThumbnail(ref.uri, Size(64, 64), null) }.getOrNull() ?: return@withContext null

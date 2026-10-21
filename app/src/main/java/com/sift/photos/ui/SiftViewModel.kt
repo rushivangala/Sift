@@ -39,6 +39,7 @@ sealed interface Screen {
     data object Trash : Screen
     data class Viewer(val items: List<PhotoItem>, val index: Int) : Screen
     data class EditPanel(val item: PhotoItem) : Screen
+    data class Editor(val item: PhotoItem) : Screen
     data class Credentials(val item: PhotoItem) : Screen
     data object Receipt : Screen
     data object Ticket : Screen
@@ -111,6 +112,8 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             loading = true
             deviceItems = repo.load()
+            // MediaStore now reflects confirmed favorites; drop the session overrides for real items.
+            favorites.keys.filter { it.startsWith("m") }.forEach { favorites.remove(it) }
             deviceTrash = runCatching { repo.load(trashed = true) }.getOrDefault(emptyList())
             storage = repo.storage(deviceItems)
             loading = false
@@ -120,12 +123,36 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
     val sample: Boolean get() = settings.sampleLibrary
     val ai: Boolean get() = settings.aiEnabled
 
-    fun isFavorite(item: PhotoItem) = item.favorite != (item.key in sampleFavorites)
+    /** Favorite state confirmed this session, ahead of the next MediaStore reload. */
+    val favorites = androidx.compose.runtime.mutableStateMapOf<String, Boolean>()
+
+    fun isFavorite(item: PhotoItem) = favorites[item.key] ?: item.favorite
+
+    /** The freshest copy of an item (favorites, after a reload) for screens that hold a snapshot. */
+    fun live(item: PhotoItem): PhotoItem {
+        val fresh = if (item.ref is PhotoRef.Media) deviceItems.firstOrNull { it.key == item.key } ?: item else item
+        return fresh.copy(favorite = isFavorite(fresh))
+    }
+
+    suspend fun saveEdit(item: PhotoItem, params: com.sift.photos.data.EditParams) {
+        val ref = item.ref as? PhotoRef.Media ?: return
+        val uri = repo.saveEdited(item, ref, params)
+        if (uri == null) {
+            toast.show("Couldn't save the edit. The original is unchanged.", icon = "error", onAction = null)
+            return
+        }
+        pop()
+        refresh()
+        toast.show("Saved an edited copy · original kept", icon = "check_circle") {
+            repo.deleteOwn(uri); refresh()
+        }
+    }
 
     val sections: List<DaySection>
         get() = if (sample) {
-            SampleData.sections.map { s -> s.copy(items = s.items.filter { it.key !in sampleTrashed }) }.filter { it.items.isNotEmpty() }
-        } else group(deviceItems)
+            SampleData.sections.map { s -> s.copy(items = s.items.filter { it.key !in sampleTrashed }.map { it.copy(favorite = isFavorite(it)) }) }
+                .filter { it.items.isNotEmpty() }
+        } else group(deviceItems.map { if (it.key in favorites) it.copy(favorite = isFavorite(it)) else it })
 
     val libraryItems: List<PhotoItem> get() = sections.flatMap { it.items }
 
@@ -209,6 +236,6 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun toggleSampleFavorite(item: PhotoItem) {
-        if (item.key in sampleFavorites) sampleFavorites.remove(item.key) else sampleFavorites.add(item.key)
+        favorites[item.key] = !isFavorite(item)
     }
 }

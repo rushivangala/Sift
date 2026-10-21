@@ -80,7 +80,7 @@ fun ActionsScreen(vm: SiftViewModel) {
             !vm.sample -> Box(Modifier.fillMaxSize()) {
                 CenterMessage(
                     "bolt", "No actions yet",
-                    "Reading receipts, tickets and cards needs the on-device text model, which this build doesn't include yet. Turn on the sample library in Settings to try the flow.",
+                    "Reading receipts, tickets and cards needs the on-device text model, which this build doesn't include yet. Turn on the demo library in Settings to try the flow.",
                 ) { Btn("Open Settings", { vm.push(Screen.Settings) }, kind = BtnKind.Outlined) }
             }
             else -> Column(Modifier.fillMaxSize().scrollY().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
