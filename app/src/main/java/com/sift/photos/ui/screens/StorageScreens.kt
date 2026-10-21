@@ -115,8 +115,8 @@ fun StorageScreen(vm: SiftViewModel) {
             }
         }
 
-        val free = stats?.freeBytes ?: 41_200_000_000
-        val total = stats?.totalBytes ?: 256_000_000_000
+        val free = if (vm.sample) 41_200_000_000 else stats?.freeBytes ?: 0
+        val total = (if (vm.sample) 256_000_000_000 else stats?.totalBytes ?: 1).coerceAtLeast(1)
         val sift = if (vm.sample) 56_000_000_000 else (stats?.photoBytes ?: 0) + (stats?.videoBytes ?: 0)
         val other = (total - free - sift).coerceAtLeast(0)
         SiftCard(spacing = 12.dp) {

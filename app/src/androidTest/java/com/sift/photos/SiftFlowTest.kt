@@ -216,6 +216,8 @@ class SiftFlowTest {
         launch(onboarded = true, sample = false)
         compose.waitUntil(15_000) { compose.onAllNodes(hasContentDescription("Photo,", substring = true)).fetchSemanticsNodes().size >= 3 }
         compose.onNodeWithText("Today").assertExists()
+        // Thumbnails decode off the main thread; give MediaStore time to generate them.
+        Thread.sleep(3000)
         shot("18-real-library")
         compose.onAllNodes(hasContentDescription("Photo,", substring = true)).onFirst().performClick()
         compose.onNodeWithContentDescription("Info").performClick()

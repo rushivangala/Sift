@@ -150,10 +150,10 @@ class MediaRepository(private val context: Context) {
     suspend fun thumbnail(ref: PhotoRef.Media, px: Int): Bitmap? {
         val key = "${ref.mediaId}@$px"
         thumbs.get(key)?.let { return it }
-        return withContext(Dispatchers.IO) {
+        val bmp = withContext(Dispatchers.IO) {
             runCatching { resolver.loadThumbnail(ref.uri, Size(px, px), null) }.getOrNull()
-                ?.also { thumbs.put(key, it) }
-        }
+        } ?: if (!ref.isVideo) display(ref, px) else null
+        return bmp?.also { thumbs.put(key, it) }
     }
 
     /** Full-screen decode, downsampled to the display so a 50 MP photo never allocates 200 MB. */
