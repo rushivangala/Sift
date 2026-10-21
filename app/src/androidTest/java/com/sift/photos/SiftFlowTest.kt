@@ -107,7 +107,7 @@ class SiftFlowTest {
         launch(onboarded = true, sample = true)
         compose.onNodeWithContentDescription("Voice search").performClick()
         compose.onNode(hasSetTextAction()).performTextInput("receipts fr")
-        waitForText("Top match understood as", substring = true)
+        waitForText("TOP MATCH UNDERSTOOD AS", substring = true)
         shot("04-ask-typing")
     }
 
@@ -145,10 +145,10 @@ class SiftFlowTest {
         compose.onAllNodesWithText("Actions").onFirst().performClick()
         waitForText("Save contact: Mara Lindqvist")
         shot("10-actions")
-        compose.onNodeWithText("Answer 2 questions").performClick()
+        compose.onNodeWithText("Answer 2 questions").performScrollTo().performClick()
         waitForText("Which email is it?")
-        compose.onNodeWithText("mara.lindqvist@nordvik.se").performClick()
-        compose.onNodeWithText("nordvik.se").performClick()
+        compose.onNodeWithText("mara.lindqvist@nordvik.se").performScrollTo().performClick()
+        compose.onNodeWithText("nordvik.se").performScrollTo().performClick()
         shot("11-card-contact")
     }
 

@@ -88,8 +88,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        api: [36, 37]
-    continue-on-error: ${{ matrix.api == 37 }}
+        # Add 37 once GitHub runners can install the Android 17 system image.
+        api: [36]
     steps:
       - uses: actions/checkout@v5
 
