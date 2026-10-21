@@ -40,8 +40,7 @@ jobs:
           if [ -f "$ANDROID_HOME/platforms/android-37/android.jar" ]; then
             echo "sdk=37" >> "$GITHUB_OUTPUT"
           else
-            echo "::warning::platforms;android-37 is not installable on this runner; building against API 36."
-            cat /tmp/sdk37.log | tail -5
+            echo "::warning::platforms;android-37 is not installable on this runner; building against API 36. sdkmanager: $(tail -3 /tmp/sdk37.log | tr '\n' ' ') | available: $(sdkmanager --list 2>/dev/null | grep -oE 'platforms;android-[0-9A-Za-z.-]+' | sort -u | tail -4 | tr '\n' ' ')"
             sdkmanager --install "platforms;android-36" > /dev/null
             echo "sdk=36" >> "$GITHUB_OUTPUT"
           fi
