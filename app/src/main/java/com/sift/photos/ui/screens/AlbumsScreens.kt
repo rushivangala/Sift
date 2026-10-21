@@ -180,7 +180,7 @@ fun AlbumDetailScreen(vm: SiftViewModel, album: Album) {
                                 tripUndone = true
                                 vm.toast.show("Trip album removed. Photos untouched.", icon = "undo") { tripUndone = false }
                             }, kind = BtnKind.Text, icon = "undo", color = c.primary)
-                            Btn("Rename", {}, kind = BtnKind.Text)
+                            Btn("Rename", { vm.toast.show("Renaming albums arrives in a later build", icon = "edit", onAction = null) }, kind = BtnKind.Text)
                             Spacer(Modifier.weight(1f))
                             Btn("Don't do this again", {
                                 vm.settings.setFeature(SmartFeature.Trips, false)

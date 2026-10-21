@@ -12,6 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -27,6 +28,7 @@ import com.sift.photos.ui.theme.Sift
 private val families = HashMap<Int, FontFamily>()
 
 /** Material Symbols Rounded with live axes: wght 300 by default, FILL 0 → 1 on active, GRAD −25 on dark. */
+@OptIn(ExperimentalTextApi::class)
 private fun symbolsFamily(weight: Int, fill: Boolean, grad: Int, opsz: Int): FontFamily {
     val key = weight * 1_000_000 + (if (fill) 1 else 0) * 100_000 + (grad + 50) * 100 + opsz
     return families.getOrPut(key) {

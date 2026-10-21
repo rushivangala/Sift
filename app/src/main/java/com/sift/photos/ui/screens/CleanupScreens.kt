@@ -376,7 +376,6 @@ fun TrashScreen(vm: SiftViewModel) {
                                 vm.cleanupDone = false
                                 vm.toast.show("342 items restored", icon = "restore") { vm.cleanupDone = true }
                             }, icon = "restore")
-                            Btn("Pick some", {}, kind = BtnKind.Text)
                         }
                     }
                 }

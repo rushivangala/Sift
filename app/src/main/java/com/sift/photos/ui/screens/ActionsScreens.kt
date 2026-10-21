@@ -205,7 +205,7 @@ fun ReceiptScreen(vm: SiftViewModel) {
                 T("Add to expenses", Sift.type.headlineS, color = c.onSurface)
             }
             Row(
-                Modifier.heightIn(min = 48.dp).clip(Shapes.full).background(c.containerHigh).clickable { }.padding(horizontal = 16.dp),
+                Modifier.heightIn(min = 48.dp).clip(Shapes.full).background(c.containerHigh).padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Sym("work", size = 20.dp)

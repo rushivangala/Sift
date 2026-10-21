@@ -191,10 +191,12 @@ class MediaRepository(private val context: Context) {
                     e.getAttributeDouble(ExifInterface.TAG_EXPOSURE_TIME, 0.0).takeIf { it > 0 }?.let {
                         add(if (it < 1) "1/${(1 / it).toInt()} s" else "%.1f s".format(it))
                     }
-                    e.getAttributeInt(ExifInterface.TAG_PHOTOGRAPHIC_SENSITIVITY, 0).takeIf { it > 0 }?.let { add("ISO $it") }
+                    e.getAttributeInt(ExifInterface.TAG_ISO_SPEED_RATINGS, 0).takeIf { it > 0 }?.let { add("ISO $it") }
                     e.getAttributeDouble(ExifInterface.TAG_FOCAL_LENGTH, 0.0).takeIf { it > 0 }?.let { add("%.0f mm".format(it)) }
                 }
-                ExifFacts(model, parts.joinToString(" · ").ifEmpty { null }, e.latLong)
+                val ll = FloatArray(2)
+                val latLong = if (e.getLatLong(ll)) doubleArrayOf(ll[0].toDouble(), ll[1].toDouble()) else null
+                ExifFacts(model, parts.joinToString(" · ").ifEmpty { null }, latLong)
             }
         }.getOrNull()
     }

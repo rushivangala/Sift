@@ -3,6 +3,7 @@ package com.sift.photos.ui.theme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -13,6 +14,7 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.sift.photos.R
 
+@OptIn(ExperimentalTextApi::class)
 private fun hanken(weight: Int) = Font(
     R.font.hanken_grotesk,
     weight = FontWeight(weight),

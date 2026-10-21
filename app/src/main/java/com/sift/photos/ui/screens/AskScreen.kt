@@ -57,6 +57,7 @@ import com.sift.photos.ui.components.IconBtn
 import com.sift.photos.ui.components.OriginBadge
 import com.sift.photos.ui.components.Overline
 import com.sift.photos.ui.components.PhotoCell
+import com.sift.photos.ui.components.Pill
 import com.sift.photos.ui.components.RiseIn
 import com.sift.photos.ui.components.scrollY
 import com.sift.photos.ui.components.SiftCard
@@ -77,8 +78,8 @@ import java.util.Locale
 @Composable
 fun AskScreen(vm: SiftViewModel, screen: Screen.Ask) {
     val c = Sift.colors
-    var field by remember { mutableStateOf(TextFieldValue(screen.query, TextRange(screen.query.length))) }
-    var submitted by remember { mutableStateOf(screen.submitted) }
+    var field by remember(screen) { mutableStateOf(TextFieldValue(screen.query, TextRange(screen.query.length))) }
+    var submitted by remember(screen) { mutableStateOf(screen.submitted) }
     var focused by remember { mutableStateOf(false) }
     val focus = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
@@ -160,8 +161,8 @@ private fun Typeahead(vm: SiftViewModel, q: String, onPick: (String) -> Unit, on
             SiftCard(spacing = 12.dp) {
                 Overline("Top match understood as")
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SiftChip("Type: receipt", true, {}, trailingClose = false)
-                    SiftChip("1–31 May 2026", false, {}, icon = "calendar_month")
+                    Pill("Type: receipt", c.primaryContainer, c.onPrimaryContainer, Modifier.heightIn(min = 32.dp), icon = "receipt_long", shape = Shapes.s)
+                    Pill("1–31 May 2026", c.containerHigh, c.onSurface, Modifier.heightIn(min = 32.dp), icon = "calendar_month", shape = Shapes.s)
                 }
                 WhyLine("\"May\" read as your most recent May. Counts come from receipts already read on this phone.", icon = false)
                 TrustRow(0.96)
@@ -219,9 +220,9 @@ private fun ReceiptResults(vm: SiftViewModel) {
     var included by remember { mutableStateOf<Boolean?>(null) }
     Column(Modifier.fillMaxSize().scrollY().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            SiftChip("Receipts", true, {}, trailingClose = true)
-            SiftChip("May 2026", true, {}, trailingClose = true)
-            SiftChip("Filter", false, {}, icon = "add")
+            SiftChip("Receipts", true, { vm.replace(Screen.Ask("May", submitted = true)) }, trailingClose = true)
+            SiftChip("May 2026", true, { vm.replace(Screen.Ask("receipts", submitted = true)) }, trailingClose = true)
+            SiftChip("Filter", false, { vm.toast.show("More filters arrive in a later build", icon = "info", onAction = null) }, icon = "add")
         }
         T("1–31 May 2026 · totals in EUR", Sift.type.data, color = c.onSurfaceVariant)
         RiseIn("summary") {
