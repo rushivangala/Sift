@@ -138,13 +138,21 @@ fun Scrubber(state: LazyGridState, sections: List<DaySection>, modifier: Modifie
     val current by remember(starts) {
         derivedStateOf { starts.indexOfLast { it <= state.firstVisibleItemIndex }.coerceAtLeast(0) }
     }
+    // Only present while the grid is moving (and briefly after), so it never blocks taps on photos.
+    var recentlyScrolled by remember { mutableStateOf(false) }
+    androidx.compose.runtime.LaunchedEffect(state.isScrollInProgress) {
+        if (state.isScrollInProgress) recentlyScrolled = true
+        else { kotlinx.coroutines.delay(1500); recentlyScrolled = false }
+    }
+    if (!dragging && !recentlyScrolled) return
+    if (state.firstVisibleItemIndex < 2 && !dragging) return
     val fraction = if (dragging) drag else current.toFloat() / (sections.size - 1).coerceAtLeast(1)
     val section = (fraction * (sections.size - 1)).roundToInt().coerceIn(0, sections.lastIndex)
     val label = remember(section) {
         SimpleDateFormat("MMM yyyy", Locale.getDefault()).format(Date(sections[section].items.first().dateMillis))
     }
     BoxWithConstraints(
-        modifier.fillMaxHeight().width(56.dp)
+        modifier.fillMaxHeight().width(32.dp)
             .semantics { contentDescription = "Timeline scrubber"; stateDescription = label },
     ) {
         val track = with(density) { (maxHeight - 48.dp).toPx() }
