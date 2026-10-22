@@ -65,13 +65,17 @@ jobs:
           mkdir -p dist
           cp app/build/outputs/apk/debug/app-debug.apk dist/sift-debug.apk
           cp app/build/outputs/apk/release/app-release.apk dist/sift-release.apk
+          # R8 mapping: turns obfuscated crash reports back into file and line numbers.
+          cp app/build/outputs/mapping/release/mapping.txt dist/sift-mapping.txt || true
           ls -la dist
           "$ANDROID_HOME"/build-tools/*/aapt2 dump badging dist/sift-release.apk | grep -E "package:|sdkVersion|targetSdkVersion" || true
 
       - uses: actions/upload-artifact@v4
         with:
           name: sift-apks
-          path: dist/*.apk
+          path: |
+            dist/*.apk
+            dist/*.txt
 
       - uses: actions/upload-artifact@v4
         if: always()

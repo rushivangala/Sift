@@ -99,8 +99,10 @@ fun PhotoCell(
 ) {
     val c = Sift.colors
     val reduce = Sift.reduceMotion
-    val inset by animateDpAsState(if (selected) 12.dp else 0.dp, Motion.spatialDefault(reduce), label = "inset")
-    val radius by animateDpAsState(if (selected) 16.dp else cellRadius, Motion.spatialDefault(reduce), label = "radius")
+    // Photos never overshoot (Stage 1 motion rule): critically damped, so the morph settles without bounce.
+    val photoSpring = if (reduce) Motion.spatialDefault<Dp>(true) else androidx.compose.animation.core.spring(dampingRatio = 1f, stiffness = 700f)
+    val inset by animateDpAsState(if (selected) 12.dp else 0.dp, photoSpring, label = "inset")
+    val radius by animateDpAsState(if (selected) 16.dp else cellRadius, photoSpring, label = "radius")
     Box(
         modifier
             .aspectRatio(1f)
@@ -111,7 +113,8 @@ fun PhotoCell(
             }
             .combinedClickable(onClick = onClick, onLongClick = onLongClick, onLongClickLabel = "Select"),
     ) {
-        PhotoView(item.ref, Modifier.fillMaxSize().padding(inset).clip(RoundedCornerShape(radius)))
+        // Springs can dip a hair below their target; padding and corner sizes must never go negative.
+        PhotoView(item.ref, Modifier.fillMaxSize().padding(inset.coerceAtLeast(0.dp)).clip(RoundedCornerShape(radius.coerceAtLeast(0.dp))))
         if (!selectionMode || !selected) {
             item.duration?.let { d ->
                 CornerBadge(Alignment.TopEnd, "Video, $d") {

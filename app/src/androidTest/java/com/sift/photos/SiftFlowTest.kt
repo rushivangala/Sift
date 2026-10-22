@@ -26,6 +26,8 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.longClick
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -141,6 +143,24 @@ class SiftFlowTest {
         waitForText("What changed and why")
         compose.onNodeWithText("Remove person, left edge").assertExists()
         shot("09-what-changed")
+    }
+
+    @Test
+    fun selectAndDeselectSettlesWithoutCrashing() {
+        // Regression: the selection morph's spring dipped below 0 dp and crashed on deselect.
+        launch(onboarded = true, sample = true)
+        val photo = compose.onAllNodes(hasContentDescription("Photo,", substring = true)).onFirst()
+        photo.performTouchInput { longClick() }
+        compose.waitForIdle()
+        compose.onNodeWithText("1 selected").assertExists()
+        photo.performClick()
+        compose.mainClock.advanceTimeBy(2_000)
+        compose.waitForIdle()
+        photo.performTouchInput { longClick() }
+        compose.onNodeWithContentDescription("Clear selection").performClick()
+        compose.mainClock.advanceTimeBy(2_000)
+        compose.waitForIdle()
+        compose.onNodeWithText("Ask your photos").assertExists()
     }
 
     @Test

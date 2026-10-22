@@ -467,8 +467,8 @@ fun SiftToggle(checked: Boolean, onCheckedChange: ((Boolean) -> Unit)?, enabled:
         )
         Box(
             Modifier
-                .padding(start = if (checked) offset - 2.dp else offset)
-                .size(thumb)
+                .padding(start = (if (checked) offset - 2.dp else offset).coerceAtLeast(0.dp))
+                .size(thumb.coerceAtLeast(0.dp))
                 .clip(CircleShape)
                 .background(if (checked) c.onPrimary else c.outline),
             contentAlignment = Alignment.Center,
@@ -849,7 +849,7 @@ fun BottomNav(selected: Tab, onSelect: (Tab) -> Unit, actionsDot: Boolean) {
                     verticalArrangement = Arrangement.Center,
                 ) {
                     Box(Modifier.size(64.dp, 32.dp), contentAlignment = Alignment.Center) {
-                        Box(Modifier.size(pill, 32.dp).clip(Shapes.full).background(pillColor))
+                        Box(Modifier.size(pill.coerceAtLeast(0.dp), 32.dp).clip(Shapes.full).background(pillColor))
                         Sym(tab.icon, fill = active, weight = if (active) 400 else 300, tint = if (active) c.onPrimaryContainer else c.onSurfaceVariant)
                         if (tab == Tab.Actions && actionsDot) {
                             Box(Modifier.align(Alignment.TopEnd).padding(end = 16.dp, top = 2.dp).size(8.dp).clip(CircleShape).background(c.primary))
