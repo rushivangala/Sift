@@ -10,3 +10,10 @@ LOG="${1:-build.log}"
 } > /tmp/annot.txt
 msg=$(sed -e 's/%/%25/g' -e 's/\r//g' /tmp/annot.txt | awk 'BEGIN{ORS="%0A"}{print}')
 echo "::error title=Build log excerpt::${msg:0:60000}"
+
+# App crashes from the device log, if any.
+LOGCAT="$(dirname "$LOG")/logcat.txt"
+if [ -f "$LOGCAT" ] && grep -q "FATAL EXCEPTION\|ANR in com.sift" "$LOGCAT"; then
+  crash=$(grep -A40 "FATAL EXCEPTION\|ANR in com.sift" "$LOGCAT" | head -120 | sed -e 's/%/%25/g' -e 's/\r//g' | awk 'BEGIN{ORS="%0A"}{print}')
+  echo "::error title=App crash in device log::${crash:0:60000}"
+fi

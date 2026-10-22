@@ -107,7 +107,7 @@ class SiftFlowTest {
     fun askTypingShowsUnderstoodAs() {
         launch(onboarded = true, sample = true)
         compose.onNodeWithContentDescription("Voice search").performClick()
-        waitForText("Ask your library")
+        compose.waitUntil(10_000) { compose.onAllNodes(hasSetTextAction()).fetchSemanticsNodes().isNotEmpty() }
         compose.waitForIdle()
         compose.onNode(hasSetTextAction()).performClick()
         compose.onNode(hasSetTextAction()).performTextInput("receipts fr")
