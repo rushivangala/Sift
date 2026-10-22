@@ -242,7 +242,7 @@ fun LockedScreen(vm: SiftViewModel) {
         if (manager?.canAuthenticate(authenticators) != BiometricManager.BIOMETRIC_SUCCESS) {
             error = "Set a screen lock to protect the Locked folder."
         } else {
-            BiometricPrompt.Builder(context)
+            runCatching { BiometricPrompt.Builder(context)
                 .setTitle("Unlock Locked folder")
                 .setSubtitle("Confirm it's you with your fingerprint.")
                 .setAllowedAuthenticators(authenticators)
@@ -255,6 +255,7 @@ fun LockedScreen(vm: SiftViewModel) {
                         error = errString?.toString()
                     }
                 })
+            }.onFailure { error = "Couldn't show the unlock prompt. Try again." }
         }
     }
     LaunchedEffect(Unit) { if (!unlocked) prompt() }

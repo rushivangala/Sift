@@ -178,7 +178,8 @@ class MediaRepository(private val context: Context) {
         runCatching {
             val src = ImageDecoder.decodeBitmap(ImageDecoder.createSource(resolver, ref.uri)) { decoder, info, _ ->
                 val longest = maxOf(info.size.width, info.size.height)
-                val scale = maxOf(1f, longest / 8192f)
+                // 4096 px keeps the decode, crop and output bitmaps well inside the app heap.
+                val scale = maxOf(1f, longest / 4096f)
                 decoder.setTargetSize((info.size.width / scale).toInt(), (info.size.height / scale).toInt())
                 decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
             }

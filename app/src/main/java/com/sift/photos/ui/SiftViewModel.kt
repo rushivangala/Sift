@@ -109,10 +109,6 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
 
     private var observer: ContentObserver? = null
 
-    init {
-        observer = repo.observe { refresh() }
-        refresh()
-    }
 
     override fun onCleared() {
         observer?.let(repo::unobserve)
@@ -135,18 +131,50 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
         refresh()
     }
 
+    private var refreshJob: kotlinx.coroutines.Job? = null
+
+    /**
+     * Reloads the library. Debounced, because MediaStore fires a change for every file during imports
+     * and edits; and guarded, so a provider or permission error leaves the last good state in place.
+     */
     fun refresh() {
-        access = repo.access()
-        viewModelScope.launch {
+        refreshJob?.cancel()
+        refreshJob = viewModelScope.launch {
+            kotlinx.coroutines.delay(250)
+            access = runCatching { repo.access() }.getOrDefault(MediaAccess.None)
             loading = true
-            deviceItems = repo.load()
-            // MediaStore now reflects confirmed favorites; drop the session overrides for real items.
-            favorites.keys.filter { it.startsWith("m") }.forEach { favorites.remove(it) }
-            deviceTrash = runCatching { repo.load(trashed = true) }.getOrDefault(emptyList())
-            storage = repo.storage(deviceItems)
-            loading = false
+            try {
+                val items = runCatching { repo.load() }.getOrNull()
+                if (items != null) {
+                    deviceItems = items
+                    deviceSections = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { group(items) }
+                    deviceAlbums = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { bucketAlbums(items) }
+                }
+                // MediaStore now reflects confirmed favorites; drop the session overrides for real items.
+                favorites.keys.filter { it.startsWith("m") }.forEach { favorites.remove(it) }
+                deviceTrash = runCatching { repo.load(trashed = true) }.getOrDefault(deviceTrash)
+                storage = runCatching { repo.storage(deviceItems) }.getOrDefault(storage)
+            } finally {
+                loading = false
+            }
             startIndexing()
         }
+    }
+
+    var deviceSections by mutableStateOf<List<DaySection>>(emptyList())
+        private set
+    var deviceAlbums by mutableStateOf<List<Album>>(emptyList())
+        private set
+
+    /** The previous run's crash report, if Sift closed unexpectedly. Stays on this phone. */
+    var lastCrash by mutableStateOf<String?>(
+        runCatching { com.sift.photos.SiftApplication.crashFile(app).takeIf { it.exists() }?.readText() }.getOrNull()
+    )
+        private set
+
+    fun dismissCrash() {
+        runCatching { com.sift.photos.SiftApplication.crashFile(getApplication()).delete() }
+        lastCrash = null
     }
 
     fun startIndexing() {
@@ -167,8 +195,10 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
     fun mediaId(item: PhotoItem): Long = (item.ref as? PhotoRef.Media)?.mediaId ?: -1
 
     /** Receipts, tickets and cards found in the real library that you haven't acted on or dismissed. */
-    val foundDocs: List<Pair<PhotoItem, com.sift.photos.data.DocParser.Doc>>
-        get() = if (!settings.feature(com.sift.photos.data.SmartFeature.Documents)) emptyList() else deviceItems.mapNotNull { i ->
+    val foundDocs: List<Pair<PhotoItem, com.sift.photos.data.DocParser.Doc>> by androidx.compose.runtime.derivedStateOf { computeFoundDocs() }
+
+    private fun computeFoundDocs(): List<Pair<PhotoItem, com.sift.photos.data.DocParser.Doc>> =
+        if (!settings.feature(com.sift.photos.data.SmartFeature.Documents)) emptyList() else deviceItems.mapNotNull { i ->
             val d = entry(i)?.doc ?: return@mapNotNull null
             if (d.confidence < 0.55 || index.decided(mediaId(i), "doc")) null else i to d
         }
@@ -181,6 +211,14 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Real cleanup groups. Favorites and anything edited in the last 30 days are never suggested. */
     suspend fun computeCleanup() {
+        // Heavy work off the main thread; a read error leaves the previous result instead of crashing.
+        val groups = runCatching {
+            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) { buildCleanup() }
+        }.getOrNull() ?: return
+        cleanup = groups
+    }
+
+    private suspend fun buildCleanup(): List<CleanupGroup> {
         val recent = System.currentTimeMillis() / 1000 - 30L * 86_400
         val candidates = deviceItems.filter { !it.favorite && (it.ref as? PhotoRef.Media)?.isVideo == false && it.modifiedSec < recent }
         val groups = ArrayList<CleanupGroup>()
@@ -217,7 +255,7 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
             "shots", "screenshot", "Screenshots", "%,d older than 30 days".format(screenshots.size),
             "older than 30 days. Ones with tickets or receipts are excluded.", 0.95, listOf(screenshots), screenshots.map { it.key }.toSet(),
         )
-        cleanup = groups
+        return groups
     }
 
     /** Text and object search over the index, plus dates, places, albums and file names. */
@@ -250,18 +288,19 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
     private val stop = setOf("from", "in", "the", "at", "of", "my", "with", "and", "a", "on")
 
     /** Trip albums: runs of photos taken far from home. */
-    val trips: List<Album>
-        get() {
-            if (!settings.feature(com.sift.photos.data.SmartFeature.Trips)) return emptyList()
-            val located = deviceItems.mapNotNull { i -> entry(i)?.let { e -> if (e.lat != null && e.lon != null) com.sift.photos.data.Analysis.Located(mediaId(i), i.dateMillis, e.lat, e.lon) else null } }
-            val byId = deviceItems.associateBy { mediaId(it) }
-            val fmt = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
-            return com.sift.photos.data.Analysis.trips(located).filter { !index.decided(it.start, "trip") }.map { t ->
-                val items = t.ids.mapNotNull { byId[it] }.sortedByDescending { it.dateMillis }
-                Album("trip:${t.start}", "Trip · ${fmt.format(Date(t.start))}", "%,d photos · %d km from home".format(items.size, t.km),
-                    items.firstOrNull()?.ref, "luggage", items)
-            }
+    val trips: List<Album> by androidx.compose.runtime.derivedStateOf { computeTrips() }
+
+    private fun computeTrips(): List<Album> {
+        if (!settings.feature(com.sift.photos.data.SmartFeature.Trips)) return emptyList()
+        val located = deviceItems.mapNotNull { i -> entry(i)?.let { e -> if (e.lat != null && e.lon != null) com.sift.photos.data.Analysis.Located(mediaId(i), i.dateMillis, e.lat, e.lon) else null } }
+        val byId = deviceItems.associateBy { mediaId(it) }
+        val fmt = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
+        return com.sift.photos.data.Analysis.trips(located).filter { !index.decided(it.start, "trip") }.map { t ->
+            val items = t.ids.mapNotNull { byId[it] }.sortedByDescending { it.dateMillis }
+            Album("trip:${t.start}", "Trip · ${fmt.format(Date(t.start))}", "%,d photos · %d km from home".format(items.size, t.km),
+                items.firstOrNull()?.ref, "luggage", items)
         }
+    }
 
     val sample: Boolean get() = settings.sampleLibrary
     val ai: Boolean get() = settings.aiEnabled
@@ -292,12 +331,15 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
         get() = if (sample) {
             SampleData.sections.map { s -> s.copy(items = s.items.filter { it.key !in sampleTrashed }.map { it.copy(favorite = isFavorite(it)) }) }
                 .filter { it.items.isNotEmpty() }
-        } else group(deviceItems.map { if (it.key in favorites) it.copy(favorite = isFavorite(it)) else it })
+        } else if (favorites.isEmpty()) deviceSections
+        else deviceSections.map { s -> s.copy(items = s.items.map { if (it.key in favorites) it.copy(favorite = isFavorite(it)) else it }) }
 
     val libraryItems: List<PhotoItem> get() = sections.flatMap { it.items }
 
     val albums: List<Album>
-        get() = if (sample) SampleData.albums else deviceItems
+        get() = if (sample) SampleData.albums else deviceAlbums
+
+    private fun bucketAlbums(items: List<PhotoItem>): List<Album> = items
             .groupBy { it.bucket ?: "Other" }
             .entries
             .sortedByDescending { it.value.size }
@@ -384,5 +426,11 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
 
     fun toggleSampleFavorite(item: PhotoItem) {
         favorites[item.key] = !isFavorite(item)
+    }
+
+    // Last in the class body so every property above is initialized before the first refresh.
+    init {
+        observer = repo.observe { refresh() }
+        refresh()
     }
 }

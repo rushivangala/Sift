@@ -37,6 +37,18 @@ class TakeoutImporter(private val context: Context) {
     var progress by mutableStateOf(ImportProgress())
         private set
 
+    // Progress is written on the main thread, at most a few times a second.
+    private var pending = ImportProgress()
+    private var lastPost = 0L
+    private suspend fun post(p: ImportProgress, force: Boolean = false) {
+        pending = p
+        val now = System.currentTimeMillis()
+        if (force || now - lastPost > 250) {
+            lastPost = now
+            withContext(Dispatchers.Main) { progress = pending }
+        }
+    }
+
     private val media = setOf("jpg", "jpeg", "png", "heic", "heif", "webp", "gif", "dng", "mp4", "mov", "3gp", "webm", "m4v")
     private val videos = setOf("mp4", "mov", "3gp", "webm", "m4v")
 
@@ -50,16 +62,17 @@ class TakeoutImporter(private val context: Context) {
         val total = uris.sumOf { u ->
             resolver.query(u, arrayOf(OpenableColumns.SIZE), null, null, null)?.use { c -> if (c.moveToFirst()) c.getLong(0) else 0L } ?: 0L
         }
-        progress = ImportProgress(running = true, bytesTotal = total * 2)
+        post(ImportProgress(running = true, bytesTotal = total * 2), force = true)
         try {
             // Pass 1: sidecars. Keyed by album folder + original title.
             val taken = HashMap<String, Long>()
             var read = 0L
             for (u in uris) {
-                ZipInputStream(Counting(resolver.openInputStream(u)!!) { read += it; progress = progress.copy(bytesRead = read) }).use { zip ->
+                ZipInputStream(Counting(resolver.openInputStream(u)!!) { read += it }).use { zip ->
                     while (true) {
                         val e = zip.nextEntry ?: break
                         ensureActive()
+                        post(pending.copy(bytesRead = read))
                         if (!e.isDirectory && e.name.endsWith(".json")) {
                             runCatching {
                                 val json = JSONObject(zip.readBytes().toString(Charsets.UTF_8))
@@ -76,16 +89,17 @@ class TakeoutImporter(private val context: Context) {
             var imported = 0
             var skipped = 0
             for (u in uris) {
-                ZipInputStream(Counting(resolver.openInputStream(u)!!) { read += it; progress = progress.copy(bytesRead = read) }).use { zip ->
+                ZipInputStream(Counting(resolver.openInputStream(u)!!) { read += it }).use { zip ->
                     while (true) {
                         val e = zip.nextEntry ?: break
                         ensureActive()
+                        post(pending.copy(bytesRead = read))
                         val name = e.name.substringAfterLast('/')
                         val ext = name.substringAfterLast('.', "").lowercase()
                         if (e.isDirectory || ext !in media) continue
                         val folder = folderOf(e.name)
                         val album = albumName(folder)
-                        if (skipExisting && name.lowercase() in existing) { skipped++; progress = progress.copy(skipped = skipped); continue }
+                        if (skipExisting && name.lowercase() in existing) { skipped++; post(pending.copy(skipped = skipped)); continue }
                         val video = ext in videos
                         val values = ContentValues().apply {
                             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
@@ -100,14 +114,17 @@ class TakeoutImporter(private val context: Context) {
                         resolver.update(target, ContentValues().apply { put(MediaStore.MediaColumns.IS_PENDING, 0) }, null, null)
                         imported++
                         albums += album
-                        progress = progress.copy(imported = imported, albums = albums.size)
+                        post(pending.copy(imported = imported, albums = albums.size))
                     }
                 }
             }
-            progress = progress.copy(running = false, done = true, bytesRead = progress.bytesTotal)
+            post(pending.copy(running = false, done = true, bytesRead = pending.bytesTotal), force = true)
         } catch (t: Throwable) {
-            progress = progress.copy(running = false, error = if (t is kotlinx.coroutines.CancellationException) "Paused" else (t.message ?: "Couldn't read this file"))
-            if (t is kotlinx.coroutines.CancellationException) throw t
+            val paused = t is kotlinx.coroutines.CancellationException
+            kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable + Dispatchers.Main) {
+                progress = pending.copy(running = false, error = if (paused) "Paused" else (t.message ?: "Couldn't read this file"))
+            }
+            if (paused) throw t
         }
     }
 

@@ -101,7 +101,10 @@ fun ViewerScreen(vm: SiftViewModel, screen: Screen.Viewer) {
     val actions = LocalActions.current
     val context = LocalContext.current
     val items = screen.items
-    if (items.isEmpty()) { vm.pop(); return }
+    if (items.isEmpty()) {
+        androidx.compose.runtime.LaunchedEffect(Unit) { vm.pop() }
+        return
+    }
     val pager = rememberPagerState(initialPage = screen.index.coerceIn(0, items.lastIndex)) { items.size }
     val item = vm.live(items[pager.currentPage.coerceIn(0, items.lastIndex)])
     var chrome by remember { mutableStateOf(true) }

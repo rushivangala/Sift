@@ -126,13 +126,15 @@ fun EditorScreen(vm: SiftViewModel, item: PhotoItem) {
             val frame = p.aspect.ratio ?: baseRatio
             val effect = remember(p) {
                 val color = RenderEffect.createColorFilterEffect(ColorMatrixColorFilter(p.colorMatrix()))
-                if (!p.toneChanged) color else {
+                // If the GPU can't compile the tone shader, preview color only; Save still applies the curve.
+                val tone = if (!p.toneChanged) null else runCatching {
                     val shader = RuntimeShader(EditParams.TONE_SHADER).apply {
                         setFloatUniform("black", p.black); setFloatUniform("white", p.white); setFloatUniform("gamma", p.gamma)
                         setFloatUniform("c1", p.c1); setFloatUniform("c2", p.c2); setFloatUniform("c3", p.c3)
                     }
                     RenderEffect.createChainEffect(RenderEffect.createRuntimeShaderEffect(shader, "content"), color)
-                }.asComposeRenderEffect()
+                }.getOrNull()
+                (tone ?: color).asComposeRenderEffect()
             }
             Box(
                 Modifier.fillMaxWidth().aspectRatio(frame, matchHeightConstraintsFirst = frame < 1f).clip(Shapes.xs)

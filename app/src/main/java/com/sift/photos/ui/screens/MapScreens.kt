@@ -318,7 +318,7 @@ fun MapScreen(vm: SiftViewModel) {
             }
             T(
                 "© OpenStreetMap contributors", Sift.type.data,
-                Modifier.clickable { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.openstreetmap.org/copyright"))) },
+                Modifier.clickable { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.openstreetmap.org/copyright"))) } },
                 color = c.onSurfaceVariant,
             )
         }

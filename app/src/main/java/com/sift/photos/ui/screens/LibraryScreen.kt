@@ -151,6 +151,33 @@ fun LibraryScreen(vm: SiftViewModel) {
                         if (vm.ai && (vm.sample || vm.access != MediaAccess.None)) IconBtn("cleaning_services", "Cleanup", { vm.push(Screen.Cleanup) }, tint = c.onSurface)
                         IconBtn("settings", "Settings", { vm.push(Screen.Settings) }, tint = c.onSurface)
                     }
+                    vm.lastCrash?.let { report ->
+                        val ctx = androidx.compose.ui.platform.LocalContext.current
+                        SiftCard(spacing = 8.dp) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Sym("info", tint = c.onSurface)
+                                Spacer(Modifier.width(12.dp))
+                                T("Sift closed unexpectedly last time", Sift.type.titleM, color = c.onSurface)
+                            }
+                            T("A crash report was saved on this phone. Sharing it helps fix the problem. It contains no photos or locations.", Sift.type.bodyS, color = c.onSurfaceVariant)
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                Btn("Share report", {
+                                    runCatching {
+                                        ctx.startActivity(
+                                            android.content.Intent.createChooser(
+                                                android.content.Intent(android.content.Intent.ACTION_SEND).setType("text/plain")
+                                                    .putExtra(android.content.Intent.EXTRA_SUBJECT, "Sift crash report")
+                                                    .putExtra(android.content.Intent.EXTRA_TEXT, report),
+                                                "Share crash report",
+                                            )
+                                        )
+                                    }
+                                }, kind = BtnKind.Outlined, icon = "share")
+                                Btn("Dismiss", { vm.dismissCrash() }, kind = BtnKind.Text)
+                            }
+                        }
+                        Spacer(Modifier.height(12.dp))
+                    }
                     if (vm.sample) {
                         Row(
                             Modifier.fillMaxWidth().clip(Shapes.l).background(c.containerHigh).padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),

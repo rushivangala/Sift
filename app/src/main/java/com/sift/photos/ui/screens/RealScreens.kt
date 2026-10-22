@@ -112,7 +112,7 @@ fun IndexProgressCard(vm: SiftViewModel) {
 @Composable
 fun RealCleanupScreen(vm: SiftViewModel) {
     val c = Sift.colors
-    LaunchedEffect(vm.index.entries.size) { vm.computeCleanup() }
+    LaunchedEffect(vm.index.progress.running, vm.deviceItems.size) { vm.computeCleanup() }
     val groups = vm.cleanup
     Column(Modifier.fillMaxSize()) {
         TopBar("Cleanup", onBack = { vm.pop() }) {
@@ -170,7 +170,10 @@ fun RealCleanupScreen(vm: SiftViewModel) {
 @Composable
 fun CleanupGroupReviewScreen(vm: SiftViewModel, key: String) {
     val c = Sift.colors
-    val group = vm.cleanup?.firstOrNull { it.key == key } ?: run { vm.pop(); return }
+    val group = vm.cleanup?.firstOrNull { it.key == key } ?: run {
+        LaunchedEffect(Unit) { vm.pop() }
+        return
+    }
     val marked = remember(key) { mutableStateListOf<String>().apply { addAll(group.suggested) } }
     val all = group.sets.flatten()
     Column(Modifier.fillMaxSize()) {
@@ -318,7 +321,10 @@ private fun ExportExpensesButton(vm: SiftViewModel) {
 fun DocConfirmScreen(vm: SiftViewModel, item: PhotoItem) {
     val c = Sift.colors
     val context = LocalContext.current
-    val doc = vm.entry(item)?.doc ?: run { vm.pop(); return }
+    val doc = vm.entry(item)?.doc ?: run {
+        LaunchedEffect(Unit) { vm.pop() }
+        return
+    }
     val id = vm.mediaId(item)
     var email by remember { mutableStateOf(doc.email.singleOrNull()) }
     fun done(msg: String, icon: String, undo: (() -> Unit)?) {

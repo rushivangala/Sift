@@ -97,7 +97,11 @@ private suspend fun prepareShare(context: Context, items: List<PhotoItem>, strip
                         saveAttributes()
                     }
                 } else {
-                    val bmp = ImageDecoder.decodeBitmap(ImageDecoder.createSource(resolver, ref.uri)) { d, _, _ -> d.allocator = ImageDecoder.ALLOCATOR_SOFTWARE }
+                    val bmp = ImageDecoder.decodeBitmap(ImageDecoder.createSource(resolver, ref.uri)) { d, info, _ ->
+                        val s = maxOf(1f, maxOf(info.size.width, info.size.height) / 4096f)
+                        d.setTargetSize((info.size.width / s).toInt(), (info.size.height / s).toInt())
+                        d.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+                    }
                     file.outputStream().use { bmp.compress(Bitmap.CompressFormat.JPEG, 95, it) }
                 }
                 out += FileProvider.getUriForFile(context, context.packageName + ".share", file)

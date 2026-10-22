@@ -91,17 +91,21 @@ class MediaIndex(private val context: Context) {
         }
         val d = HashSet<String>()
         db.readableDatabase.rawQuery("SELECT id, what FROM decisions", null).use { c -> while (c.moveToNext()) d += "${c.getLong(0)}:${c.getString(1)}" }
-        entries = map
-        decisions = d
-        loadExpenses()
+        val list = readExpenses()
+        onMain { entries = map; decisions = d; expenses = list }
     }
 
-    private fun loadExpenses() {
+    /** Compose state is only written on the main thread, so composition never sees a half-applied change. */
+    private suspend fun onMain(block: () -> Unit) = withContext(Dispatchers.Main) { block() }
+
+    private fun loadExpenses() { expenses = readExpenses() }
+
+    private fun readExpenses(): List<Expense> {
         val list = ArrayList<Expense>()
         db.readableDatabase.rawQuery("SELECT id, merchant, total, date, added FROM expenses ORDER BY added DESC", null).use { c ->
-            while (c.moveToNext()) list += Expense(c.getLong(0), c.getString(1), c.getString(2), if (c.isNull(3)) null else c.getLong(3), c.getLong(4))
+            while (c.moveToNext()) list += Expense(c.getLong(0), c.getString(1) ?: "", c.getString(2) ?: "", if (c.isNull(3)) null else c.getLong(3), c.getLong(4))
         }
-        expenses = list
+        return list
     }
 
     /**
@@ -115,9 +119,9 @@ class MediaIndex(private val context: Context) {
             val e = entries[id]
             e == null || e.modified != p.modifiedSec || (read && !e.read)
         }
-        if (todo.isEmpty()) { progress = IndexProgress(photos.size, photos.size, false); return@withContext }
+        if (todo.isEmpty()) { onMain { progress = IndexProgress(photos.size, photos.size, false) }; return@withContext }
         var done = photos.size - todo.size
-        progress = IndexProgress(done, photos.size, true, if (read) "Reading text and objects" else "Indexing")
+        onMain { progress = IndexProgress(done, photos.size, true, if (read) "Reading text and objects" else "Indexing") }
         val batch = HashMap<Long, IndexEntry>()
         for (p in todo) {
             ensureActive()
@@ -126,13 +130,14 @@ class MediaIndex(private val context: Context) {
             if (entry != null) { batch[entry.id] = entry; write(entry) }
             done++
             if (batch.size >= 20) {
-                entries = entries + batch; batch.clear()
-                progress = progress.copy(done = done); onBatch()
+                val snapshot = HashMap(batch); batch.clear()
+                val d = done
+                onMain { entries = entries + snapshot; progress = progress.copy(done = d); onBatch() }
             }
         }
-        entries = entries + batch
-        progress = IndexProgress(done, photos.size, false)
-        onBatch()
+        val rest = HashMap(batch)
+        val d = done
+        onMain { entries = entries + rest; progress = IndexProgress(d, photos.size, false); onBatch() }
     }
 
     private suspend fun analyze(p: PhotoItem, ref: PhotoRef.Media, read: Boolean): IndexEntry {
