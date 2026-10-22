@@ -70,8 +70,8 @@ private val gpsTags = listOf(
     ExifInterface.TAG_GPS_SPEED, ExifInterface.TAG_GPS_SPEED_REF, ExifInterface.TAG_GPS_DEST_LATITUDE, ExifInterface.TAG_GPS_DEST_LONGITUDE,
 )
 private val cameraTags = listOf(
-    ExifInterface.TAG_MAKE, ExifInterface.TAG_MODEL, ExifInterface.TAG_LENS_MAKE, ExifInterface.TAG_LENS_MODEL,
-    ExifInterface.TAG_BODY_SERIAL_NUMBER, ExifInterface.TAG_LENS_SERIAL_NUMBER, ExifInterface.TAG_SOFTWARE,
+    ExifInterface.TAG_MAKE, ExifInterface.TAG_MODEL, "LensMake", "LensModel",
+    "BodySerialNumber", "LensSerialNumber", ExifInterface.TAG_SOFTWARE,
 )
 
 /**
