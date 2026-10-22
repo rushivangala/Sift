@@ -79,6 +79,9 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
     var editsReverted = mutableStateListOf<String>()
     var flightUndone by mutableStateOf(false)
 
+    /** Favorite state confirmed this session, ahead of the next MediaStore reload. */
+    val favorites = androidx.compose.runtime.mutableStateMapOf<String, Boolean>()
+
     private var observer: ContentObserver? = null
 
     init {
@@ -122,9 +125,6 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
 
     val sample: Boolean get() = settings.sampleLibrary
     val ai: Boolean get() = settings.aiEnabled
-
-    /** Favorite state confirmed this session, ahead of the next MediaStore reload. */
-    val favorites = androidx.compose.runtime.mutableStateMapOf<String, Boolean>()
 
     fun isFavorite(item: PhotoItem) = favorites[item.key] ?: item.favorite
 
