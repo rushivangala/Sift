@@ -72,6 +72,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.material3)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    // On-device ML with bundled models: no download, works offline.
+    implementation(libs.mlkit.text)
+    implementation(libs.mlkit.labels)
 
     testImplementation(libs.junit)
 

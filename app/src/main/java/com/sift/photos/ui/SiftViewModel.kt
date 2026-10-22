@@ -50,6 +50,14 @@ sealed interface Screen {
     data object SmartFeatures : Screen
     data class AlbumDetail(val album: Album) : Screen
     data object Locked : Screen
+    data class CleanupGroupReview(val key: String) : Screen
+    data class DocConfirm(val item: PhotoItem) : Screen
+    data object Map : Screen
+    data class Place(val title: String, val items: List<PhotoItem>, val lat: Double, val lon: Double) : Screen
+    data class Share(val items: List<PhotoItem>) : Screen
+    data object Family : Screen
+    data object Import : Screen
+    data object FirstSync : Screen
 }
 
 class SiftViewModel(app: Application) : AndroidViewModel(app) {
@@ -81,6 +89,23 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
 
     /** Favorite state confirmed this session, ahead of the next MediaStore reload. */
     val favorites = androidx.compose.runtime.mutableStateMapOf<String, Boolean>()
+
+    /** On-device index: hashes, sharpness, GPS, labels and text. */
+    val index = com.sift.photos.data.MediaIndex(app)
+    private var indexJob: kotlinx.coroutines.Job? = null
+    private var cacheLoaded = false
+    var cleanup by mutableStateOf<List<CleanupGroup>?>(null)
+        private set
+    val importer = com.sift.photos.data.TakeoutImporter(app)
+    private var importJob: kotlinx.coroutines.Job? = null
+    var onboardingStep by mutableStateOf(0)
+
+    fun startImport(uris: List<android.net.Uri>, skipExisting: Boolean) {
+        importJob?.cancel()
+        importJob = viewModelScope.launch { importer.import(uris, skipExisting); refresh() }
+    }
+
+    fun pauseImport() { importJob?.cancel() }
 
     private var observer: ContentObserver? = null
 
@@ -120,8 +145,123 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
             deviceTrash = runCatching { repo.load(trashed = true) }.getOrDefault(emptyList())
             storage = repo.storage(deviceItems)
             loading = false
+            startIndexing()
         }
     }
+
+    fun startIndexing() {
+        if (access == MediaAccess.None || !ai) return
+        indexJob?.cancel()
+        indexJob = viewModelScope.launch {
+            if (!cacheLoaded) { index.loadCached(); cacheLoaded = true }
+            val read = settings.feature(com.sift.photos.data.SmartFeature.Search) || settings.feature(com.sift.photos.data.SmartFeature.Documents)
+            index.run(deviceItems, read)
+        }
+    }
+
+    fun stopIndexing() { indexJob?.cancel() }
+
+    fun entry(item: PhotoItem): com.sift.photos.data.IndexEntry? =
+        (item.ref as? PhotoRef.Media)?.let { index.entries[it.mediaId] }
+
+    fun mediaId(item: PhotoItem): Long = (item.ref as? PhotoRef.Media)?.mediaId ?: -1
+
+    /** Receipts, tickets and cards found in the real library that you haven't acted on or dismissed. */
+    val foundDocs: List<Pair<PhotoItem, com.sift.photos.data.DocParser.Doc>>
+        get() = if (!settings.feature(com.sift.photos.data.SmartFeature.Documents)) emptyList() else deviceItems.mapNotNull { i ->
+            val d = entry(i)?.doc ?: return@mapNotNull null
+            if (d.confidence < 0.55 || index.decided(mediaId(i), "doc")) null else i to d
+        }
+
+    val doneDocs: List<Pair<PhotoItem, com.sift.photos.data.DocParser.Doc>>
+        get() = deviceItems.mapNotNull { i ->
+            val d = entry(i)?.doc ?: return@mapNotNull null
+            if (index.decided(mediaId(i), "done")) i to d else null
+        }
+
+    /** Real cleanup groups. Favorites and anything edited in the last 30 days are never suggested. */
+    suspend fun computeCleanup() {
+        val recent = System.currentTimeMillis() / 1000 - 30L * 86_400
+        val candidates = deviceItems.filter { !it.favorite && (it.ref as? PhotoRef.Media)?.isVideo == false && it.modifiedSec < recent }
+        val groups = ArrayList<CleanupGroup>()
+        val exact = index.exactDuplicates(candidates).map { set -> set.sortedBy { it.dateMillis } }
+        if (exact.isNotEmpty()) groups += CleanupGroup(
+            "dupes", "content_copy", "Duplicates", "%,d exact copies".format(exact.sumOf { it.size - 1 }),
+            "byte-identical files. The oldest copy of each is kept.", 1.0, exact,
+            exact.flatMap { it.drop(1) }.map { it.key }.toSet(),
+        )
+        val inExact = exact.flatten().map { it.key }.toSet()
+        val shots = candidates.filter { it.key !in inExact }.mapNotNull { i ->
+            entry(i)?.let { com.sift.photos.data.Analysis.Shot(mediaId(i), i.dateMillis, it.dHash, it.sharpness, i.sizeBytes) }
+        }
+        val byId = candidates.associateBy { mediaId(it) }
+        val near = com.sift.photos.data.Analysis.nearDuplicateSets(shots).map { set -> set.sortedByDescending { it.sharp }.mapNotNull { byId[it.id] } }
+        if (near.isNotEmpty()) groups += CleanupGroup(
+            "near", "burst_mode", "Near-duplicates", "%,d sets · %,d photos".format(near.size, near.sumOf { it.size }),
+            "same scene within 10 s. The sharpest of each set is suggested to keep.", 0.88, near,
+            near.flatMap { it.drop(1) }.map { it.key }.toSet(),
+        )
+        val inNear = near.flatten().map { it.key }.toSet()
+        val blurry = candidates.filter { it.key !in inExact && it.key !in inNear && it.docIcon == null }.mapNotNull { i ->
+            entry(i)?.let { e -> com.sift.photos.data.Analysis.blurConfidence(e.sharpness).takeIf { it >= 0.6 }?.let { i to it } }
+        }
+        if (blurry.isNotEmpty()) groups += CleanupGroup(
+            "blurry", "blur_on", "Blurry", "%,d photos".format(blurry.size),
+            "motion or focus blur measured on this phone. Ones below 0.70 are left for you.", blurry.map { it.second }.average(),
+            listOf(blurry.map { it.first }), blurry.filter { it.second >= 0.7 }.map { it.first.key }.toSet(),
+        )
+        val cutoff = System.currentTimeMillis() - 30L * 86_400_000
+        val docIds = foundDocs.map { it.first.key }.toSet()
+        val screenshots = deviceItems.filter { it.docIcon == "screenshot" && it.dateMillis < cutoff && !it.favorite && it.key !in docIds }
+        if (screenshots.isNotEmpty()) groups += CleanupGroup(
+            "shots", "screenshot", "Screenshots", "%,d older than 30 days".format(screenshots.size),
+            "older than 30 days. Ones with tickets or receipts are excluded.", 0.95, listOf(screenshots), screenshots.map { it.key }.toSet(),
+        )
+        cleanup = groups
+    }
+
+    /** Text and object search over the index, plus dates, places, albums and file names. */
+    fun search(q: String): List<Pair<PhotoItem, Double>> {
+        val words = q.lowercase(Locale.getDefault()).split(' ', ',').filter { it.length > 1 && it !in stop }
+        if (words.isEmpty()) return emptyList()
+        return libraryItems.mapNotNull { item ->
+            val e = entry(item)
+            val cal = Calendar.getInstance().apply { timeInMillis = item.dateMillis }
+            val month = java.text.DateFormatSymbols(Locale.getDefault()).months[cal.get(Calendar.MONTH)]
+            val meta = listOfNotNull(item.name, item.bucket, item.place, month, cal.get(Calendar.YEAR).toString(),
+                if (item.duration != null) "video videos" else "photo photos",
+                if (item.docIcon == "screenshot") "screenshot screenshots" else null).joinToString(" ").lowercase()
+            val docKind = e?.doc?.kind?.name?.lowercase()?.let { "$it ${it}s" } ?: ""
+            val text = (e?.text ?: "").lowercase()
+            var score = 0.0
+            for (w in words) {
+                val label = e?.labels?.firstOrNull { it.first.lowercase().startsWith(w.trimEnd('s')) }
+                score += when {
+                    meta.contains(w) || docKind.contains(w) -> 1.0
+                    label != null -> label.second.toDouble()
+                    text.contains(w) -> 0.9
+                    else -> return@mapNotNull null
+                }
+            }
+            item to (score / words.size)
+        }.sortedByDescending { it.second }
+    }
+
+    private val stop = setOf("from", "in", "the", "at", "of", "my", "with", "and", "a", "on")
+
+    /** Trip albums: runs of photos taken far from home. */
+    val trips: List<Album>
+        get() {
+            if (!settings.feature(com.sift.photos.data.SmartFeature.Trips)) return emptyList()
+            val located = deviceItems.mapNotNull { i -> entry(i)?.let { e -> if (e.lat != null && e.lon != null) com.sift.photos.data.Analysis.Located(mediaId(i), i.dateMillis, e.lat, e.lon) else null } }
+            val byId = deviceItems.associateBy { mediaId(it) }
+            val fmt = SimpleDateFormat("d MMM yyyy", Locale.getDefault())
+            return com.sift.photos.data.Analysis.trips(located).filter { !index.decided(it.start, "trip") }.map { t ->
+                val items = t.ids.mapNotNull { byId[it] }.sortedByDescending { it.dateMillis }
+                Album("trip:${t.start}", "Trip · ${fmt.format(Date(t.start))}", "%,d photos · %d km from home".format(items.size, t.km),
+                    items.firstOrNull()?.ref, "luggage", items)
+            }
+        }
 
     val sample: Boolean get() = settings.sampleLibrary
     val ai: Boolean get() = settings.aiEnabled
@@ -233,6 +373,13 @@ class SiftViewModel(app: Application) : AndroidViewModel(app) {
         toast.show("${added.size} ${if (added.size == 1) "item" else "items"} moved to Trash", icon = "delete") {
             sampleTrashed.removeAll(added.toSet())
         }
+    }
+
+    data class CleanupGroup(
+        val key: String, val icon: String, val name: String, val count: String, val why: String, val confidence: Double,
+        val sets: List<List<PhotoItem>>, val suggested: Set<String>,
+    ) {
+        val bytes: Long get() = sets.flatten().filter { it.key in suggested }.sumOf { it.sizeBytes }
     }
 
     fun toggleSampleFavorite(item: PhotoItem) {

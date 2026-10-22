@@ -5,6 +5,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -202,11 +203,11 @@ fun ViewerScreen(vm: SiftViewModel, screen: Screen.Viewer) {
         }
     }
 
-    if (info) InfoSheet(vm, item) { info = false }
+    if (info) InfoSheet(vm, item, panel = landscape) { info = false }
 }
 
 @Composable
-private fun InfoSheet(vm: SiftViewModel, item: PhotoItem, onDismiss: () -> Unit) {
+private fun InfoSheet(vm: SiftViewModel, item: PhotoItem, panel: Boolean, onDismiss: () -> Unit) {
     val c = Sift.colors
     val repo = LocalMediaRepository.current
     val exif by produceState<ExifFacts?>(null, item.key) {
@@ -221,8 +222,8 @@ private fun InfoSheet(vm: SiftViewModel, item: PhotoItem, onDismiss: () -> Unit)
         exif?.latLong?.let { add(Triple("location_on", "Photo location", "%.4f, %.4f".format(it[0], it[1]))) }
         add(Triple("memory", if (item.ref is PhotoRef.Media) "On this phone" else "Sample library", item.relativePath ?: "placeholder photo"))
     }
-    SiftSheet(onDismiss) {
-        T("Info", Sift.type.titleL, color = c.onSurface)
+    val body: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit = {
+        if (!panel) T("Info", Sift.type.titleL, color = c.onSurface)
         T("Add a description", Sift.type.bodyL, Modifier.padding(vertical = 8.dp), color = c.onSurfaceVariant)
         rows.forEach { (icon, a, b) ->
             Row(Modifier.fillMaxWidth().heightIn(min = 56.dp).padding(vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -239,6 +240,22 @@ private fun InfoSheet(vm: SiftViewModel, item: PhotoItem, onDismiss: () -> Unit)
             Btn("Use its color for the accent", { vm.useColorOf(item); onDismiss() }, kind = BtnKind.Outlined, icon = "colorize")
         }
     }
+    if (panel) {
+        // Landscape: info sits beside the photo instead of covering it.
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
+            Column(
+                Modifier.fillMaxHeight().width(360.dp).background(c.modal)
+                    .then(if (c.hairline != null) Modifier.border(1.dp, c.hairline, androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) else Modifier)
+                    .statusBarsPadding().navigationBarsPadding().scrollY().padding(horizontal = 20.dp),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    T("Info", Sift.type.titleL, Modifier.weight(1f), color = c.onSurface)
+                    IconBtn("close", "Close info", onDismiss, tint = c.onSurface)
+                }
+                body()
+            }
+        }
+    } else SiftSheet(onDismiss) { body() }
 }
 
 @Composable

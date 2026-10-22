@@ -92,6 +92,7 @@ private fun recoverableUntil(): String =
 
 @Composable
 fun CleanupScreen(vm: SiftViewModel) {
+    if (!vm.sample && vm.ai) { RealCleanupScreen(vm); return }
     val c = Sift.colors
     Column(Modifier.fillMaxSize()) {
         TopBar("Cleanup", onBack = { vm.pop() }) {
@@ -282,7 +283,7 @@ private fun RealReview(vm: SiftViewModel) {
                 T(formatBytes(shots.filter { it.key in selected }.sumOf { it.sizeBytes }), Sift.type.data, color = c.onSurfaceVariant)
             }
             Btn("Move to Trash", {
-                LocalPending.items = shots.filter { it.key in selected }
+                CleanupPending.items = shots.filter { it.key in selected }
                 vm.push(Screen.CleanupConfirm)
             }, enabled = selected.isNotEmpty())
         }
@@ -290,14 +291,14 @@ private fun RealReview(vm: SiftViewModel) {
 }
 
 /** Hand-off between review and confirm for the real library (screens hold no arguments for this). */
-private object LocalPending { var items: List<PhotoItem> = emptyList() }
+internal object CleanupPending { var items: List<PhotoItem> = emptyList() }
 
 @Composable
 fun CleanupConfirmScreen(vm: SiftViewModel) {
     val c = Sift.colors
     val actions = LocalActions.current
     val real = !vm.sample
-    val items = if (real) LocalPending.items else emptyList()
+    val items = if (real) CleanupPending.items else emptyList()
     val count = if (real) items.size else 342
     val size = if (real) formatBytes(items.sumOf { it.sizeBytes }) else "3.5 GB"
     val confirm = {

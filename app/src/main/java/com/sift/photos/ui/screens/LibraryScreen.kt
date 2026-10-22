@@ -65,6 +65,7 @@ import com.sift.photos.ui.components.T
 import com.sift.photos.ui.components.Tab
 import com.sift.photos.ui.theme.Shapes
 import com.sift.photos.ui.theme.Sift
+import kotlinx.coroutines.launch
 
 /** The Sift mark: a 3 × 3 grid whose last tiles are still settling, round and translucent, into place. */
 @Composable
@@ -123,9 +124,18 @@ fun LibraryScreen(vm: SiftViewModel) {
     val all = remember(sections) { sections.flatMap { it.items } }
     val selectionMode = selection.isNotEmpty()
     val showLibrary = vm.sample || vm.access != MediaAccess.None
+    val gridState = androidx.compose.foundation.lazy.grid.rememberLazyGridState()
+    var zoom by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(Zoom.Days) }
+    val months = remember(sections) { monthGroups(sections) }
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val openMonth: (MonthGroup) -> Unit = { m ->
+        zoom = Zoom.Days
+        scope.launch { gridState.scrollToItem(sectionGridIndex(sections, m.firstSection)) }
+    }
 
     Box(Modifier.fillMaxSize()) {
         LazyVerticalGrid(
+            state = gridState,
             columns = GridCells.Fixed(3),
             horizontalArrangement = Arrangement.spacedBy(2.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -176,6 +186,23 @@ fun LibraryScreen(vm: SiftViewModel) {
                             Spacer(Modifier.height(12.dp))
                             PartialAccessCard(vm.deviceItems.size) { actions.requestAccess() }
                         }
+                        if (!vm.sample && vm.ai) {
+                            val p = vm.index.progress
+                            if (p.running) { Spacer(Modifier.height(12.dp)); IndexProgressCard(vm) }
+                            val n = vm.realActionCount()
+                            if (n > 0) {
+                                Spacer(Modifier.height(12.dp))
+                                val docs = vm.foundDocs
+                                AiCard(
+                                    icon = "bolt",
+                                    eyebrow = "Found in your photos · not acted on",
+                                    title = "$n ${if (n == 1) "photo can" else "photos can"} become actions",
+                                    why = docs.groupBy { it.second.kind }.entries.joinToString(", ") { (k, v) -> "${v.size} ${k.name.lowercase()}${if (v.size > 1) "s" else ""}" } + ", read on this phone.",
+                                    confidence = docs.maxOf { it.second.confidence },
+                                    onClick = { vm.tab = Tab.Actions },
+                                )
+                            }
+                        }
                         if (vm.sample && vm.ai && vm.settings.feature(SmartFeature.Documents) && vm.actionsDone.size < 3) {
                             Spacer(Modifier.height(12.dp))
                             AiCard(
@@ -190,7 +217,16 @@ fun LibraryScreen(vm: SiftViewModel) {
                     }
                 }
             }
-            if (showLibrary) {
+            if (showLibrary && sections.isNotEmpty()) {
+                item(span = { GridItemSpan(maxLineSpan) }, key = "zoom") {
+                    Row(Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Zoom.entries.forEach { z -> SiftChip(z.label, zoom == z, { zoom = z }) }
+                    }
+                }
+            }
+            if (showLibrary && zoom == Zoom.Months) monthTiles(months, openMonth)
+            if (showLibrary && zoom == Zoom.Years) yearRows(months, openMonth)
+            if (showLibrary && zoom == Zoom.Days) {
                 daySections(sections, selection, onOpen = { item ->
                     vm.push(Screen.Viewer(all, all.indexOf(item).coerceAtLeast(0)))
                 }, onToggle = { item ->
@@ -216,6 +252,10 @@ fun LibraryScreen(vm: SiftViewModel) {
                     body = "Take a photo or copy some to this phone. Nothing is uploaded.",
                 )
             }
+        }
+
+        if (showLibrary && zoom == Zoom.Days && !selectionMode && all.size > 30) {
+            Scrubber(gridState, sections, Modifier.align(Alignment.CenterEnd).padding(top = 120.dp, bottom = 16.dp))
         }
 
         if (selectionMode) {

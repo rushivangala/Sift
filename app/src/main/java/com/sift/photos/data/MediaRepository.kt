@@ -84,6 +84,7 @@ class MediaRepository(private val context: Context) {
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.RELATIVE_PATH,
             MediaStore.MediaColumns.DATE_EXPIRES,
+            MediaStore.MediaColumns.DATE_MODIFIED,
         )
         val args = Bundle().apply {
             putString(
@@ -119,6 +120,7 @@ class MediaRepository(private val context: Context) {
             val iMime = c.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE)
             val iPath = c.getColumnIndexOrThrow(MediaStore.MediaColumns.RELATIVE_PATH)
             val iExp = c.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_EXPIRES)
+            val iMod = c.getColumnIndexOrThrow(MediaStore.MediaColumns.DATE_MODIFIED)
             while (c.moveToNext()) {
                 val id = c.getLong(iId)
                 val video = c.getInt(iType) == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO
@@ -141,6 +143,7 @@ class MediaRepository(private val context: Context) {
                     mime = c.getString(iMime),
                     relativePath = path,
                     expiresMillis = c.getLong(iExp) * 1000,
+                    modifiedSec = c.getLong(iMod),
                 )
             }
         }
@@ -184,11 +187,32 @@ class MediaRepository(private val context: Context) {
                 postRotate(-params.rotation.toFloat())
             }
             val turned = Bitmap.createBitmap(src, 0, 0, src.width, src.height, m, true)
-            val out = Bitmap.createBitmap(turned.width, turned.height, Bitmap.Config.ARGB_8888)
-            android.graphics.Canvas(out).drawBitmap(turned, 0f, 0f, android.graphics.Paint().apply {
+            // Crop to the chosen aspect, centered, then straighten with enough zoom to fill the frame.
+            val srcRatio = turned.width.toFloat() / turned.height
+            val ratio = params.aspect.ratio ?: srcRatio
+            val (cw, ch) = if (ratio > srcRatio) turned.width to (turned.width / ratio).toInt() else (turned.height * ratio).toInt() to turned.height
+            val out = Bitmap.createBitmap(cw.coerceAtLeast(1), ch.coerceAtLeast(1), Bitmap.Config.ARGB_8888)
+            val canvas = android.graphics.Canvas(out)
+            canvas.translate(cw / 2f, ch / 2f)
+            canvas.rotate(-params.straighten)
+            val fill = params.fillScale(cw.toFloat() / ch)
+            canvas.scale(fill, fill)
+            canvas.drawBitmap(turned, -turned.width / 2f, -turned.height / 2f, android.graphics.Paint().apply {
                 colorFilter = android.graphics.ColorMatrixColorFilter(params.colorMatrix())
                 isFilterBitmap = true
             })
+            if (params.toneChanged) {
+                val lut = params.lut()
+                val row = IntArray(out.width)
+                for (y in 0 until out.height) {
+                    out.getPixels(row, 0, out.width, 0, y, out.width, 1)
+                    for (x in row.indices) {
+                        val px = row[x]
+                        row[x] = (px and 0xFF000000.toInt()) or (lut[(px shr 16) and 0xFF] shl 16) or (lut[(px shr 8) and 0xFF] shl 8) or lut[px and 0xFF]
+                    }
+                    out.setPixels(row, 0, out.width, 0, y, out.width, 1)
+                }
+            }
             val base = item.name.substringBeforeLast('.')
             val values = android.content.ContentValues().apply {
                 put(MediaStore.MediaColumns.DISPLAY_NAME, "${base}_edit_${System.currentTimeMillis() / 1000}.jpg")

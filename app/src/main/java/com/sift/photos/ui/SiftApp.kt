@@ -158,22 +158,7 @@ fun SiftApp(vm: SiftViewModel) {
                     }
                 }
             },
-            share = { items ->
-                val uris = ArrayList(items.mapNotNull { (it.ref as? PhotoRef.Media)?.uri })
-                if (uris.isEmpty()) {
-                    vm.toast.show("Sample photos are placeholders and can't be shared", icon = "info", onAction = null)
-                } else {
-                    val intent = if (uris.size == 1) {
-                        Intent(Intent.ACTION_SEND).putExtra(Intent.EXTRA_STREAM, uris[0])
-                    } else {
-                        Intent(Intent.ACTION_SEND_MULTIPLE).putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
-                    }
-                    intent.type = if (items.all { (it.ref as? PhotoRef.Media)?.isVideo == true }) "video/*"
-                    else if (items.none { (it.ref as? PhotoRef.Media)?.isVideo == true }) "image/*" else "*/*"
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    context.startActivity(Intent.createChooser(intent, null))
-                }
-            },
+            share = { items -> vm.push(Screen.Share(items)) },
             requestAccess = { permissionLauncher.launch(MediaPermissions) },
         ).also { restoreRef[0] = it.restore }
     }
@@ -243,5 +228,13 @@ private fun ScreenContent(vm: SiftViewModel, screen: Screen) {
         Screen.SmartFeatures -> SmartFeaturesScreen(vm)
         is Screen.AlbumDetail -> AlbumDetailScreen(vm, screen.album)
         Screen.Locked -> LockedScreen(vm)
+        is Screen.CleanupGroupReview -> com.sift.photos.ui.screens.CleanupGroupReviewScreen(vm, screen.key)
+        is Screen.DocConfirm -> com.sift.photos.ui.screens.DocConfirmScreen(vm, screen.item)
+        Screen.Map -> com.sift.photos.ui.screens.MapScreen(vm)
+        is Screen.Place -> com.sift.photos.ui.screens.PlaceScreen(vm, screen)
+        is Screen.Share -> com.sift.photos.ui.screens.ShareScreen(vm, screen.items)
+        Screen.Family -> com.sift.photos.ui.screens.FamilyScreen(vm)
+        Screen.Import -> com.sift.photos.ui.screens.ImportScreen(vm)
+        Screen.FirstSync -> com.sift.photos.ui.screens.FirstSyncScreen(vm)
     }
 }

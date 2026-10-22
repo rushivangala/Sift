@@ -280,7 +280,9 @@ private fun ReceiptResults(vm: SiftViewModel) {
 private fun MetadataResults(vm: SiftViewModel, q: String) {
     val c = Sift.colors
     val source = vm.libraryItems
-    val results = remember(q, source) { metadataSearch(source, q) }
+    val results = remember(q, source, vm.index.entries.size) {
+        if (!vm.sample && vm.ai) vm.search(q).map { it.first } else metadataSearch(source, q)
+    }
     var cloudDialog by remember { mutableStateOf(false) }
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
@@ -295,7 +297,11 @@ private fun MetadataResults(vm: SiftViewModel, q: String) {
                     T("${results.size} ${if (results.size == 1) "result" else "results"}", Sift.type.titleM, Modifier.weight(1f), color = c.onSurface)
                     OriginBadge()
                 }
-                T("Matched on dates, places, albums and file names.", Sift.type.bodyS, color = c.onSurfaceVariant)
+                T(
+                    if (!vm.sample && vm.ai) "Matched on text and objects read on this phone, plus dates, places, albums and file names."
+                    else "Matched on dates, places, albums and file names.",
+                    Sift.type.bodyS, color = c.onSurfaceVariant,
+                )
                 if (results.isEmpty() && vm.ai) {
                     SiftCard {
                         T("Nothing matched on this phone", Sift.type.titleM, color = c.onSurface)

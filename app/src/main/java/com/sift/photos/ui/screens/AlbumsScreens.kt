@@ -69,7 +69,7 @@ import com.sift.photos.ui.theme.Sift
 fun AlbumsScreen(vm: SiftViewModel) {
     val c = Sift.colors
     var filter by remember { mutableIntStateOf(0) }
-    val albums = vm.albums.filter {
+    val albums = ((if (!vm.sample) vm.trips else emptyList()) + vm.albums).filter {
         when (filter) {
             1 -> it.icon != "group" && it.icon != "memory"
             2 -> it.icon == "group"
@@ -128,8 +128,12 @@ fun AlbumsScreen(vm: SiftViewModel) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Spacer(Modifier.height(4.dp))
-                Overline("Private")
+                Overline("Places and private")
                 SiftCard(spacing = 0.dp, padding = PaddingValues(vertical = 4.dp)) {
+                    LinkRow("map", "Places", "Your photos on a map") { vm.push(Screen.Map) }
+                    Divider(Modifier.padding(horizontal = 16.dp))
+                    LinkRow("group", "Family library", "Share a library with the people you live with") { vm.push(Screen.Family) }
+                    Divider(Modifier.padding(horizontal = 16.dp))
                     LinkRow("lock", "Locked folder", if (vm.sample) "9 items · not backed up" else "Not backed up · hidden from search") { vm.push(Screen.Locked) }
                     Divider(Modifier.padding(horizontal = 16.dp))
                     LinkRow(
@@ -166,7 +170,7 @@ fun AlbumDetailScreen(vm: SiftViewModel, album: Album) {
         item(span = { GridItemSpan(maxLineSpan) }) {
             Column {
                 TopBar(null, onBack = { vm.pop() }) {
-                    IconBtn("share", "Share album", { vm.toast.show("Sharing opens from a selection in this build", icon = "info", onAction = null) })
+                    IconBtn("share", "Share album", { vm.push(Screen.Share(album.items)) })
                 }
                 Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     T(album.name, Sift.type.headlineL, color = c.onSurface)
@@ -184,6 +188,25 @@ fun AlbumDetailScreen(vm: SiftViewModel, album: Album) {
                             Spacer(Modifier.weight(1f))
                             Btn("Don't do this again", {
                                 vm.settings.setFeature(SmartFeature.Trips, false)
+                                vm.toast.show("Trip albums turned off", icon = "block") { vm.settings.setFeature(SmartFeature.Trips, true) }
+                            }, kind = BtnKind.Text, color = c.onSurfaceVariant)
+                        }
+                    }
+                    if (album.key.startsWith("trip:") && !tripUndone) {
+                        AiCard(
+                            icon = "luggage", eyebrow = "Trip album · made by Sift", title = album.name.removePrefix("Trip · "),
+                            why = "${album.count}, grouped by date and GPS read on this phone.", confidence = 0.9,
+                        ) {
+                            Btn("Undo album", {
+                                val start = album.key.removePrefix("trip:").toLong()
+                                vm.index.decide(start, "trip")
+                                vm.pop()
+                                vm.toast.show("Trip album removed. Photos untouched.", icon = "undo") { vm.index.decide(start, "trip", false) }
+                            }, kind = BtnKind.Text, icon = "undo", color = c.primary)
+                            Spacer(Modifier.weight(1f))
+                            Btn("Don't do this again", {
+                                vm.settings.setFeature(SmartFeature.Trips, false)
+                                vm.pop()
                                 vm.toast.show("Trip albums turned off", icon = "block") { vm.settings.setFeature(SmartFeature.Trips, true) }
                             }, kind = BtnKind.Text, color = c.onSurfaceVariant)
                         }

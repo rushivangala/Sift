@@ -77,12 +77,7 @@ fun ActionsScreen(vm: SiftViewModel) {
                     "Receipts and documents is off in Smart features, so photos aren't read for text. Your library still works.",
                 ) { Btn("Open Smart features", { vm.push(Screen.SmartFeatures) }, kind = BtnKind.Outlined) }
             }
-            !vm.sample -> Box(Modifier.fillMaxSize()) {
-                CenterMessage(
-                    "bolt", "No actions yet",
-                    "Reading receipts, tickets and cards needs the on-device text model, which this build doesn't include yet. Turn on the demo library in Settings to try the flow.",
-                ) { Btn("Open Settings", { vm.push(Screen.Settings) }, kind = BtnKind.Outlined) }
-            }
+            !vm.sample -> RealActionsContent(vm)
             else -> Column(Modifier.fillMaxSize().scrollY().padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 val pending = listOf("receipt", "ticket", "card").filter { it !in vm.actionsDone }
                 if (pending.isNotEmpty()) Overline("Suggested · not done yet")

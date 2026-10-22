@@ -240,7 +240,8 @@ class SiftFlowTest {
         waitForText("sift_test_", substring = true)
         shot("19-real-viewer-info")
         // Edit a real photo: the editor saves a new copy and leaves the original alone.
-        androidx.test.espresso.Espresso.pressBack()
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        compose.waitForIdle()
         compose.onNodeWithContentDescription("Edit").performClick()
         waitForText("Exposure")
         compose.onNodeWithContentDescription("Exposure").performSemanticsAction(androidx.compose.ui.semantics.SemanticsActions.SetProgress) { it(0.5f) }

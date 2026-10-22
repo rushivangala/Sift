@@ -173,7 +173,9 @@ fun SettingsScreen(vm: SiftViewModel) {
                         }
                     }
                     Divider(Modifier.padding(horizontal = 16.dp))
-                    LinkRow("photo_library", "Photo access", when (vm.access) {
+                    LinkRow("cloud_download", "Import from Google Photos", "From a Google Takeout .zip, with dates and albums") { vm.push(Screen.Import) }
+                Divider(Modifier.padding(horizontal = 16.dp))
+                LinkRow("photo_library", "Photo access", when (vm.access) {
                         com.sift.photos.data.MediaAccess.Full -> "All photos and videos"
                         com.sift.photos.data.MediaAccess.Partial -> "Selected photos only · change"
                         com.sift.photos.data.MediaAccess.None -> "Not allowed · tap to allow"
@@ -195,6 +197,10 @@ fun SettingsScreen(vm: SiftViewModel) {
                 ToggleRow("Strip location when sharing", "Default for new shares", s.stripLocation, { s.stripLocation = it })
                 ToggleRow("Require biometrics for Locked folder", null, s.lockedBiometrics, { s.lockedBiometrics = it }, divider = true)
                 ToggleRow("Hide previews in app switcher", null, s.hidePreviews, { s.hidePreviews = it }, divider = true)
+                ToggleRow(
+                    "Map tiles", "Downloads map images from OpenStreetMap for Places. Your photos and locations are never sent.",
+                    s.mapTiles, { s.mapTiles = it }, divider = true,
+                )
             }
 
             Overline("Smart features")
@@ -206,7 +212,8 @@ fun SettingsScreen(vm: SiftViewModel) {
             SiftCard(spacing = 6.dp) {
                 T("Sift ${BuildConfig.VERSION_NAME}", Sift.type.titleM, color = c.onSurface)
                 T("No account. No ads. No storage to buy. Photos stay plain files.", Sift.type.bodyS, color = c.onSurfaceVariant)
-                T("Hanken Grotesk and IBM Plex Mono (SIL OFL 1.1) · Material Symbols (Apache 2.0)", Sift.type.data, color = c.onSurfaceVariant)
+                T("Text and objects are read by Google ML Kit models bundled in the app; images never leave the phone. ML Kit may send anonymous usage statistics to Google.", Sift.type.bodyS, color = c.onSurfaceVariant)
+                T("Map © OpenStreetMap contributors · Hanken Grotesk and IBM Plex Mono (SIL OFL 1.1) · Material Symbols (Apache 2.0)", Sift.type.data, color = c.onSurfaceVariant)
             }
             Spacer(Modifier.navigationBarsPadding().height(16.dp))
         }
@@ -320,6 +327,7 @@ fun SmartFeaturesScreen(vm: SiftViewModel) {
             onSecondary = {
                 deleteDialog = false
                 vm.actionsDone.clear(); vm.editsReverted.clear(); vm.cleanupDone = false
+                vm.index.deleteAll()
                 vm.toast.show("AI data deleted from this phone", icon = "delete", onAction = null)
             },
         )
@@ -327,7 +335,7 @@ fun SmartFeaturesScreen(vm: SiftViewModel) {
 }
 
 @Composable
-fun OnboardingScreen(vm: SiftViewModel) {
+internal fun PermissionsStep(vm: SiftViewModel, onNext: () -> Unit) {
     val c = Sift.colors
     val actions = LocalActions.current
     Column(Modifier.fillMaxSize().statusBarsPadding()) {
@@ -367,7 +375,7 @@ fun OnboardingScreen(vm: SiftViewModel) {
         Column(Modifier.fillMaxWidth().navigationBarsPadding().padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Btn("Allow photo access", {
                 actions.requestAccess()
-                vm.finishOnboarding(sample = false)
+                onNext()
             }, Modifier.fillMaxWidth(), large = true)
             Btn("Explore with the demo library", { vm.finishOnboarding(sample = true) }, Modifier.fillMaxWidth(), kind = BtnKind.Outlined, large = true)
         }

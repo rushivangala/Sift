@@ -36,6 +36,8 @@ class SiftSettings(context: Context) {
     var hidePreviews by pref("hide_previews", false)
     var cloudProcessing by pref("cloud_processing", false)
     var autoFileReceipts by pref("auto_file_receipts", true)
+    /** The only network use: OpenStreetMap tile images for the map. */
+    var mapTiles by pref("map_tiles", true)
 
     private val featureState = SmartFeature.entries.associateWith {
         mutableStateOf(prefs.getBoolean("feature_${it.name}", it.defaultOn))

@@ -29,6 +29,7 @@ data class PhotoItem(
     val mime: String? = null,
     val relativePath: String? = null,
     val expiresMillis: Long = 0,
+    val modifiedSec: Long = 0,
 )
 
 @Immutable

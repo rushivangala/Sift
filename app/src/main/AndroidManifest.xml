@@ -9,7 +9,9 @@
     <!-- Optional "Media management" access: favorite and trash without a system dialog each time. -->
     <uses-permission android:name="android.permission.MANAGE_MEDIA" />
 
-    <!-- Sift never needs the network: no INTERNET permission. Nothing can leave the phone. -->
+    <!-- Network is used for one thing only: OpenStreetMap tile images on the Places map
+         (Settings → Privacy → Map tiles). Photos, locations and text never leave the phone. -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <queries>
         <intent>
@@ -35,6 +37,16 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sift">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.share"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_paths" />
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
