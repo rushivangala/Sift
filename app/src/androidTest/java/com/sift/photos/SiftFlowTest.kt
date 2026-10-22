@@ -156,6 +156,70 @@ class SiftFlowTest {
     }
 
     @Test
+    fun mapTimelineAndShareInDemoLibrary() {
+        launch(onboarded = true, sample = true, extra = mapOf("map_tiles" to false))
+        compose.onNodeWithText("Months").performClick()
+        waitForText("October")
+        shot("21-timeline-months")
+        compose.onNodeWithText("Years").performClick()
+        waitForText("2026")
+        compose.onNodeWithText("Days").performClick()
+        compose.onAllNodesWithText("Albums").onFirst().performClick()
+        compose.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Places"))
+        compose.onNodeWithText("Places").performClick()
+        waitForText("photos ·", substring = true)
+        shot("22-map")
+        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        compose.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Family library"))
+        compose.onNodeWithText("Family library").performClick()
+        waitForText("Stored on Home NAS")
+        shot("23-family")
+    }
+
+    @Test
+    fun editorProToolsAndOnboardingSteps() {
+        launch(onboarded = true, sample = true)
+        compose.onAllNodes(hasContentDescription("Photo,", substring = true)).onFirst().performClick()
+        compose.onNodeWithContentDescription("Edit").performClick()
+        compose.onNodeWithText("Pro").performClick()
+        waitForText("Reset curve")
+        shot("24-editor-curves")
+        compose.onNodeWithText("Crop").performClick()
+        compose.onNodeWithText("4:5").performClick()
+        waitForText("Straighten")
+        shot("25-editor-crop")
+    }
+
+    @Test
+    fun receiptPhotoBecomesAnAction() {
+        val ua = InstrumentationRegistry.getInstrumentation().uiAutomation
+        ua.grantRuntimePermission(ctx.packageName, Manifest.permission.READ_MEDIA_IMAGES)
+        val bmp = Bitmap.createBitmap(1000, 1400, Bitmap.Config.ARGB_8888)
+        Canvas(bmp).apply {
+            drawColor(Color.WHITE)
+            val paint = android.graphics.Paint().apply { color = Color.BLACK; textSize = 64f; isAntiAlias = true }
+            listOf("Cervejaria Ramiro", "Av Almirante Reis 1", "15/05/2026 22:14", "Gambas 24,00", "Sapateira 32,60", "IVA 23% 16,16", "TOTAL 86,40 EUR")
+                .forEachIndexed { i, line -> drawText(line, 60f, 160f + i * 150f, paint) }
+        }
+        val uri = ctx.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, "sift_receipt_test.jpg")
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/SiftTest")
+        })!!
+        inserted += uri
+        ctx.contentResolver.openOutputStream(uri)!!.use { bmp.compress(Bitmap.CompressFormat.JPEG, 95, it) }
+        launch(onboarded = true, sample = false)
+        compose.onAllNodesWithText("Actions").onFirst().performClick()
+        compose.waitUntil(90_000) { compose.onAllNodes(hasText("€86.40", substring = true)).fetchSemanticsNodes().isNotEmpty() }
+        shot("26-real-receipt-action")
+        compose.onNodeWithText("Review").performClick()
+        waitForText("Add to expenses")
+        compose.onNodeWithText("Add expense").performClick()
+        waitForText("Expenses on this phone".uppercase(), substring = true)
+        shot("27-real-expense-added")
+    }
+
+    @Test
     fun actionsAndConfirmFlows() {
         launch(onboarded = true, sample = true)
         compose.onAllNodesWithText("Actions").onFirst().performClick()
