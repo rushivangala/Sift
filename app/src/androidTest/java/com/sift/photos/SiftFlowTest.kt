@@ -192,7 +192,9 @@ class SiftFlowTest {
         compose.onNodeWithText("Places").performClick()
         waitForText("photos ·", substring = true)
         shot("22-map")
-        InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(android.view.KeyEvent.KEYCODE_BACK)
+        compose.onNodeWithContentDescription("Back").performClick()
+        compose.waitUntil(10_000) { compose.onAllNodes(hasScrollToNodeAction()).fetchSemanticsNodes().size == 1 }
+        compose.waitForIdle()
         compose.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Family library"))
         compose.onNodeWithText("Family library").performClick()
         waitForText("Stored on Home NAS")
