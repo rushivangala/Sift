@@ -89,8 +89,8 @@ fun LazyGridScope.daySections(
     onToggle: (PhotoItem) -> Unit,
     selectionMode: Boolean,
 ) {
-    sections.forEach { section ->
-        item(key = "h:" + section.title + section.subtitle, span = { GridItemSpan(maxLineSpan) }) {
+    sections.forEachIndexed { index, section ->
+        item(key = "h:$index:" + section.title, span = { GridItemSpan(maxLineSpan) }) {
             Row(
                 Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 10.dp).semantics(mergeDescendants = true) { heading() },
                 verticalAlignment = Alignment.Bottom,

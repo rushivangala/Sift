@@ -65,7 +65,8 @@ fun monthGroups(sections: List<DaySection>): List<MonthGroup> {
         cal.timeInMillis = s.items.first().dateMillis
         out.getOrPut(cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH)) { mutableListOf() } += i to s
     }
-    return out.map { (k, list) ->
+    // Newest month first, each month exactly once, whatever order the sections arrive in.
+    return out.entries.sortedByDescending { it.key }.map { (k, list) ->
         cal.set(k / 100, k % 100, 1)
         MonthGroup(k / 100, k % 100, fmt.format(Date(cal.timeInMillis)).replaceFirstChar { it.uppercase() }, list.flatMap { it.second.items }, list.first().first)
     }
@@ -76,23 +77,22 @@ fun sectionGridIndex(sections: List<DaySection>, section: Int): Int =
     2 + sections.take(section).sumOf { 1 + it.items.size }
 
 fun LazyGridScope.monthTiles(months: List<MonthGroup>, onOpen: (MonthGroup) -> Unit) {
-    var lastYear = -1
-    months.forEach { m ->
-        if (m.year != lastYear) {
-            lastYear = m.year
-            item(key = "y${m.year}", span = { GridItemSpan(maxLineSpan) }) {
-                T(m.year.toString(), Sift.type.headlineS, Modifier.padding(start = 16.dp, top = 20.dp, bottom = 8.dp), color = Sift.colors.onSurface)
-            }
+    // Grouped by year, so a year heading can only ever be emitted once (lazy keys must be unique).
+    months.groupBy { it.year }.toSortedMap(compareByDescending { it }).forEach { (year, ms) ->
+        item(key = "y$year", span = { GridItemSpan(maxLineSpan) }) {
+            T(year.toString(), Sift.type.headlineS, Modifier.padding(start = 16.dp, top = 20.dp, bottom = 8.dp), color = Sift.colors.onSurface)
         }
-        item(key = "m${m.year}-${m.month}", span = { GridItemSpan(maxLineSpan / 2) }) {
-            Column(
-                Modifier.padding(horizontal = 4.dp, vertical = 4.dp).clip(Shapes.l).clickable { onOpen(m) }
-                    .semantics(mergeDescendants = true) {},
-            ) {
-                Box(Modifier.fillMaxWidth().aspectRatio(1.4f).clip(Shapes.l)) { PhotoView(m.items.first().ref, Modifier.fillMaxSize(), thumbSize = 240.dp) }
-                Row(Modifier.padding(horizontal = 4.dp, vertical = 6.dp), verticalAlignment = Alignment.Bottom) {
-                    T(m.label, Sift.type.titleS, Modifier.weight(1f), color = Sift.colors.onSurface)
-                    T("%,d".format(m.items.size), Sift.type.data, color = Sift.colors.onSurfaceVariant)
+        ms.distinctBy { it.month }.forEach { m ->
+            item(key = "m${m.year}-${m.month}", span = { GridItemSpan(maxLineSpan / 2) }) {
+                Column(
+                    Modifier.padding(horizontal = 4.dp, vertical = 4.dp).clip(Shapes.l).clickable { onOpen(m) }
+                        .semantics(mergeDescendants = true) {},
+                ) {
+                    Box(Modifier.fillMaxWidth().aspectRatio(1.4f).clip(Shapes.l)) { PhotoView(m.items.first().ref, Modifier.fillMaxSize(), thumbSize = 240.dp) }
+                    Row(Modifier.padding(horizontal = 4.dp, vertical = 6.dp), verticalAlignment = Alignment.Bottom) {
+                        T(m.label, Sift.type.titleS, Modifier.weight(1f), color = Sift.colors.onSurface)
+                        T("%,d".format(m.items.size), Sift.type.data, color = Sift.colors.onSurfaceVariant)
+                    }
                 }
             }
         }
@@ -100,7 +100,7 @@ fun LazyGridScope.monthTiles(months: List<MonthGroup>, onOpen: (MonthGroup) -> U
 }
 
 fun LazyGridScope.yearRows(months: List<MonthGroup>, onOpen: (MonthGroup) -> Unit) {
-    months.groupBy { it.year }.forEach { (year, ms) ->
+    months.groupBy { it.year }.toSortedMap(compareByDescending { it }).forEach { (year, ms) ->
         item(key = "Y$year", span = { GridItemSpan(maxLineSpan) }) {
             val covers = ms.flatMap { it.items }.let { all -> listOf(0, all.size / 2, all.size - 1).distinct().map { all[it] } }
             Column(

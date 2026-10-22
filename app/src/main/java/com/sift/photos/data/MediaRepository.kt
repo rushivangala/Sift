@@ -147,6 +147,9 @@ class MediaRepository(private val context: Context) {
                 )
             }
         }
+        // MediaStore orders by DATE_TAKEN, but items without one fall back to DATE_ADDED and land at the
+        // end out of order. Sort on the date we actually show, newest first, so every grouping is monotonic.
+        out.sortByDescending { it.dateMillis }
         out
     }
 
